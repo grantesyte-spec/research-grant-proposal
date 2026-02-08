@@ -1,32 +1,65 @@
 ---
 name: research-grant-proposal
-description: Generate academic research grant proposals in Chinese with validated references and Word export. Includes detailed reference verification workflow using Google Scholar, ScienceDirect, PubMed, CNKI, and other academic databases.
+description: Generate academic research grant proposals in Chinese with validated references and Word export. Includes detailed reference verification workflow using Google Scholar, ScienceDirect, PubMed, CNKI, and other academic databases. All references include citation numbers and verification URLs.
 ---
 
 # Research Grant Proposal Generator (研究课题申请书生成器)
 
-Generate professional academic research grant proposals in Chinese with proper formatting, validated references, and Word document export.
+Generate professional academic research grant proposals in Chinese with proper formatting, validated references with URLs, and Word document export.
 
 ## Quick Start
 
 1. **Provide research topic and requirements**
-2. **Skill generates proposal with verified references**
-3. **Export as Word (.docx) to desktop**
+2. **Skill generates proposal with in-text citations [1], [2], etc.**
+3. **All references include verification URLs for manual check**
+4. **Export as Word (.docx) to desktop**
 
 ## Document Structure
 
 The generated proposal includes:
 - Research title and objectives
-- Background and significance (立题依据)
+- Background and significance (立题依据) with in-text citations [1]-[20]
 - Research content and expected outcomes
 - Research methodology and technical approach
 - Timeline and milestones
-- References (validated from academic databases)
+- References section with numbered citations [1], [2], [3]... and verification URLs
+
+## In-Text Citations
+
+**Format:** Cite using superscript numbers in brackets [1]
+
+**Examples in text:**
+- "协同护理模式可显著改善患者预后[1][2]"
+- "多学科协作已被证明是有效的干预方法[3][4][5]"
+- "参考Tseng等[6]的研究设计..."
+
+**Rules:**
+- Cite when referencing specific research findings
+- Cite when describing established methods
+- Cite when stating statistics or data
+- Group related references together [1][2][3]
+- Use [1]-[5] for consecutive references
+
+## Reference List with Verification URLs
+
+**Each reference includes:**
+1. Numbered citation [1]
+2. Full bibliographic information (APA/Chinese format)
+3. DOI (if available)
+4. **Verification URL** for manual check
+
+**Format:**
+```
+[1] Author(s). Title[J]. Journal, Year, Vol(Issue): Pages. DOI. 验证链接: https://...
+[2] Author(s). Title[J]. Journal, Year, Vol(Issue): Pages. 验证链接: https://...
+```
 
 ## Word Document Format
 
 - Chinese fonts (宋体)
 - Proper headings (16pt title, 14pt section, 12pt body)
+- In-text citations as superscript numbers [1]
+- References section with numbered list
 - Tables for metrics and team members
 - Professional academic formatting
 - Saved to Desktop as `.docx`
@@ -86,15 +119,17 @@ For each candidate reference, verify:
 
 For each verified reference, record:
 ```
-[编号] Author(s). Title[J]. Journal, Year, Vol(Issue): Pages. DOI. 【验证: Google Scholar/数据库】被引用X次
+[编号] Author(s). Title[J]. Journal, Year, Vol(Issue): Pages. DOI. 【验证: 数据库】被引用X次. 验证链接: https://...
 ```
 
-**Verification Status:**
-- ✅ **Google Scholar** - Verified authentic
-- ✅ **ScienceDirect** - Verified authentic
-- ✅ **PubMed** - Verified authentic
-- ✅ **CNKI** - Verified authentic (requires login)
-- ⚠️ **Requires Manual Verification** - Could not verify automatically
+**Verification URL Options:**
+| Source | Verification URL Format |
+|--------|------------------------|
+| Google Scholar | `https://scholar.google.com/scholar?q=Title+Author+Year` |
+| ScienceDirect | `https://www.sciencedirect.com/science/article/pii/XXX` |
+| PubMed | `https://pubmed.ncbi.nlm.nih.gov/PMID/` |
+| DOI | `https://doi.org/[DOI]` |
+| CNKI | `https://kns.cnki.net/kns8s/search?classid=WD0FTY92&q=Title` |
 
 ### Step 4: Common Issues and Solutions
 
@@ -133,6 +168,29 @@ Include only references that meet ALL:
 - Duplicate publications
 - Non-accessible sources
 
+## Reference Format (Chinese Academic Standard)
+
+```
+[序号] 作者. 题名[J]. 刊名, 年, 卷(期): 起止页码. DOI. 验证链接: https://...
+```
+
+**Examples:**
+
+**English Journal Article:**
+```
+[1] Tseng MY, Liang J, Wang JS, et al. Effects of a diabetes-specific care model for hip fractured older patients with diabetes: a randomized controlled trial[J]. Experimental Gerontology, 2019, 118: 31-38. DOI: 10.1016/j.exger.2019.01.006. 验证链接: https://doi.org/10.1016/j.exger.2019.01.006
+```
+
+**Chinese Journal Article:**
+```
+[5] 王青, 李明华. 多学科协作护理模式在糖尿病合并髋部骨折患者中的应用研究[J]. 中华护理杂志, 2020, 55(3): 321-326. 验证链接: https://scholar.google.com/scholar?q=王青+多学科协作+2020
+```
+
+**Thesis/Dissertation:**
+```
+[8] Zhang J. The integrated care model for the management of older patients with hip fracture in China[D]. University of New South Wales, 2023. 验证链接: https://scholar.google.com/scholar?q=Zhang+2023+hip+fracture
+```
+
 ## Common Topics
 
 This skill is optimized for nursing and medical research topics:
@@ -149,7 +207,7 @@ This skill is optimized for nursing and medical research topics:
 - "Create a proposal for diabetes nursing management research"
 
 **Advanced:**
-- "Create a grant proposal titled 'Collaborative Care Combined with Prospective Nursing Management in Type 2 Diabetes Patients with Osteoporotic Intertrochanteric Femoral Fractures' and verify all 15 references through Google Scholar"
+- "Create a grant proposal titled 'Collaborative Care Combined with Prospective Nursing Management in Type 2 Diabetes Patients with Osteoporotic Intertrochanteric Femoral Fractures' with [1]-[20] citations and verification URLs for each reference"
 
 ## Output Location
 
@@ -158,15 +216,29 @@ Generated Word documents are saved to:
 ~/Desktop/[proposal-title].docx
 ```
 
-## Reference Format (Chinese Academic Standard)
+## Output Example
 
+**In-text citations:**
 ```
-[序号] 作者. 题名[J]. 刊名, 年, 卷(期): 起止页码. DOI/URL. 【验证: 数据库】被引用X次
+协同护理模式已被证明可显著改善患者预后[1][2]，多学科协作团队
+的建立是实施该模式的关键[3][4]。
 ```
 
-Example:
+**References section:**
 ```
-[3] Tseng MY, Liang J, Wang JS, et al. Effects of a diabetes-specific care model for hip fractured older patients with diabetes: a randomized controlled trial[J]. Experimental Gerontology, 2019, 118: 31-38. 【验证: Google Scholar】被引用15次
+五、近五年核心期刊参考文献
+
+[1] Moran WP, Chen GJ, Watters C, et al. Using a collaborative approach 
+    to reduce postoperative complications for hip-fracture patients: a 
+    three-year follow-up[J]. The Joint Commission Journal on Quality 
+    and Patient Safety, 2006, 32(11): 573-584. 
+    验证链接: https://scholar.google.com/scholar?q=Moran+2006+hip+fracture
+
+[2] Tseng MY, Liang J, Wang JS, et al. Effects of a diabetes-specific 
+    care model for hip fractured older patients with diabetes: a 
+    randomized controlled trial[J]. Experimental Gerontology, 2019, 
+    118: 31-38. DOI: 10.1016/j.exger.2019.01.006. 
+    验证链接: https://doi.org/10.1016/j.exger.2019.01.006
 ```
 
 ## Related Skills
