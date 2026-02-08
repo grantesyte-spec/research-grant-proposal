@@ -55,8 +55,12 @@ For EACH reference:
    ```bash
    openclaw browser --browser-profile chrome open "[verification-url]"
    ```
+   OR for PubMed:
+   ```bash
+   web_fetch(url="https://pubmed.ncbi.nlm.nih.gov/[PMID]/")
+   ```
 
-2. **Take Snapshot**
+2. **Take Snapshot (if using browser)**
    ```bash
    openclaw browser --browser-profile chrome snapshot --compact
    ```
@@ -99,23 +103,41 @@ For each reference, record:
 ### Database Search for Replacements
 
 ```bash
-# Google Scholar
-openclaw browser --browser-profile chrome open "https://scholar.google.com/scholar?q=keywords"
-
 # CNKI
 openclaw browser --browser-profile chrome open "https://kns.cnki.net/kns8s/search?classid=WD0FTY92&q=keywords"
+
+# PubMed
+web_fetch(url="https://pubmed.ncbi.nlm.nih.gov/?term=keywords")
+
+# Google Scholar (limited access)
+# Manual verification may be required
 ```
 
 ## CNKI Verification Workflow
 
 **Reference**: [CNKI Verification Steps](verification_steps/cnki.md) for detailed 8-step process.
 
+**Key Difference**: CNKI uses `openclaw browser` for verification.
+
 ### Golden Rule
 ```bash
 snapshot → type → click → wait --load networkidle → snapshot
 ```
 
-**Important**: Use `--browser-profile chrome` (not `--profile`)
+## PubMed Verification Workflow
+
+**Reference**: [PubMed Verification Steps](verification_steps/pubmed.md) for detailed process.
+
+**Key Difference**: PubMed uses `web_fetch` tool (browser automation returns 404).
+
+### Key Steps
+```bash
+# Search
+web_fetch(url="https://pubmed.ncbi.nlm.nih.gov/?term=keywords")
+
+# Get article details
+web_fetch(url="https://pubmed.ncbi.nlm.nih.gov/[PMID]/")
+```
 
 ## Common Pitfalls
 
@@ -125,6 +147,7 @@ snapshot → type → click → wait --load networkidle → snapshot
 | Missing path in write | Always include: `write(content="text", path="/file.txt")` |
 | Typo in numbers | Verify: 亿/万, %, decimals |
 | Refs invalid after navigation | Re-run `snapshot` after page changes |
+| PubMed 404 error | Use `web_fetch` instead of browser |
 
 ## Output Location
 
@@ -137,12 +160,12 @@ snapshot → type → click → wait --load networkidle → snapshot
 ### CNKI (Chinese)
 - **File**: `verification_steps/cnki.md`
 - **Scope**: Chinese nursing research verification
-- **Features**: No VPN required, 8-step detailed process
+- **Features**: openclaw browser automation, 8-step detailed process
 
-### PubMed (Coming Soon)
+### PubMed (English)
 - **File**: `verification_steps/pubmed.md`
-- **Scope**: English biomedical literature
-- **Features**: Complete DOI information
+- **Scope**: English biomedical and nursing literature
+- **Features**: web_fetch tool, PMID-based verification
 
 ### DOI (Coming Soon)
 - **File**: `verification_steps/doi.md`
