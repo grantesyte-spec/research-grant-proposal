@@ -26,22 +26,25 @@ openclaw browser --browser-profile chrome snapshot --compact
 **Note**: Search box is typically `ref=e18`, Search button is `ref=e33`
 
 ### Step 3: Enter Search Keywords
-```bash
-# Simplify keywords if no results
-openclaw browser --browser-profile chrome type [search-box-ref] "Orem 自理模式 糖尿病"
-```
 
-### Step 4: Click Search Button
+**Option A: Use type + click separately**
 ```bash
+openclaw browser --browser-profile chrome type [search-box-ref] "Orem 自理模式 糖尿病"
 openclaw browser --browser-profile chrome click [search-button-ref]
 ```
 
-### Step 5: Wait for Page Load (Critical!)
+**Option B: Use type --submit (Recommended)**
+```bash
+openclaw browser --browser-profile chrome type [search-box-ref] "Orem 自理模式 糖尿病" --submit
+```
+**Advantage**: Single command to input and submit search
+
+### Step 4: Wait for Page Load (Critical!)
 ```bash
 openclaw browser --browser-profile chrome wait --load networkidle
 ```
 
-### Step 6: Get Search Results Snapshot
+### Step 5: Get Search Results Snapshot
 ```bash
 openclaw browser --browser-profile chrome snapshot --compact
 ```
@@ -49,7 +52,7 @@ openclaw browser --browser-profile chrome snapshot --compact
 - Result count visible (e.g., "共找到 75 条结果")
 - Article list visible (title, authors, journal, date)
 
-### Step 7: View Article Details
+### Step 6: View Article Details
 ```bash
 # Click article title link
 openclaw browser --browser-profile chrome click [article-ref]
@@ -61,7 +64,7 @@ openclaw browser --browser-profile chrome wait --load networkidle
 openclaw browser --browser-profile chrome snapshot --compact
 ```
 
-### Step 8: Extract Complete Article Information
+### Step 7: Extract Complete Article Information
 From detail page, extract:
 - ✅ Full title
 - ✅ All authors (check "显示全部作者" link)
@@ -143,9 +146,21 @@ After verification, confirm:
 3. **Ref Changes**: Refs become invalid after navigation, must re-snapshot
 4. **Captcha**: If captcha appears, may require manual handling
 5. **Information Completeness**: Not all articles have complete DOI and page info
+6. **--submit Option**: Use `type [ref] "keywords" --submit` for single-step input and search
 
 ## Golden Rule
 
 ```bash
-snapshot → type → click → wait --load networkidle → snapshot
+snapshot → type --submit "keywords" → wait --load → snapshot
 ```
+
+## Comparison: CNKI vs PubMed
+
+| Aspect | CNKI | PubMed |
+|--------|------|--------|
+| **Search Method** | `type --submit` or `type` + `click` | Similar approach |
+| **Primary ID** | None | PMID |
+| **DOI Availability** | Sometimes missing | Usually available |
+| **Language** | Chinese | English |
+| **Nursing Coverage** | Strong | Very Strong |
+| **Bot Detection** | Low | Medium |

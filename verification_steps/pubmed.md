@@ -15,24 +15,47 @@
 
 ## 4-Step Verification Process
 
-### Step 1: Open PubMed with Search Term
+### Step 1: Open PubMed Homepage
 ```bash
-openclaw browser --browser-profile chrome open "https://pubmed.ncbi.nlm.nih.gov/?term=Orem+self-care+model+nursing"
+openclaw browser --browser-profile chrome open "https://pubmed.ncbi.nlm.nih.gov/"
 ```
 
 ### Step 2: Get Page Snapshot
 ```bash
 openclaw browser --browser-profile chrome snapshot --compact
 ```
+Note: Search box ref is typically `e14`, Search button ref is `e15`
 
-### Step 3: Click Article Link
-Find article ref from snapshot and click:
+### Step 3: Enter Search Keywords
+
+**Option A: Use type + click separately**
 ```bash
-openclaw browser --browser-profile chrome click [article-ref]
+openclaw browser --browser-profile chrome type e14 "Orem self-care model diabetes hip fracture"
+openclaw browser --browser-profile chrome click e15
+```
+
+**Option B: Use type --submit (Recommended)**
+```bash
+openclaw browser --browser-profile chrome type e14 "Orem self-care model diabetes hip fracture" --submit
+```
+**Advantage**: Single command to input and submit search
+
+**Option C: Use URL with search term**
+```bash
+openclaw browser --browser-profile chrome open "https://pubmed.ncbi.nlm.nih.gov/?term=Orem+self-care+model"
 ```
 
 ### Step 4: Get Article Details
+
+**After search results load:**
 ```bash
+openclaw browser --browser-profile chrome click [article-ref]
+openclaw browser --browser-profile chrome snapshot --compact
+```
+
+**Or use PMID URL directly:**
+```bash
+openclaw browser --browser-profile chrome open "https://pubmed.ncbi.nlm.nih.gov/[PMID]/"
 openclaw browser --browser-profile chrome snapshot --compact
 ```
 
@@ -55,14 +78,20 @@ openclaw browser --browser-profile chrome type e14 "Orem self-care model diabete
 ```
 
 ### Step 4: Submit Search
-**Option A**: Click search button
+
+**Option A: Click search button**
 ```bash
 openclaw browser --browser-profile chrome click e15
 ```
 
-**Option B**: Press Enter
+**Option B: Press Enter**
 ```bash
 openclaw browser --browser-profile chrome press Enter
+```
+
+**Option C: Use --submit**
+```bash
+openclaw browser --browser-profile chrome type e14 "Orem self-care model" --submit
 ```
 
 ### Step 5: Wait for Page Load
@@ -117,6 +146,11 @@ Extract:
 
 ## Example Verification
 
+### Search with --submit
+```bash
+openclaw browser --browser-profile chrome type e14 "Orem self-care model nursing" --submit
+```
+
 ### Snapshot Response (Simplified)
 ```
 [1] Younas A, et al. Scand J Caring Sci. 2019 Sep;33(3):540-555. DOI: 10.1111/scs.12670. PMID: 30866078
@@ -166,7 +200,7 @@ Younas A, et al. Usefulness of nursing theory-guided practice: an integrative re
 **Solution**:
 1. Simplify search terms
 2. Try: `Orem self-care model` first, then add more terms
-3. Check spelling
+3. Use URL with search term: `https://pubmed.ncbi.nlm.nih.gov/?term=Orem+self-care`
 
 ### Issue 3: Cannot Find Article in Results
 **Symptom**: Article not visible in snapshot
@@ -185,12 +219,13 @@ Younas A, et al. Usefulness of nursing theory-guided practice: an integrative re
 
 ## Important Notes
 
-1. **Golden Rule**: snapshot → type → click → wait → snapshot
+1. **Golden Rule**: snapshot → type --submit → wait → snapshot
 2. **PMID is Reliable**: Every PubMed article has unique PMID
 3. **DOI Preferred**: Use DOI for verification when available
 4. **Check Retractions**: Look for "Retracted"标记
 5. **Navigation**: Refs change after navigation, always re-snapshot
 6. **Bot Detection**: PubMed may close tabs, try alternative approaches
+7. **--submit Option**: Use `type [ref] "keywords" --submit` for efficient single-step search
 
 ## PubMed URL Patterns
 
@@ -219,7 +254,8 @@ Younas A, et al. Usefulness of nursing theory-guided practice: an integrative re
 
 | Aspect | CNKI | PubMed |
 |--------|------|--------|
-| **Access Method** | openclaw browser | openclaw browser |
+| **Search Method** | `type --submit` or `type` + `click` | Similar approach |
+| **Browser Stability** | ✅ Stable | ⚠️ Less stable (tabs close) |
 | **Primary ID** | None | PMID |
 | **DOI Availability** | Sometimes missing | Usually available |
 | **Language** | Chinese | English |
