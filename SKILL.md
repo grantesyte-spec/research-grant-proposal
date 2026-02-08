@@ -202,29 +202,24 @@ openclaw browser --profile chrome open "https://kns.cnki.net/kns8s/search?classi
 # Add to proposal if confirmed
 ```
 
+
 ## Browser Tool Usage
 
-**⚠️ Important: Use CLI mode, not JSON API**
+**重要提示**: 请参考 `verification_steps/cnki.md` 获取完整的浏览器工具使用步骤。
 
+### 快速参考
 ```bash
-# Open URL
-openclaw browser --profile chrome open "https://kns.cnki.net/kns8s/search"
-
-# Get page structure
-openclaw browser --profile chrome snapshot --compact
-
-# Type/Click (use ref from snapshot)
-openclaw browser --profile chrome type e8 "关键词" --target-id <tab-id>
-openclaw browser --profile chrome click e10 --target-id <tab-id>
+# 黄金法则：每次页面变化后必须重新 snapshot
+snapshot → type → click → wait --load networkidle → snapshot
 ```
 
-**Do NOT use:** `web_fetch` tool
+**详细步骤**: [查看 CNKI 验证步骤文档](verification_steps/cnki.md)
 
 ## Common Pitfalls
 
 | Issue | Solution |
 |-------|----------|
-| JSON API errors | Use CLI mode: `openclaw browser --profile chrome <command>` |
+| JSON API errors | Use CLI mode: `openclaw browser --browser-profile chrome <command>` |
 | Missing path in write | Always include: `write(content="text", path="/file.txt") |
 | Typo in numbers | Verify: 亿/万, %, decimals |
 
@@ -234,49 +229,6 @@ openclaw browser --profile chrome click e10 --target-id <tab-id>
 ~/Desktop/[课题名称]课题申请书.docx
 ```
 
-## Best Practices Checklist
-
-Before submitting:
-- [ ] **EACH reference verified via CLI** - Execute `openclaw browser --profile chrome open "[url]"` for every reference
-- [ ] **Snapshot confirmed for each** - Take snapshot and verify details visible
-- [ ] **TOPIC confirmed** - Article is about the research topic
-- [ ] **AUTHORS confirmed** - At least first 2-3 authors match citation
-- [ ] **YEAR confirmed** - Publication year matches
-- [ ] **NO fabricated references** - Never include references without actual verification
-- [ ] **Failed references replaced** - If any check fails, find and add new reference
-- [ ] All in-text citations match reference list
-- [ ] Document follows Chinese academic standards
-
-## Reference Quality Sources
-
-### English Journals
-- Journal of Clinical Nursing
-- International Journal of Nursing Studies
-- Osteoporosis International
-- Geriatric Nursing
-
-### Chinese Core Journals
-- 中华护理杂志
-- 中国护理管理
-- 护理学杂志
-- 中华糖尿病杂志
-- 中国实用护理杂志
-
----
-
-## 📚 独立验证步骤文档
-
-### CNKI（中国知网）
-- **文件**：`verification_steps/cnki.md`
-- **适用范围**：中文护理研究文献验证
-- **特点**：无需VPN，但部分文献可能缺少DOI
-
-### PubMed（即将推出）
-- **文件**：`verification_steps/pubmed.md`
-- **适用范围**：英文生物医学文献验证
-- **特点**：DOI信息完整，验证便捷
-
-### DOI验证（即将推出）
 - **文件**：`verification_steps/doi.md`
 - **适用范围**：通过DOI验证文献真实性
 - **特点**：最权威的文献验证方式
