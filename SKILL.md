@@ -114,8 +114,10 @@ Generate proposal with references (may include unverifiable ones).
    ```bash
    # Use search keywords from failed reference
    openclaw browser --profile chrome open "https://scholar.google.com/scholar?q=topic+keywords"
-   # OR
+   # OR CNKI
    open "https://kns.cnki.net/kns8s/search?classid=WD0FTY92&q=topic+keywords"
+   # OR 万方数据库
+   open "https://www.wanfangdata.com.cn/"
    ```
 
 2. **Select Valid Replacement**
