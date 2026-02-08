@@ -1,6 +1,6 @@
 ---
 name: research-grant-proposal
-description: Generate academic research grant proposals in Chinese (中文研究课题申请书). Use when creating nursing/medical research proposals, including document creation with proper academic formatting, literature references, and Word (.docx) export. Supports topics like collaborative care, nursing management, diabetes, osteoporosis, and hip fractures.
+description: Generate academic research grant proposals in Chinese with validated references and Word export. Includes detailed reference verification workflow using Google Scholar, ScienceDirect, PubMed, CNKI, and other academic databases.
 ---
 
 # Research Grant Proposal Generator (研究课题申请书生成器)
@@ -9,11 +9,9 @@ Generate professional academic research grant proposals in Chinese with proper f
 
 ## Quick Start
 
-To create a research grant proposal:
-
-1. Provide the research topic, title, and key sections
-2. The skill will generate a complete proposal document
-3. Export as Word (.docx) file to desktop
+1. **Provide research topic and requirements**
+2. **Skill generates proposal with verified references**
+3. **Export as Word (.docx) to desktop**
 
 ## Document Structure
 
@@ -23,7 +21,7 @@ The generated proposal includes:
 - Research content and expected outcomes
 - Research methodology and technical approach
 - Timeline and milestones
-- References (validated from Google Scholar/Academic databases)
+- References (validated from academic databases)
 
 ## Word Document Format
 
@@ -32,6 +30,108 @@ The generated proposal includes:
 - Tables for metrics and team members
 - Professional academic formatting
 - Saved to Desktop as `.docx`
+
+## Reference Verification Workflow
+
+**Critical: All references must be verified before including in proposals.**
+
+### Step 1: Search for References
+
+**Primary Search Tools:**
+```bash
+# Google Scholar (recommended for English)
+open "https://scholar.google.com/scholar?q=keywords"
+
+# ScienceDirect
+open "https://www.sciencedirect.com"
+
+# CNKI (中国知网) - requires institutional login
+open "https://kns.cnki.net/kns8s/search?classid=WD0FTY92"
+```
+
+**Search Keywords Strategy:**
+- English: "collaborative care nursing diabetes hip fracture"
+- Chinese: "协同护理 糖尿病 髋部骨折 前瞻性护理"
+
+### Step 2: Verify Each Reference
+
+For each candidate reference, verify:
+
+**2.1 Check Authenticity:**
+```bash
+# Google Scholar
+# 1. Click on the article title
+# 2. Verify author names match
+# 3. Check publication year
+# 4. Confirm journal/publisher exists
+# 5. Look for "Cited by" count (legitimate papers have citations)
+```
+
+**2.2 Verify with DOI:**
+- Look for DOI in article metadata
+- Visit: https://doi.org/[DOI]
+- Confirm article loads correctly
+
+**2.3 Check Citation Count:**
+- Google Scholar shows citation count
+- Papers with 0 citations may be questionable
+- Highly cited papers (>10) are reliable
+
+**2.4 Cross-Reference Check:**
+- Search for the article title in quotes
+- Check if same article appears on publisher site
+- Verify authors and publication details match
+
+### Step 3: Document Verification Results
+
+For each verified reference, record:
+```
+[编号] Author(s). Title[J]. Journal, Year, Vol(Issue): Pages. DOI. 【验证: Google Scholar/数据库】被引用X次
+```
+
+**Verification Status:**
+- ✅ **Google Scholar** - Verified authentic
+- ✅ **ScienceDirect** - Verified authentic
+- ✅ **PubMed** - Verified authentic
+- ✅ **CNKI** - Verified authentic (requires login)
+- ⚠️ **Requires Manual Verification** - Could not verify automatically
+
+### Step 4: Common Issues and Solutions
+
+**Issue: Article not found in database**
+- Try alternative search (title in quotes, author name)
+- Check for spelling variations
+- Verify the journal exists
+
+**Issue: Citation count is 0 for recent paper**
+- Acceptable if published within 1-2 years
+- Check if it's from a reputable journal
+
+**Issue: Author name mismatch**
+- Check author profiles on Google Scholar
+- Look for "Author profile" links
+- Verify institutional affiliation
+
+**Issue: CNKI access requires login**
+- Use institutional credentials
+- Alternative: Use Google Scholar for Chinese journals
+- Record as "requires institutional login"
+
+### Step 5: Reference Quality Criteria
+
+Include only references that meet ALL:
+- [ ] Published in peer-reviewed journal
+- [ ] Authors can be verified
+- [ ] Journal has impact factor or is reputable
+- [ ] DOI or stable URL available
+- [ ] Content directly relevant to research topic
+- [ ] Published within last 10 years (except seminal papers)
+
+**Exclude:**
+- Predatory journals (check Beall's List)
+- Non-peer-reviewed sources
+- Duplicate publications
+- Non-accessible sources
 
 ## Common Topics
 
@@ -45,11 +145,11 @@ This skill is optimized for nursing and medical research topics:
 ## Usage Examples
 
 **Basic:**
-- "Generate a research grant proposal about collaborative nursing care"
+- "Generate a research grant proposal about collaborative nursing care with verified references"
 - "Create a proposal for diabetes nursing management research"
 
 **Advanced:**
-- "Create a grant proposal titled 'Collaborative Care Combined with Prospective Nursing Management in Type 2 Diabetes Patients with Osteoporotic Intertrochanteric Femoral Fractures'"
+- "Create a grant proposal titled 'Collaborative Care Combined with Prospective Nursing Management in Type 2 Diabetes Patients with Osteoporotic Intertrochanteric Femoral Fractures' and verify all 15 references through Google Scholar"
 
 ## Output Location
 
@@ -58,18 +158,16 @@ Generated Word documents are saved to:
 ~/Desktop/[proposal-title].docx
 ```
 
-## Reference Validation
+## Reference Format (Chinese Academic Standard)
 
-All references in the proposal are validated through:
-- Google Scholar (for English literature)
-- Academic databases (ScienceDirect, PubMed, Wiley, etc.)
+```
+[序号] 作者. 题名[J]. 刊名, 年, 卷(期): 起止页码. DOI/URL. 【验证: 数据库】被引用X次
+```
 
-Reference format follows Chinese academic standards with:
-- Author names in Chinese/English
-- Year of publication
-- Journal/Source
-- Volume, issue, pages
-- DOI links where available
+Example:
+```
+[3] Tseng MY, Liang J, Wang JS, et al. Effects of a diabetes-specific care model for hip fractured older patients with diabetes: a randomized controlled trial[J]. Experimental Gerontology, 2019, 118: 31-38. 【验证: Google Scholar】被引用15次
+```
 
 ## Related Skills
 
