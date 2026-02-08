@@ -86,24 +86,35 @@ For EACH reference, you MUST:
    # For DOI links:
    openclaw browser --profile chrome open "https://doi.org/[DOI]"
    # WAIT for page to load
-   # CONFIRM article title is visible
    
    # For CNKI links:
    openclaw browser --profile chrome open "https://kns.cnki.net/kcms/detail/detail.aspx?dbcode=CJFD&filename=XXX"
-   # CONFIRM article details page loads
-   # Verify authors, year, journal match citation
    ```
 
-2. **Record Verification Result**
+2. **Take Snapshot to Confirm Details**
+   ```bash
+   openclaw browser --profile chrome snapshot --compact
+   ```
+
+3. **Verify TWO Key Elements (MANDATORY):**
+   ```
+   ✓ TOPIC/MATCHES research topic
+   ✓ AUTHORS at least first 2-3 match citation
+   ✓ YEAR of publication matches
+   ✓ JOURNAL name matches
+   ```
+
+4. **Record Verification Result**
    ```
    [1] AUTHOR. TITLE[J]. JOURNAL, YEAR.
        Status: VERIFIED / FAILED
        URL Accessed: YES/NO
-       Article Confirmed: YES/NO
+       TOPIC Confirmed: YES/NO (article is about the right topic)
+       AUTHORS Confirmed: YES/NO (authors match citation)
        If FAILED → Must find replacement
    ```
 
-3. **If Verification FAILS:**
+5. **If Verification FAILS:**
    - Mark reference as FAILED
    - Search for valid replacement
    - Add new reference
@@ -147,8 +158,12 @@ For each reference, record:
 [1] AUTHOR. TITLE[J]. JOURNAL, YEAR.
     Verification URL: https://...
     CLI Command Executed: openclaw browser --profile chrome open "URL"
-    Article Confirmed: YES/NO (based on snapshot)
-    If NO → Reference FAILED → REPLACEMENT: [NEW-REF]
+    Snapshot Taken: YES
+    TOPIC Confirmed: YES/NO (article discusses the research topic)
+    AUTHORS Confirmed: YES/NO (at least first 2-3 authors match)
+    YEAR Confirmed: YES/NO
+    Status: VERIFIED / FAILED
+    If FAILED → REPLACEMENT: [NEW-REF]
 ```
 
 ### Example of Proper Verification
@@ -161,10 +176,13 @@ For each reference, record:
 
 **CORRECT (Verified):**
 ```
-[1] Wang Y, et al. Title[J]. J Nurs, 2022.
+[1] Wang Y, Li X, Zhang Y, et al. Effects of Orem's self-care theory on hip fracture patients[J]. J Clin Nurs, 2022.
     Verification URL: https://doi.org/10.1111/jocn.16235
     CLI Command: openclaw browser --profile chrome open "https://doi.org/10.1111/jocn.16235"
-    Snapshot Confirms: YES (article title "Effects of Orem's..." visible)
+    Snapshot: Article title, authors (Wang Y, Li X, Zhang Y), journal, year all visible
+    TOPIC Confirmed: YES (article is about Orem self-care theory for hip fracture)
+    AUTHORS Confirmed: YES (Wang Y, Li X, Zhang Y match citation)
+    YEAR Confirmed: YES (2022 matches)
     Status: VERIFIED ✓
 ```
 
@@ -219,10 +237,13 @@ openclaw browser --profile chrome click e10 --target-id <tab-id>
 ## Best Practices Checklist
 
 Before submitting:
-- [ ] **EACH reference verified via CLI** - You MUST execute `openclaw browser --profile chrome open "[url]"` for every reference
-- [ ] **Article confirmed in snapshot** - Take snapshot and confirm article details are visible
+- [ ] **EACH reference verified via CLI** - Execute `openclaw browser --profile chrome open "[url]"` for every reference
+- [ ] **Snapshot confirmed for each** - Take snapshot and verify details visible
+- [ ] **TOPIC confirmed** - Article is about the research topic
+- [ ] **AUTHORS confirmed** - At least first 2-3 authors match citation
+- [ ] **YEAR confirmed** - Publication year matches
 - [ ] **NO fabricated references** - Never include references without actual verification
-- [ ] **Failed references replaced** - If URL fails, find and add new reference
+- [ ] **Failed references replaced** - If any check fails, find and add new reference
 - [ ] All in-text citations match reference list
 - [ ] Document follows Chinese academic standards
 
