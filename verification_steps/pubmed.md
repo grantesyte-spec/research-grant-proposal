@@ -3,7 +3,7 @@
 ## Scope
 - PubMed (NCBI - National Center for Biotechnology Information)
 - English biomedical and nursing literature verification
-- Requires web_fetch tool (browser automation has limitations)
+- Two methods: `openclaw browser` and `web_fetch`
 
 ## Verification Goals
 - ✅ TOPIC: Article matches research topic
@@ -13,17 +13,55 @@
 - ✅ DOI: Most articles have DOI
 - ✅ JOURNAL: Official journal name
 
-## Important Discovery
+## Two Verification Methods
 
-**Key Finding**: 
-- `openclaw browser` returns HTTP 404 for PubMed
-- **`web_fetch` tool works successfully** for PubMed verification
+### Method 1: openclaw browser (Less Stable)
+**Challenge**: PubMed may close tabs during automation (detected as bot)
 
-**Recommendation**: Use `web_fetch` for PubMed verification, not browser automation.
+**Process**:
+```bash
+# Step 1: Open PubMed with search term
+openclaw browser --browser-profile chrome open "https://pubmed.ncbi.nlm.nih.gov/?term=Orem+self-care+model"
 
-## 4-Step Verification Process
+# Step 2: Get page snapshot
+openclaw browser --browser-profile chrome snapshot --compact
 
-### Step 1: Search PubMed via web_fetch
+# Step 3: Type search keywords (if needed)
+openclaw browser --browser-profile chrome type e14 "Orem self-care model diabetes hip fracture"
+
+# Step 4: Click search button
+openclaw browser --browser-profile chrome click e15
+
+# Step 5: Wait for load
+openclaw browser --browser-profile chrome wait --load networkidle
+
+# Step 6: Get results snapshot
+openclaw browser --browser-profile chrome snapshot --compact
+
+# Step 7: Click article link
+openclaw browser --browser-profile chrome click [article-ref]
+
+# Step 8: Get article details
+openclaw browser --browser-profile chrome snapshot --compact
+```
+
+**Note**: If tab disappears, use Method 2 instead.
+
+### Method 2: web_fetch (Recommended - Stable)
+**Advantage**: More stable, reliable data extraction
+
+**Process**:
+```bash
+# Step 1: Search PubMed
+web_fetch(url="https://pubmed.ncbi.nlm.nih.gov/?term=Orem+self-care+model+nursing")
+
+# Step 2: Get article details
+web_fetch(url="https://pubmed.ncbi.nlm.nih.gov/[PMID]/")
+```
+
+## 4-Step Verification Process (web_fetch Recommended)
+
+### Step 1: Search PubMed
 ```bash
 web_fetch(url="https://pubmed.ncbi.nlm.nih.gov/?term=keywords")
 ```
@@ -43,7 +81,7 @@ From web_fetch response, extract:
 - ✅ PMIDs
 - ✅ DOIs
 
-### Step 3: Get Article Details (Optional)
+### Step 3: Get Article Details
 For specific article verification:
 ```bash
 web_fetch(url="https://pubmed.ncbi.nlm.nih.gov/[PMID]/")
@@ -51,7 +89,7 @@ web_fetch(url="https://pubmed.ncbi.nlm.nih.gov/[PMID]/")
 
 **Example**:
 ```bash
-web_fetch(url="https://pubmed.ncbi.nlm.nih.gov/32050090/")
+web_fetch(url="https://pubmed.ncbi.nlm.nih.gov/30866078/")
 ```
 
 ### Step 4: Record Verification Result
@@ -84,13 +122,22 @@ Extract from details page:
 
 ## Example Verification
 
-### Web Fetch Response (Simplified)
+### web_fetch Response (Simplified)
 ```json
 {
   "url": "https://pubmed.ncbi.nlm.nih.gov/?term=Orem+self-care+model+nursing",
   "status": 200,
   "text": "77,272 results\n\n[1] Younas A, et al. Scand J Caring Sci. 2019 Sep;33(3):540-555. DOI: 10.1111/scs.12670. PMID: 30866078",
   "tookMs": 1068
+}
+```
+
+### Article Details Response
+```json
+{
+  "url": "https://pubmed.ncbi.nlm.nih.gov/30866078/",
+  "status": 200,
+  "text": "Usefulness of nursing theory-guided practice: an integrative review\n\nYounas A, et al.\nScand J Caring Sci.\n2019 Sep;33(3):540-555.\nDOI: 10.1111/scs.12670\nPMID: 30866078\n\nAbstract: Nursing theory-guided practice helps improve the quality of nursing care..."
 }
 ```
 
@@ -112,13 +159,14 @@ Younas A, et al. Usefulness of nursing theory-guided practice: an integrative re
 
 ## Troubleshooting
 
-### Issue 1: Browser Returns 404
-**Symptom**: `openclaw browser --browser-profile chrome open "https://pubmed.ncbi.nlm.nih.gov/"` returns HTTP 404
-**Solution**: Use `web_fetch` instead
+### Issue 1: Browser Tab Disappears
+**Symptom**: `Error: tab not found` after navigation
+**Cause**: PubMed detects automation and closes tab
+**Solution**: Use `web_fetch` instead (more stable)
 
 ### Issue 2: web_fetch Returns Incomplete Data
 **Symptom**: Text truncated or missing details
-**Solution**: 
+**Solution**:
 - Check `truncated: false` in response
 - If truncated, try specific PMID URL
 - Use `extractMode: "text"` for raw text
@@ -140,11 +188,11 @@ Younas A, et al. Usefulness of nursing theory-guided practice: an integrative re
 
 ## Important Notes
 
-1. **Use web_fetch**: Browser automation doesn't work for PubMed
+1. **web_fetch Recommended**: More stable for PubMed verification
 2. **PMID is Reliable**: Every PubMed article has unique PMID
 3. **DOI is Preferred**: Use DOI for verification when available
 4. **Check Retractions**: Look for "Retracted"标记
-5. **Search First**: Use broad search to find relevant articles
+5. **Browser Less Stable**: PubMed may close tabs during automation
 6. **Verify Specifics**: Get details for each candidate reference
 
 ## Search Strategy Examples
@@ -188,7 +236,8 @@ web_fetch(url="https://pubmed.ncbi.nlm.nih.gov/30866078/")
 
 | Aspect | CNKI | PubMed |
 |--------|------|--------|
-| **Access Method** | openclaw browser | web_fetch |
+| **Access Method** | openclaw browser (stable) | web_fetch (recommended) |
+| **Browser Stability** | ✅ Stable | ⚠️ Less stable (tabs close) |
 | **Primary ID** | None | PMID |
 | **DOI Availability** | Sometimes missing | Usually available |
 | **Language** | Chinese | English |
