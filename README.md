@@ -91,11 +91,11 @@ Include only references that:
 - Verification URL accessible
 
 **Recommended Chinese Journals:**
-- 中华护理杂志
-- 中国护理管理
-- 护理学杂志
-- 护理研究
-- 解放军护理杂志
+- Chinese Journal of Nursing (中华护理杂志)
+- Chinese Nursing Management (中国护理管理)
+- Journal of Nursing Science (护理学杂志)
+- Nursing Research (护理研究)
+- PLA Nursing Journal (解放军护理杂志)
 
 **Recommended English Journals:**
 - Journal of Clinical Nursing
@@ -132,8 +132,9 @@ research-grant-proposal/
 
 **In-text:**
 ```
-协同护理模式可显著降低术后并发症发生率[1][2]，通过多学科
-协作团队的个体化干预，患者的血糖控制达标率提高至85%以上[3]。
+Collaborative care models can significantly reduce postoperative complications[1][2], 
+through individualized interventions by multidisciplinary teams, 
+patient glycemic control rate improved to over 85%[3].
 ```
 
 **References:**
