@@ -12,11 +12,11 @@ Generate academic research grant proposals in Chinese with validated references 
 ## Output Structure
 
 Generated proposal includes:
-- 一、立题依据 (Background & Significance)
-- 二、研究目标与内容 (Objectives & Content)
-- 三、研究方法与技术路线 (Methods & Approach)
-- 四、预期成果与创新点 (Expected Outcomes)
-- 五、近五年核心期刊参考文献 (References [1]-[10])
+- 一、立题依据
+- 二、研究目标与内容
+- 三、研究方法与技术路线
+- 四、预期成果与创新点
+- 五、近五年核心期刊参考文献
 
 ## Citation Format
 
@@ -139,7 +139,7 @@ patient glycemic control rate improved to over 85%[3].
 
 **References:**
 ```
-五、近五年核心期刊参考文献
+References
 
 [1] Moran WP, et al. Using a collaborative approach to reduce 
     postoperative complications for hip-fracture patients[J]. 
