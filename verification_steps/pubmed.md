@@ -12,7 +12,8 @@ For EACH reference, verify these 5 elements:
 - ✅ **AUTHORS**: At least first 2-3 authors correct
 - ✅ **YEAR**: Publication year correct
 - ✅ **ABSTRACT**: Article abstract is relevant to proposal
-- ✅ **DOI/PMID**: DOI or PMID available and verifiable
+- ✅ **PMID**: PubMed unique identifier (required)
+- ⚠️ **DOI**: Most articles have DOI (optional)
 
 ## 5-Element Verification Checklist
 

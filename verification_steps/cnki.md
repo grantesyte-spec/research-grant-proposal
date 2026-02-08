@@ -26,6 +26,8 @@ For EACH reference, verify these 5 elements:
    - Does the abstract address the same intervention?
    - Does the abstract measure similar outcomes?
    - If NOT relevant → Mark FAILED → Search again
+
+✓ URL: Verification URL accessible (CNKI/PubMed/Wanfang)
 ```
 
 ## If Abstract is NOT Relevant → FAILED
