@@ -1,38 +1,3 @@
-## CRITICAL: Sequential Verification Required
-
-**IMPORTANT**: Do NOT perform concurrent verifications.
-
-When verifying references:
-1. Complete ALL CNKI verifications FIRST
-2. Then complete ALL PubMed verifications
-3. Finally complete Wanfang verifications (supplementary)
-4. Do NOT switch between databases mid-verification
-
-**Why Sequential?**
-- Browser tabs may conflict between databases
-- Tab management becomes complex with multiple databases
-- Easier to track progress and errors
-- Cleaner verification records
-
-**Verification Order:**
-1. CNKI (Chinese references) - First priority
-2. PubMed (English references) - Second priority
-3. Wanfang (supplementary Chinese) - Third priority
-
-**For Each Database:**
-```bash
-# Complete all verifications for this database first
-# Then move to the next database
-# Do NOT interleave verifications
-```
-
-**Wanfang Note:**
-- Articles open in NEW TAB - remember to switch tabs
-- Clean up unused tabs between verifications
-- Complete all Wanfang references last
-
----
-
 # Wanfang Reference Verification Steps
 
 ## Scope
@@ -40,44 +5,43 @@ When verifying references:
 - Chinese science and technology literature
 - Complementary to CNKI
 
+---
+
+## CRITICAL: Research-First Workflow
+
+**BEFORE verification, you MUST do research:**
+
+```
+1. Search CNKI first (primary Chinese source)
+2. Search PubMed for English literature
+3. THEN search Wanfang for supplementary Chinese sources
+4. Record findings in research_notes.md
+5. Select 10-15 quality references
+6. THEN verify references
+```
+
+**NEVER verify references without doing research first.**
+
+---
+
 ## Important: New Tab Behavior
 
 **Key Difference**:
 - Clicking search results **opens in NEW tab** (not same tab)
 - You must **switch to the new tab** to continue verification
 
+---
+
 ## Verification Goals
 
-For EACH reference, verify these 5 elements:
-- ✅ **TOPIC**: Article matches research topic (title matches proposal theme)
+For EACH reference found during research, verify these 5 elements:
+- ✅ **TOPIC**: Article matches research topic
 - ✅ **AUTHORS**: At least first 2-3 authors correct
 - ✅ **YEAR**: Publication year correct
-- ✅ **ABSTRACT**: Article abstract is relevant to proposal
-- ⚠️ DOI: Some articles may not have DOI
+- ✅ **ABSTRACT**: Abstract relevant to proposal
+- ✅ **URL**: Verification URL accessible
 
-## 5-Element Verification Checklist
-
-```
-✓ TOPIC: Title matches research topic
-✓ AUTHORS: First 2-3 authors match citation
-✓ YEAR: Publication year matches
-✓ ABSTRACT: Content is relevant to proposal
-   - Does the abstract discuss the same population?
-   - Does the abstract address the same intervention?
-   - Does the abstract measure similar outcomes?
-   - If NOT relevant → Mark FAILED → Search again
-```
-
-## If Abstract is NOT Relevant → FAILED
-
-When abstract does NOT match proposal:
-1. Mark reference as **FAILED**
-2. Document why:
-   ```
-   FAILED REASON: Abstract discusses [X] but proposal needs [Y]
-   ```
-3. Search for replacement article
-4. Re-verify ALL references from beginning
+---
 
 ## 8-Step Verification Process
 
@@ -92,16 +56,8 @@ openclaw browser --browser-profile chrome snapshot --compact
 ```
 
 ### Step 3: Enter Search Keywords
-
-**Option A: Use type --submit (Recommended)**
 ```bash
-openclaw browser --browser-profile chrome type [search-box-ref] "Orem 自理模式 糖尿病" --submit
-```
-
-**Option B: Use type + click**
-```bash
-openclaw browser --browser-profile chrome type [search-box-ref] "Orem 自理模式 糖尿病"
-openclaw browser --browser-profile chrome click [search-button-ref]
+openclaw browser --browser-profile chrome type [search-box-ref] "keywords" --submit
 ```
 
 ### Step 4: Wait for Page Load
@@ -109,14 +65,12 @@ openclaw browser --browser-profile chrome click [search-button-ref]
 openclaw browser --browser-profile chrome wait --load networkidle
 ```
 
-### Step 5: Get Search Results Snapshot
+### Step 5: Get Search Results
 ```bash
 openclaw browser --browser-profile chrome snapshot --compact
 ```
 
 ### Step 6: Click Article (Opens in NEW Tab!)
-
-**Important**: Article opens in NEW tab
 ```bash
 openclaw browser --browser-profile chrome click [article-ref]
 ```
@@ -135,21 +89,13 @@ openclaw browser --browser-profile chrome tabs
 openclaw browser --browser-profile chrome focus [new-tab-id]
 ```
 
-### Step 8: Get Article Details and Verify 5 Elements
+### Step 8: Get Article Details
 ```bash
-# Wait for new tab to load
 openclaw browser --browser-profile chrome wait --load networkidle
-
-# Get snapshot of article page
 openclaw browser --browser-profile chrome snapshot --compact
-
-# Verify 5 elements:
-# 1. TOPIC: Does title match proposal theme?
-# 2. AUTHORS: Do first 2-3 authors match?
-# 3. YEAR: Does year match?
-# 4. ABSTRACT: Is abstract relevant to proposal?
-# 5. DOI: Is DOI available?
 ```
+
+---
 
 ## Tab Management Commands
 
@@ -168,29 +114,29 @@ openclaw browser --browser-profile chrome focus [tab-id]
 openclaw browser --browser-profile chrome close [tab-id]
 ```
 
-## Verification Result Format
+---
+
+## Record Research Findings
+
+After search, create `research_notes.md`:
 
 ```markdown
-## [Number] [VERIFIED/FAILED]
+## Wanfang Search Results (Supplementary)
+**Keywords**: [Search terms]
+**Total Results**: [Number]
 
-**Title**: [Full Title]
-- **Authors**: [First 3 authors, et al.]
-- **Journal**: [Journal Name], [Year], [Vol]([Issue]): [Pages]
-- **Abstract**: [First 2-3 sentences...]
-- **Relevance Check**:
-  - Population matches: YES/NO
-  - Intervention matches: YES/NO
-  - Outcomes match: YES/NO
-- **Status**: [TOPIC✓ AUTHORS✓ YEAR✓ ABSTRACT✓ DOI✓] or [FAILED]
+### Relevant Articles
+| # | Title | Authors | Journal | Year | Relevance |
+|---|-------|---------|---------|------|-----------|
+| 1 | [Title] | [Authors] | [Journal] | [Year] | Medium |
 
-**Failed Example**:
-[3] Authors. Title[J]. Journal, 2020.
-    FAILED: Abstract discusses hospital nursing management,
-    but proposal focuses on patient self-care at home.
-    → REPLACEMENT SEARCH NEEDED
+### Selected for Proposal
+- [1] Full citation with URL
 ```
 
-## Example Workflow with New Tabs
+---
+
+## Example Workflow
 
 ```bash
 # 1. Search on homepage
@@ -205,7 +151,6 @@ click [article-ref]
 
 # 4. List tabs to find new one
 tabs
-# Output: 3 tabs - original + new article tab
 
 # 5. Switch to new tab
 focus [new-tab-id]
@@ -214,10 +159,12 @@ focus [new-tab-id]
 wait --load networkidle
 snapshot
 
-# 7. Verify 5 elements
-# [1] Authors. Title[J]. Journal, 2021.
-#     Status: ALL VERIFIED ✓✓✓✓✓
+# 7. Verify
+[1] Authors. Title[J]. Journal, 2021.
+    Status: VERIFIED ✓✓✓✓✓
 ```
+
+---
 
 ## Troubleshooting
 
@@ -225,72 +172,32 @@ snapshot
 **Cause**: Article opened in new tab, but you stayed on old tab
 **Solution**:
 ```bash
-# List all tabs
-openclaw browser --browser-profile chrome tabs
-
-# Focus on the new tab
-openclaw browser --browser-profile chrome focus [new-tab-id]
+tabs
+focus [new-tab-id]
 ```
 
-### Issue 2: Abstract NOT Relevant
-**Symptom**: Article discusses different population/intervention
-**Solution**:
-1. Mark as FAILED
-2. Document why not relevant
-3. Search for replacement
-4. Re-verify ALL references
-
-### Issue 3: Cannot Find Article in Snapshot
+### Issue 2: Cannot Find Article in Snapshot
 **Cause**: Still on search page, not article page
 **Solution**:
 1. Run `tabs` to check current tabs
 2. Switch to the article tab
 3. Re-run `snapshot`
 
-### Issue 4: Multiple Tabs Open
-**Cause**: Clicked multiple articles
+### Issue 3: Multiple Tabs Open
 **Solution**:
 ```bash
-# List all tabs
 tabs
-
-# Close unnecessary tabs
 close [unwanted-tab-id]
-
-# Focus on correct tab
 focus [correct-tab-id]
 ```
 
-### Issue 5: Search Returns No Results
-**Cause**: Keywords too specific
-**Solution**:
-1. Simplify keywords
-2. Use CNKI instead if needed
+### Issue 4: Search Returns No Results
+**Solution**: Simplify keywords, or use CNKI instead
 
-## Verification Checklist
+### Issue 5: Abstract NOT Relevant
+**Solution**: Mark FAILED → Search for replacement
 
-- [ ] Search returned relevant results
-- [ ] Clicked article (new tab opened)
-- [ ] Switched to new tab successfully
-- [ ] Article page loaded completely
-- [ ] **TOPIC**: Title matches proposal theme
-- [ ] **AUTHORS**: First 3 author names correct
-- [ ] **YEAR**: Publication year correct
-- [ ] **ABSTRACT**: Content relevant to proposal
-  - [ ] Same population
-  - [ ] Same/similar intervention
-  - [ ] Similar outcomes measured
-- [ ] Volume/Issue/Pages obtained
-- [ ] DOI obtained (if available)
-
-## Important Notes
-
-1. **5 Elements Required**: TOPIC, AUTHORS, YEAR, ABSTRACT, DOI/URL
-2. **Abstract Critical**: Must check relevance to proposal
-3. **If Not Relevant → FAILED**: Don't include irrelevant references
-4. **New Tab Behavior**: Clicking articles opens new tab - MUST switch tabs!
-5. **Tab Management**: Use `tabs` and `focus [tab-id]` commands
-6. **Wait After Switch**: Always `wait --load networkidle` after switching tabs
+---
 
 ## Golden Rule for Wanfang
 
@@ -299,18 +206,28 @@ focus [correct-tab-id]
 snapshot → type --submit "keywords" → wait → snapshot
 
 # Article phase (new tab!)
-click article → tabs → focus [new-tab-id] → wait → snapshot → verify 5 elements
+click article → tabs → focus [new-tab-id] → wait → snapshot → verify
 ```
+
+---
+
+## Important Notes
+
+1. **Research FIRST**: Always do research before verification
+2. **Document Everything**: Save findings to research_notes.md
+3. **New Tab Behavior**: Clicking articles opens new tab - MUST switch tabs!
+4. **Tab Management**: Use `tabs` and `focus [tab-id]` commands
+5. **Sequential**: CNKI → PubMed → Wanfang (in that order)
+6. **Wait After Switch**: Always `wait --load networkidle` after switching tabs
+
+---
 
 ## Comparison: CNKI vs Wanfang vs PubMed
 
 | Aspect | CNKI | Wanfang | PubMed |
-|--------|------|---------|---------|
-| **5-Element Verify** | ✅ Yes | ✅ Yes | ✅ Yes |
-| **Search Method** | type --submit | type --submit | type --submit |
-| **Abstract Check** | ✅ Required | ✅ Required | ✅ Required |
+|--------|------|---------|--------|
+| **Search Order** | 1st | 3rd | 2nd |
 | **Tab Behavior** | Same tab | **NEW TAB** ⚠️ | Same tab |
 | **Tab Management** | Not needed | Required | Not needed |
 | **Chinese Coverage** | ✅ Strong | ✅ Strong | Limited |
 | **English Coverage** | Limited | Limited | ✅ Strong |
-| **DOI Availability** | Sometimes missing | Sometimes missing | ✅ Usually available |

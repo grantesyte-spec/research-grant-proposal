@@ -1,268 +1,295 @@
 ---
 name: research-grant-proposal
-description: Generate academic research grant proposals in Chinese with validated references and Word export.
+description: Generate academic research grant proposals in Chinese based on REAL literature research and validated references.
 ---
 
 # Research Grant Proposal Generator
 
-Generate professional academic research grant proposals in Chinese with proper formatting, validated references, and Word document export.
+**IMPORTANT**: This skill follows a RESEARCH-FIRST workflow. You MUST search for real literature BEFORE generating any proposal.
 
-## Quick Start
+## CRITICAL WORKFLOW
 
-1. User provides research topic and requirements
-2. Generate proposal with in-text citations [1], [2], etc.
-3. Verify all references via CLI commands
-4. Export as Word (.docx) to `~/Desktop/`
+```
+STEP 1: Research (MANDATORY)     ← DO THIS FIRST
+  ├── Search CNKI for Chinese literature
+  ├── Search PubMed for English literature  
+  ├── Search Wanfang for supplementary Chinese literature
+  └── Record ALL findings in research_notes.md
 
-## Output Structure
+STEP 2: Analyze & Select          ← AFTER RESEARCH
+  ├── Review search results
+  ├── Select 10-15 high-quality references
+  └── Verify references are REAL (not fabricated)
+
+STEP 3: Generate Proposal          ← BASED ON REAL LITERATURE
+  ├── Write proposal based on research findings
+  ├── Cite ONLY the verified real references
+  └── Export to Word document
+
+STEP 4: Final Verification         ← OPTIONAL
+  └── Double-check all references are correctly cited
+```
+
+## ⚠️ GOLDEN RULES
+
+1. **NEVER generate a proposal without doing research first**
+2. **NEVER fabricate references** - all citations must come from actual search results
+3. **Research MUST be completed before any writing begins**
+4. **Document everything** - save research findings to file
+
+---
+
+## STEP 1: LITERATURE RESEARCH (REQUIRED)
+
+When user provides a research topic, you MUST:
+
+### 1.1 Search CNKI (Chinese Literature)
+```bash
+# Open CNKI advanced search
+openclaw browser --browser-profile chrome open "https://kns.cnki.net/kns8s/AdvSearch?classid=WD0FTY92&rlang=CHINESE"
+
+# Get page snapshot to find element refs
+openclaw browser --browser-profile chrome snapshot --compact
+
+# Search with keywords (typically ref=e18)
+openclaw browser --browser-profile chrome type e18 "Orem 自理模式 护理" --submit
+
+# Wait for results
+openclaw browser --browser-profile chrome wait --load networkidle
+
+# Get search results
+openclaw browser --browser-profile chrome snapshot --compact
+```
+
+### 1.2 Search PubMed (English Literature)
+```bash
+# Open PubMed
+openclaw browser --browser-profile chrome open "https://pubmed.ncbi.nlm.nih.gov/"
+
+# Get page snapshot
+openclaw browser --browser-profile chrome snapshot --compact
+
+# Search (typically ref=e14 for search box)
+openclaw browser --browser-profile chrome type e14 "Orem self-care model nursing" --submit
+
+# Wait for results
+openclaw browser --browser-profile chrome wait --load networkidle
+
+# Get search results
+openclaw browser --browser-profile chrome snapshot --compact
+```
+
+### 1.3 Search Wanfang (Supplementary Chinese)
+```bash
+# Open Wanfang
+openclaw browser --browser-profile chrome open "https://www.wanfangdata.com.cn/"
+
+# Get page snapshot
+openclaw browser --browser-profile chrome snapshot --compact
+
+# Search
+openclaw browser --browser-profile chrome type [search-ref] "Orem 自理模式 护理" --submit
+
+# Wait for results
+openclaw browser --browser-profile chrome wait --load networkidle
+
+# NOTE: Articles open in NEW TAB!
+openclaw browser --browser-profile chrome tabs
+openclaw browser --browser-profile chrome focus [new-tab-id]
+```
+
+---
+
+## STEP 2: RECORD RESEARCH FINDINGS
+
+### Create research_notes.md
+
+After each search session, CREATE a file called `research_notes.md`:
+
+```markdown
+# Literature Research Notes
+
+## Topic
+[Research topic provided by user]
+
+## Search Date
+[Date]
+
+## CNKI Search Results
+**Keywords**: [Search terms used]
+**Total Results**: [Number]
+
+### Relevant Articles Found
+| # | Title | Authors | Journal | Year | Relevance |
+|---|-------|---------|---------|------|-----------|
+| 1 | [Article Title] | [Authors] | [Journal] | [Year] | High/Medium/Low |
+
+### Full Citation (if accessed)
+[Complete reference with URL]
+
+## PubMed Search Results  
+**Keywords**: [Search terms used]
+**Total Results**: [Number]
+
+### Relevant Articles Found
+| # | Title | PMID | Authors | Journal | Year | Relevance |
+|---|-------|------|---------|---------|------|-----------|
+| 1 | [Article Title] | [PMID] | [Authors] | [Journal] | [Year] | High/Medium/Low |
+
+## Wanfang Search Results
+[Similar format]
+
+## Selected References for Proposal
+[List of 10-15 selected references with justification]
+
+## Research Gaps
+[What literature is missing? What needs to be addressed?]
+```
+
+### Key Information to Extract
+
+For EACH relevant article found:
+- ✅ Full title
+- ✅ Authors (first 2-3)
+- ✅ Journal name
+- ✅ Publication year
+- ✅ Volume, issue, pages (if available)
+- ✅ Abstract (for relevance check)
+- ✅ Verification URL (CNKI/PubMed/Wanfang link)
+- ✅ Relevance to the topic (High/Medium/Low)
+
+---
+
+## STEP 3: GENERATE PROPOSAL (AFTER RESEARCH)
+
+**CRITICAL**: Only generate proposal AFTER completing Step 1 & 2.
+
+### Output Structure
 
 Generated proposal includes:
-- Research title and objectives
-- Background and significance (立题依据)
-- Research content and expected outcomes
-- Methodology and technical approach
-- References section with [1]-[10] and verification URLs
+- 1. Background & Significance (立题依据)
+- 2. Objectives & Content (研究目标与内容)
+- 3. Methods & Technical Approach (研究方法与技术路线)
+- 4. Expected Outcomes & Innovation (预期成果与创新点)
+- 5. References (参考文献) - MUST be from research findings
 
-## Citation Format
+### Citation Format
 
-### In-Text Citations
+**In-Text Citations:**
 Use brackets: `[1]`, `[2]`, `[1][2]`, `[1]-[3]`
 
-### Reference List
+**Reference List:**
 ```
 [number] Authors. Article title[J]. Journal Name, Year, Volume(Issue): Pages. Verification URL: https://...
 ```
 
 **Examples:**
 ```
-[1] Wang Y, Li X. Effects of nursing intervention on hip fracture[J]. J Clin Nurs, 2022, 31(15): 2156-2165. Verification URL: https://pubmed.ncbi.nlm.nih.gov/35012345/
+[1] Wang Y, Zhang X, Liu J. Effects of nursing intervention on hip fracture[J]. J Clin Nurs, 2022, 31(15): 2156-2165. Verification URL: https://pubmed.ncbi.nlm.nih.gov/35012345/
 
-[2] Li M, Wang J. Orem self-care model in elderly hip fracture patients[J]. Chinese Journal of Nursing, 2020, 55(8): 1121-1126. Verification URL: https://kns.cnki.net/kcms/detail/detail.aspx?dbcode=CJFD&filename=ZHHL202008001
+[2] Li M, Wang J. Orem self-care model in elderly hip fracture patients[J]. Chinese Journal of Nursing, 2021, 56(8): 1121-1126. Verification URL: https://kns.cnki.net/kcms/detail/detail.aspx?dbcode=CJFD&filename=ZHHL202108001
 ```
 
-**Note**: DOI is optional - use verification URL from CNKI/PubMed/Wanfang as primary source.
+**NOTE**: All references MUST come from your research findings. Do NOT cite anything you haven't found.
 
-## Reference Verification Workflow
+---
 
-**CRITICAL: All references MUST be verified via CLI commands. Do NOT fabricate references.**
+## STEP 4: VERIFICATION (FINAL CHECK)
 
-### Sequential Verification Required
+Even though you found real references during research, do a final verification:
 
-**IMPORTANT**: Do NOT perform concurrent verifications.
+### For Each Reference in Proposal:
 
-**Verification Order:**
-1. **CNKI** - Complete ALL Chinese references first
-2. **PubMed** - Then complete ALL English references
-3. **Wanfang** - Finally complete supplementary Chinese references (if needed)
-
-**For Each Database:**
-```bash
-# Complete all verifications for this database first
-# Then move to the next database
-# Do NOT interleave verifications
-```
-
-**Why Sequential?**
-- Browser tabs may conflict between databases
-- Easier to track progress and errors
-- Cleaner verification records
-- Avoids confusion with verification URLs
-
-### 5-Element Verification
-
-For EACH reference, verify these 5 elements:
-
-1. ✅ **TOPIC**: Article title matches research topic
-2. ✅ **AUTHORS**: At least first 2-3 authors correct
-3. ✅ **YEAR**: Publication year correct
-4. ✅ **ABSTRACT**: Abstract content relevant to proposal
-5. ✅ **URL**: Verification URL accessible via browser
-
-### Abstract Relevance Check
-
-```
-ABSTRACT verification asks:
-- Does the abstract discuss the same POPULATION?
-  (e.g., elderly hip fracture patients vs. children)
-
-- Does the abstract address the same INTERVENTION?
-  (e.g., Orem self-care model vs. traditional care)
-
-- Does the abstract measure similar OUTCOMES?
-  (e.g., functional recovery vs. blood pressure)
-
-IF ANY answer is NO → Mark FAILED → Search for replacement
-```
-
-### If Abstract NOT Relevant → FAILED
-
-When abstract does NOT match proposal:
-1. Mark reference as **FAILED**
-2. Document reason:
-   ```
-   FAILED: Abstract discusses [X] but proposal focuses on [Y]
-   ```
-3. Search for replacement article
-4. Re-verify ALL references from beginning
-
-### Step 1: Generate Draft
-Generate proposal with references marked as "PENDING VERIFICATION".
-
-### Step 2: Verify Each Reference (MANDATORY)
-
-For EACH reference:
-
-1. **Access Verification URL via CLI**
+1. **Verify Reference Exists**
    ```bash
    openclaw browser --browser-profile chrome open "[verification-url]"
-   ```
-
-2. **Take Snapshot**
-   ```bash
    openclaw browser --browser-profile chrome snapshot --compact
    ```
 
-3. **Verify 5 Elements**
+2. **Verify 5 Elements**
    ```
-   ✓ TOPIC: YES/NO (Title matches research topic)
-   ✓ AUTHORS: YES/NO (First 2-3 authors match)
-   ✓ YEAR: YES/NO (Publication year matches)
-   ✓ ABSTRACT: YES/NO (Content relevant to proposal)
-   ✓ URL: YES/NO (Verification URL accessible)
-   ```
-
-4. **Record Result**
-   ```
-   [1] Authors. Title[J]. Journal, Year.
-       Status: VERIFIED / FAILED
-       If FAILED → REASON: [Why not relevant]
+   ✓ TOPIC: Does title match? YES/NO
+   ✓ AUTHORS: Do first 2-3 authors match? YES/NO  
+   ✓ YEAR: Does year match? YES/NO
+   ✓ ABSTRACT: Is abstract relevant to proposal? YES/NO
+   ✓ URL: Can you access the article? YES/NO
    ```
 
-5. **If FAILED**
-   - Mark as FAILED
-   - Document why not relevant
-   - Search for replacement
-   - Re-verify ALL references from beginning
+3. **Record Verification**
+   ```markdown
+   ## [1] VERIFIED
+   
+   **Title**: [Title]
+   - **Authors**: [Authors]  
+   - **Journal**: [Journal], [Year]
+   - **Status**: TOPIC✓ AUTHORS✓ YEAR✓ ABSTRACT✓ URL✓
+   ```
 
-### Verification Template
+---
 
-For each reference, record:
-```
-[1] Authors. Title[J]. Journal, Year.
+## COMMON PITFALLS
 
-    VERIFICATION RESULTS:
-    ✓ TOPIC: YES/NO (Title matches research topic)
-    ✓ AUTHORS: YES/NO (First 2-3 authors match)
-    ✓ YEAR: YES/NO (Year matches)
-    ✓ ABSTRACT: YES/NO (Content relevant to proposal)
-    ✓ URL: YES/NO (Verification URL accessible)
-    
-    If ANY is NO → FAILED → Search again
-    
-    Status: [ALL VERIFIED] or [FAILED]
-```
+| Pitfall | Solution |
+|---------|----------|
+| Skipping research | ALWAYS do research first - it's mandatory |
+| Fabricating references | NEVER cite anything you haven't found |
+| Using old/outdated references | Prioritize last 5 years |
+| Irrelevant abstracts | Verify abstract relevance to topic |
+| Broken URLs | Test all verification URLs |
+| Forgetting to save research | Create research_notes.md file |
+| Mixing up references | Track which DB each came from |
 
-### Database Search for Replacements
+---
 
-```bash
-# CNKI
-openclaw browser --browser-profile chrome open "https://kns.cnki.net/kns8s/search?classid=WD0FTY92&q=keywords"
-
-# PubMed
-openclaw browser --browser-profile chrome open "https://pubmed.ncbi.nlm.nih.gov/?term=keywords"
-
-# Wanfang
-openclaw browser --browser-profile chrome open "https://www.wanfangdata.com.cn/"
-```
-
-## CNKI Verification Workflow
-
-**Reference**: [CNKI Verification Steps](verification_steps/cnki.md) for detailed 8-step process.
-
-### Golden Rule
-```bash
-snapshot → type --submit "keywords" → wait --load networkidle → snapshot → click → wait → snapshot → verify 5 elements
-```
-
-## PubMed Verification Workflow
-
-**Reference**: [PubMed Verification Steps](verification_steps/pubmed.md) for detailed 4/8-step process.
-
-### Key Steps
-```bash
-# Search with keywords
-openclaw browser --browser-profile chrome type e14 "keywords" --submit
-
-# Get article by PMID directly
-openclaw browser --browser-profile chrome open "https://pubmed.ncbi.nlm.nih.gov/[PMID]/"
-```
-
-## Wanfang Verification Workflow
-
-**Reference**: [Wanfang Verification Steps](verification_steps/wanfang.md) for detailed 8-step process.
-
-**Key Difference**: Articles open in **NEW TAB**
-
-### Key Steps
-```bash
-# Click article (opens in NEW TAB!)
-openclaw browser --browser-profile chrome click [article-ref]
-
-# MUST switch to new tab!
-openclaw browser --browser-profile chrome tabs
-openclaw browser --browser-profile chrome focus [new-tab-id]
-```
-
-## Common Pitfalls
-
-| Issue | Solution |
-|-------|----------|
-| Abstract NOT relevant | Mark FAILED → Search for replacement |
-| Wrong population | Mark FAILED → Different article needed |
-| Wrong intervention | Mark FAILED → Different article needed |
-| Wrong outcomes | Mark FAILED → Different article needed |
-| JSON API errors | Use CLI mode: `openclaw browser --browser-profile chrome <command>` |
-| Missing path in write | Always include: `write(content="text", path="/file.txt")` |
-| Typo in numbers | Verify: 亿/万, %, decimals |
-| Refs invalid after navigation | Re-run `snapshot` after page changes |
-| Wanfang new tab | Use `tabs` and `focus [tab-id]` to switch tabs |
-| Bot detection | Use simplified keywords, try different databases |
-
-## Output Location
+## OUTPUT LOCATION
 
 ```
 ~/Desktop/[Topic Name]课题申请书.docx
 ```
 
-## Independent Verification Steps
+---
 
-### CNKI (Chinese)
-- **File**: `verification_steps/cnki.md`
-- **Scope**: Chinese nursing research verification
-- **Features**: openclaw browser, 8-step process, --submit option, 5-element verification
+## RESEARCH WORKFLOW CHECKLIST
 
-### PubMed (English)
-- **File**: `verification_steps/pubmed.md`
-- **Scope**: English biomedical and nursing literature
-- **Features**: openclaw browser, PMID-based, 4/8-step options, --submit option, 5-element verification
+Before generating ANY proposal, confirm:
 
-### Wanfang (Chinese)
-- **File**: `verification_steps/wanfang.md`
-- **Scope**: Chinese science & technology literature
-- **Features**: Complementary to CNKI, NEW TAB behavior, tab management, 5-element verification
+- [ ] CNKI search completed and recorded
+- [ ] PubMed search completed and recorded
+- [ ] Wanfang search completed (if needed)
+- [ ] research_notes.md created with findings
+- [ ] 10-15 relevant references selected
+- [ ] All references verified as REAL
+- [ ] References are relevant to topic
+- [ ] Only THEN generate proposal
 
 ---
 
-## Verification Requirements Summary
+## REFERENCE VERIFICATION STEPS
 
-- ❌ DO NOT fabricate references
-- ❌ DO NOT assume references exist without verification
-- ❌ DO NOT include references with irrelevant abstracts
-- ✅ MUST verify 5 elements for EACH reference
-  - ✓ TOPIC: Article matches research topic
-  - ✓ AUTHORS: First 2-3 authors correct
-  - ✓ YEAR: Publication year correct
-  - ✓ ABSTRACT: Content relevant to proposal
-  - ✓ URL: Verification URL accessible (use CNKI/PubMed/Wanfang, DOI not required)
-- ✅ If abstract NOT relevant → Mark FAILED → Search for replacement
-- ✅ ALL references must pass 5-element verification before export
+### CNKI (Chinese)
+- **File**: `verification_steps/cnki.md`
+- **Features**: openclaw browser automation, 8-step process, --submit option, 5-element verification
+
+### PubMed (English)
+- **File**: `verification_steps/pubmed.md`  
+- **Features**: PMID-based verification, 4/8-step options, --submit option
+
+### Wanfang (Chinese)
+- **File**: `verification_steps/wanfang.md`
+- **Features**: NEW TAB behavior, tab management (tabs, focus)
+
+---
+
+## SUMMARY: THE CORRECT ORDER
+
+```
+1. User provides topic
+2. YOU DO RESEARCH (CNKI + PubMed + Wanfang)
+3. YOU RECORD findings in research_notes.md
+4. YOU SELECT 10-15 real references
+5. YOU VERIFY references are real
+6. ONLY THEN generate proposal citing real references
+7. Export to Word
+```
+
+**REMEMBER**: Research FIRST, Writing SECOND. Never skip Step 1.

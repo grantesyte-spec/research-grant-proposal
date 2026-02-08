@@ -1,13 +1,49 @@
 # Research Grant Proposal Generator
 
-Generate academic research grant proposals in Chinese with validated references and Word export.
+Generate academic research grant proposals in Chinese based on REAL literature research.
+
+## ⚠️ IMPORTANT: Research-First Workflow
+
+**You MUST do research BEFORE generating any proposal.**
+
+### The Correct Order:
+
+```
+STEP 1: Research (Required)     ← DO THIS FIRST
+  ├── Search CNKI for Chinese literature
+  ├── Search PubMed for English literature  
+  ├── Search Wanfang for supplementary
+  └── Save findings to research_notes.md
+
+STEP 2: Analyze & Select
+  ├── Review search results
+  └── Select 10-15 quality references
+
+STEP 3: Generate Proposal
+  └── Write based on REAL research findings
+
+STEP 4: Final Verification
+  └── Verify all references
+```
+
+### The Wrong Order (❌ DO NOT DO THIS):
+
+```
+User provides topic → Generate proposal → Find references
+```
+
+---
 
 ## Quick Start
 
 1. User provides research topic
-2. Generate proposal framework (4 chapters + references)
-3. Verify references via CNKI/PubMed/Wanfang CLI commands
-4. Export as Word to `~/Desktop/`
+2. I search CNKI/PubMed/Wanfang for real literature
+3. I record findings in research_notes.md
+4. I select 10-15 verified references
+5. I generate proposal based on real research
+6. Export to Word at `~/Desktop/`
+
+---
 
 ## Output Structure
 
@@ -18,105 +54,76 @@ Generated proposal includes:
 - 4. Expected Outcomes & Innovation
 - 5. References
 
+---
+
 ## Citation Format
 
-### In-Text Citations
-Use brackets: `[1]`, `[2]`, `[1][2]`, `[1]-[3]`
+**In-Text Citations:**
+`[1]`, `[2]`, `[1][2]`, `[1]-[3]`
 
-### Reference List
+**Reference List:**
 ```
 [number] Authors. Title[J]. Journal Name, Year, Volume(Issue): Pages. Verification URL: https://...
 ```
 
 **Examples:**
 ```
-[1] Wang Y, Li X. Effects of nursing intervention on hip fracture[J]. J Clin Nurs, 2022, 31(15): 2156-2165. Verification URL: https://pubmed.ncbi.nlm.nih.gov/35012345/
+[1] Wang Y, Zhang X, Liu J. Effects of nursing intervention on hip fracture[J]. J Clin Nurs, 2022, 31(15): 2156-2165. Verification URL: https://pubmed.ncbi.nlm.nih.gov/35012345/
 
-[2] Li M, Wang J. Orem self-care model in elderly hip fracture patients[J]. Chinese Journal of Nursing, 2020, 55(8): 1121-1126. Verification URL: https://kns.cnki.net/kcms/detail/detail.aspx?dbcode=CJFD&filename=ZHHL202008001
+[2] Li M, Wang J. Orem self-care model in elderly hip fracture patients[J]. Chinese Journal of Nursing, 2021, 56(8): 1121-1126. Verification URL: https://kns.cnki.net/kcms/detail/detail.aspx?dbcode=CJFD&filename=ZHHL202108001
 ```
 
-**Note**: DOI is optional - use verification URL from CNKI/PubMed/Wanfang as primary.
+**Note**: All references come from actual research, not fabricated.
 
-## Reference Verification
+---
 
-**CRITICAL**: All references MUST be verified via CLI commands.
+## Research Process
 
-### 5-Element Verification
-
-For EACH reference, verify:
-1. ✓ TOPIC: Title matches research topic
-2. ✓ AUTHORS: First 2-3 authors correct
-3. ✓ YEAR: Publication year correct
-4. ✓ ABSTRACT: Content relevant to proposal
-5. ✓ URL: Verification URL accessible
-
-**If any element fails → Mark FAILED → Search for replacement**
-
-### Verification Steps
-
-**Reference detailed guides:**
-- **CNKI**: `verification_steps/cnki.md` (8-step process)
-- **PubMed**: `verification_steps/pubmed.md` (4/8-step process)
-- **Wanfang**: `verification_steps/wanfang.md` (8-step process)
-
-### Quick Verification Commands
+### Step 1: Search Databases
 
 ```bash
-# For CNKI
-openclaw browser --browser-profile chrome open "https://kns.cnki.net/kns8s/search?classid=WD0FTY92&q=keywords"
+# CNKI
+openclaw browser --browser-profile chrome open "https://kns.cnki.net/kns8s/AdvSearch?classid=WD0FTY92&rlang=CHINESE"
+openclaw browser --browser-profile chrome type e18 "keywords" --submit
 
-# For PubMed
-openclaw browser --browser-profile chrome open "https://pubmed.ncbi.nlm.nih.gov/?term=keywords"
+# PubMed  
+openclaw browser --browser-profile chrome open "https://pubmed.ncbi.nlm.nih.gov/"
+openclaw browser --browser-profile chrome type e14 "keywords" --submit
 
-# For Wanfang
+# Wanfang
 openclaw browser --browser-profile chrome open "https://www.wanfangdata.com.cn/"
 ```
 
-### Verification URL Examples
+### Step 2: Record Findings
 
-| Source | URL Pattern |
-|--------|------------|
-| CNKI | `https://kns.cnki.net/kcms/detail/detail.aspx?dbcode=CJFD&filename=XXX` |
-| PubMed | `https://pubmed.ncbi.nlm.nih.gov/[PMID]/` |
-| Wanfang | `https://www.wanfangdata.com.cn/details/article-detail/...` |
+Create `research_notes.md` with:
+- Search keywords used
+- Total results found
+- Relevant articles with full citations
+- Selected references for proposal
 
-### Verification Criteria
+### Step 3: Generate Proposal
 
-Include only references that:
-- Published in peer-reviewed journal (Chinese or English)
-- Authors can be verified (at least first 2-3)
-- Journal is reputable
-- Content directly relevant to proposal
-- Published within last 10 years
-- Verification URL accessible
+Only AFTER research is complete.
 
-**Recommended Chinese Journals:**
-- Chinese Journal of Nursing (中华护理杂志)
-- Chinese Nursing Management (中国护理管理)
-- Journal of Nursing Science (护理学杂志)
-- Nursing Research (护理研究)
-- PLA Nursing Journal (解放军护理杂志)
-
-**Recommended English Journals:**
-- Journal of Clinical Nursing
-- International Journal of Nursing Studies
-- Osteoporosis International
-- Geriatric Nursing
+---
 
 ## Directory Structure
 
 ```
 research-grant-proposal/
-├── SKILL.md                        # Main skill documentation
+├── SKILL.md                        # Main skill (RESEARCH-FIRST workflow)
 ├── README.md                       # This file
 ├── verification_steps/              # Detailed verification guides
-│   ├── cnki.md                    # CNKI verification (8-step)
-│   ├── pubmed.md                  # PubMed verification (4/8-step)
-│   └── wanfang.md                 # Wanfang verification (8-step)
+│   ├── cnki.md                    # CNKI verification
+│   ├── pubmed.md                  # PubMed verification
+│   └── wanfang.md                 # Wanfang verification
 ├── push_to_github.sh             # Push to GitHub
 └── scripts/
     └── generate_proposal.py       # Word document generator
 ```
+
+---
 
 ## Supported Topics
 
@@ -127,6 +134,8 @@ research-grant-proposal/
 - Diabetes nursing
 - Osteoporosis research
 - Hip fracture care
+
+---
 
 ## Output Example
 
@@ -152,6 +161,8 @@ References
     Verification URL: https://pubmed.ncbi.nlm.nih.gov/30770084/
 ```
 
+---
+
 ## Push to GitHub
 
 ```bash
@@ -159,14 +170,20 @@ cd research-grant-proposal
 ./push_to_github.sh
 ```
 
+---
+
 ## Requirements
 
 - Python 3.7+
 - python-docx library
 
+---
+
 ## License
 
 MIT License
+
+---
 
 ## Contributing
 
