@@ -55,12 +55,8 @@ For EACH reference:
    ```bash
    openclaw browser --browser-profile chrome open "[verification-url]"
    ```
-   OR for PubMed:
-   ```bash
-   web_fetch(url="https://pubmed.ncbi.nlm.nih.gov/[PMID]/")
-   ```
 
-2. **Take Snapshot (if using browser)**
+2. **Take Snapshot**
    ```bash
    openclaw browser --browser-profile chrome snapshot --compact
    ```
@@ -107,10 +103,7 @@ For each reference, record:
 openclaw browser --browser-profile chrome open "https://kns.cnki.net/kns8s/search?classid=WD0FTY92&q=keywords"
 
 # PubMed
-web_fetch(url="https://pubmed.ncbi.nlm.nih.gov/?term=keywords")
-
-# Google Scholar (limited access)
-# Manual verification may be required
+openclaw browser --browser-profile chrome open "https://pubmed.ncbi.nlm.nih.gov/?term=keywords"
 ```
 
 ## CNKI Verification Workflow
@@ -128,15 +121,21 @@ snapshot → type → click → wait --load networkidle → snapshot
 
 **Reference**: [PubMed Verification Steps](verification_steps/pubmed.md) for detailed process.
 
-**Key Difference**: PubMed uses `web_fetch` tool (browser automation returns 404).
+**Key Difference**: Uses `openclaw browser` with PMID-based URLs.
 
 ### Key Steps
 ```bash
-# Search
-web_fetch(url="https://pubmed.ncbi.nlm.nih.gov/?term=keywords")
+# Open PubMed
+openclaw browser --browser-profile chrome open "https://pubmed.ncbi.nlm.nih.gov/"
 
-# Get article details
-web_fetch(url="https://pubmed.ncbi.nlm.nih.gov/[PMID]/")
+# Search with keywords
+openclaw browser --browser-profile chrome type [search-box-ref] "keywords"
+
+# Submit search
+openclaw browser --browser-profile chrome click [search-button-ref]
+
+# Get article by PMID directly
+openclaw browser --browser-profile chrome open "https://pubmed.ncbi.nlm.nih.gov/[PMID]/"
 ```
 
 ## Common Pitfalls
@@ -147,7 +146,7 @@ web_fetch(url="https://pubmed.ncbi.nlm.nih.gov/[PMID]/")
 | Missing path in write | Always include: `write(content="text", path="/file.txt")` |
 | Typo in numbers | Verify: 亿/万, %, decimals |
 | Refs invalid after navigation | Re-run `snapshot` after page changes |
-| PubMed 404 error | Use `web_fetch` instead of browser |
+| Bot detection on PubMed | Use PMID direct URLs when possible |
 
 ## Output Location
 
@@ -165,7 +164,7 @@ web_fetch(url="https://pubmed.ncbi.nlm.nih.gov/[PMID]/")
 ### PubMed (English)
 - **File**: `verification_steps/pubmed.md`
 - **Scope**: English biomedical and nursing literature
-- **Features**: web_fetch tool, PMID-based verification
+- **Features**: openclaw browser, PMID-based verification, 4/8-step options
 
 ### DOI (Coming Soon)
 - **File**: `verification_steps/doi.md`
