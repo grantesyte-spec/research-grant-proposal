@@ -1,156 +1,246 @@
-# CNKI Reference Verification Steps
+# CNKI Research & Verification Guide
 
 ## Scope
 - China National Knowledge Infrastructure (CNKI)
-- Chinese nursing research literature verification
+- Primary source for Chinese nursing literature
 - No VPN required
 
 ---
 
-## CRITICAL: Research-First Workflow
+## PART A: RESEARCH PHASE (Required First)
 
-**BEFORE verification, you MUST do research:**
+### A1: Define Search Keywords
 
+Based on the research topic, identify:
+- **Core concepts**: Orem self-care model, nursing intervention
+- **Population**: Hip fracture, diabetes, elderly
+- **Outcome measures**: Self-care ability, glycemic control, recovery
+
+**Example Keywords:**
 ```
-1. Search CNKI for relevant literature
-2. Record findings in research_notes.md
-3. Select 10-15 quality references
-4. THEN verify references
+Orem 自理模式 护理
+股骨颈骨折 护理
+糖尿病 护理
+Orem 自理模式 糖尿病
+动机行为转化理论 护理
 ```
 
-**NEVER verify references without doing research first.**
-
----
-
-## Verification Goals
-
-For EACH reference found during research, verify these 5 elements:
-- ✅ **TOPIC**: Article matches research topic
-- ✅ **AUTHORS**: At least first 2-3 authors correct
-- ✅ **YEAR**: Publication year correct
-- ✅ **ABSTRACT**: Abstract relevant to proposal
-- ✅ **URL**: Verification URL accessible
-
----
-
-## 8-Step Verification Process
-
-### Step 1: Open CNKI Advanced Search
+### A2: Open CNKI
 ```bash
 openclaw browser --browser-profile chrome open "https://kns.cnki.net/kns8s/AdvSearch?classid=WD0FTY92&rlang=CHINESE"
 ```
 
-### Step 2: Get Page Snapshot (Find Element Refs)
+### A3: Search and Explore
+
 ```bash
+# Get page snapshot to find refs
 openclaw browser --browser-profile chrome snapshot --compact
-```
-**Note**: Search box is typically `ref=e18`, Search button is `ref=e33`
 
-### Step 3: Enter Search Keywords
-
-**Recommended: Use type --submit**
-```bash
-openclaw browser --browser-profile chrome type [search-box-ref] "Orem 自理模式 糖尿病" --submit
-```
-
-### Step 4: Wait for Page Load (Critical!)
-```bash
+# Try different keywords
+openclaw browser --browser-profile chrome type e18 "Orem 自理模式 护理" --submit
 openclaw browser --browser-profile chrome wait --load networkidle
-```
-
-### Step 5: Get Search Results Snapshot
-```bash
 openclaw browser --browser-profile chrome snapshot --compact
 ```
 
-**Success Indicators**:
-- Result count visible (e.g., "共找到 75 条结果")
-- Article list visible (title, authors, journal, date)
+### A4: Record Initial Findings
 
-### Step 6: View Article Details
+**Create research_notes.md and record:**
+- Keywords used
+- Total results found
+- Relevant article titles (don't cite yet - just explore)
+- Journal names and years
+
+**Example entry:**
+```
+## CNKI Search #1
+Keywords: Orem 自理模式 护理
+Results: 994 articles found
+
+Relevant titles found:
+1. 以奥瑞姆自理模式为基础的护理模式对急诊创伤骨折患者... (2025)
+2. 基于循证支持的Orem自理模式干预对糖尿病合并精神分裂症... (2025)
+...
+```
+
+---
+
+##ION PHASE
+
+ PART B: SELECT### B1: Click on Promising Articles
+
+For each potentially relevant article:
 ```bash
 openclaw browser --browser-profile chrome click [article-ref]
 openclaw browser --browser-profile chrome wait --load networkidle
 openclaw browser --browser-profile chrome snapshot --compact
 ```
 
-### Step 7: Extract Complete Information
-From detail page, extract:
+### B2: Extract Full Citation Information
+
+From article detail page, extract:
 - ✅ Full title
-- ✅ All authors (check "显示全部作者" link)
+- ✅ All authors
 - ✅ Journal name
-- ✅ Publication date
-- ✅ Abstract (for relevance)
-- ⚠️ Volume/Issue (if available)
-- ⚠️ Pages (if available)
-- Verification URL
+- ✅ Publication date (Year)
+- ✅ Volume, Issue (if available)
+- ✅ Pages (if available)
+- ✅ Abstract
+- ✅ Verification URL
 
-### Step 8: Verify 5 Elements
+### B3: Add to Selected References
 
-```
-[1] Authors. Title[J]. Journal, Year.
-
-    VERIFICATION RESULTS:
-    ✓ TOPIC: YES/NO (Title matches)
-    ✓ AUTHORS: YES/NO (First 2-3 match)
-    ✓ YEAR: YES/NO (Year matches)
-    ✓ ABSTRACT: YES/NO (Relevant)
-    ✓ URL: YES/NO (Accessible)
-    
-    Status: [VERIFIED] or [FAILED]
-```
-
----
-
-## Record Research Findings
-
-After search, create `research_notes.md`:
-
+Update research_notes.md:
 ```markdown
-## CNKI Search Results
-**Keywords**: [Search terms]
-**Total Results**: [Number]
+## Selected CNKI References
 
-### Relevant Articles
-| # | Title | Authors | Journal | Year | Relevance |
-|---|-------|---------|---------|------|-----------|
-| 1 | [Title] | [Authors] | [Journal] | [Year] | High |
-
-### Selected for Proposal
-- [1] Full citation with URL
+### #1 - High Relevance
+**Title**: [Full Title]
+**Authors**: [First 2-3 authors], et al.
+**Journal**: [Journal Name], [Year], [Vol]([Issue]): [Pages]
+**URL**: https://kns.cnki.net/kcms/detail/detail.aspx?...
+**Abstract**: [Paste abstract]
+**Relevance**: HIGH - Directly addresses Orem model in [population]
 ```
 
 ---
 
-## Troubleshooting
+## PART C: VERIFICATION PHASE (After Research Complete)
 
-### Issue 1: No Search Results
-**Solution**: Simplify keywords
+**BEFORE verification:**
+- ✅ Research completed
+- ✅ 10-15 references selected
+- ✅ All saved in research_notes.md
 
-### Issue 2: Element Ref Invalid  
-**Solution**: Re-run `snapshot` to get new refs
+### C1: Verify 5 Elements
 
-### Issue 3: Refs Change After Navigation
-**Cause**: "Refs are not stable across navigations"
-**Solution**: Must re-run `snapshot` after any page change
-
-### Issue 4: Abstract NOT Relevant
-**Solution**: Mark FAILED → Search for replacement
-
----
-
-## Golden Rule
+For EACH selected reference:
 
 ```bash
-snapshot → type --submit "keywords" → wait --load → snapshot → click → wait → snapshot → verify
+# Open verification URL
+openclaw browser --browser-profile chrome open "[verification-url]"
+openclaw browser --browser-profile chrome snapshot --compact
+```
+
+**Check:**
+```
+✓ TOPIC: Does title match? YES/NO
+✓ AUTHORS: Do first 2-3 authors match? YES/NO
+✓ YEAR: Does year match? YES/NO
+✓ ABSTRACT: Is abstract relevant to proposal? YES/NO
+✓ URL: Can you access the article? YES/NO
+```
+
+### C2: Record Verification Result
+
+```markdown
+## CNKI Verification Results
+
+### #1 - VERIFIED ✓
+
+**Title**: [Title]
+**Authors**: [Authors]
+**Journal**: [Journal], [Year]
+
+VERIFICATION RESULTS:
+✓ TOPIC: YES - Matches hip fracture nursing
+✓ AUTHORS: YES - Wang Y, Zhang X confirmed
+✓ YEAR: YES - 2022 matches
+✓ ABSTRACT: YES - Relevant to proposal
+✓ URL: YES - Accessible
+
+**Full Citation**:
+[1] Wang Y, Zhang X, Liu J. Effects of nursing intervention on hip fracture[J]. 
+    Chinese Journal of Nursing, 2022, 57(8): 1021-1026. 
+    Verification URL: https://kns.cnki.net/kcms/detail/detail.aspx?dbcode=CJFD&...
 ```
 
 ---
 
-## Important Notes
+## COMPLETE WORKFLOW
 
-1. **Research FIRST**: Always do research before verification
-2. **Document Everything**: Save findings to research_notes.md
-3. **Wait Time**: Must `wait --load networkidle` after navigation
-4. **Ref Changes**: Must re-snapshot after navigation
-5. **Sequential**: Complete CNKI before PubMed/Wanfang
+```
+STEP 1: Research
+  ├── A1: Define keywords
+  ├── A2: Open CNKI
+  ├── A3: Search and explore (multiple times)
+  └── A4: Record initial findings
+
+STEP 2: Selection
+  ├── B1: Click promising articles
+  ├── B2: Extract full citations
+  └── B3: Add selected references
+
+STEP 3: Verification (Only AFTER selection)
+  ├── C1: Verify 5 elements for each
+  └── C2: Record results
+```
+
+---
+
+## 8-STEP QUICK REFERENCE
+
+### Research Steps (1-4)
+1. `open CNKI` - Open advanced search
+2. `snapshot` - Get page refs
+3. `type "keywords" --submit` - Search
+4. `wait --load` - Wait for results
+5. `snapshot` - Review results
+
+### Selection Steps (5-6)
+5. `click [article-ref]` - Open article
+6. `wait --load → snapshot` - Get details
+
+### Verification Steps (7-8)
+7. `open [URL]` - Open verification URL
+8. `verify 5 elements` - Confirm accuracy
+
+---
+
+## TROUBLESHOOTING
+
+### No Results
+- Simplify keywords
+- Try broader terms
+- Check spelling
+
+### Can't Access Article
+- Try different database (PubMed)
+- Mark as unavailable
+
+### Irrelevant Abstract
+- Mark FAILED
+- Continue searching
+
+---
+
+## GOLDEN RULE
+
+```
+Research FIRST → Select → THEN Verify
+Never verify what you haven't found through research
+```
+
+---
+
+## EXAMPLE: Complete CNKI Session
+
+```bash
+# Session 1: Initial Research
+open "https://kns.cnki.net/kns8s/AdvSearch?classid=WD0FTY92"
+type e18 "Orem 自理模式 护理" --submit
+wait --load
+snapshot
+→ Record findings in research_notes.md
+
+# Session 2: Select Articles  
+click [article-ref-2]  # Click "Orem自理模式对急诊创伤骨折患者"
+wait --load
+snapshot
+→ Extract citation, add to selected references
+
+# Session 3: Verify
+open "https://kns.cnki.net/kcms/detail/detail.aspx?dbcode=CJFD&filename=..."
+snapshot
+→ Verify 5 elements
+→ Record as VERIFIED
+```
