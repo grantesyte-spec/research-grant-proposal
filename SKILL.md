@@ -42,48 +42,112 @@ Use brackets: `[1]`, `[2]`, `[1][2]`, `[1]-[3]`
 
 ## Reference Verification Workflow
 
-**Critical: All references must include verification URLs.**
+**Critical: All references must be verified. AI must iterate until all references are authentic.**
 
-### Step 1: Search References
+### AI Self-Correction Loop
 
-**English (Google Scholar/ScienceDirect/DOI):**
 ```
-# Google Scholar
-open "https://scholar.google.com/scholar?q=keywords"
-
-# ScienceDirect
-open "https://www.sciencedirect.com"
-
-# DOI verification
-open "https://doi.org/[DOI]"
+┌─────────────────────────────────────────────────────────────┐
+│                    VERIFICATION LOOP                        │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  ┌──────────────────┐                                       │
+│  │ Generate Proposal │ ←── Initial input                      │
+│  └────────┬─────────┘                                       │
+│           ↓                                                 │
+│  ┌──────────────────┐    ┌──────────────────┐            │
+│  │ Verify All       │──NO→│ Find Replacement │            │
+│  │ References Auth? │     │ Reference        │            │
+│  └────────┬─────────┘     └────────┬─────────┘            │
+│           ↓ YES                     ↓                       │
+│  ┌──────────────────┐     ┌──────────────────┐            │
+│  │ Export Word      │     │ Update Proposal  │            │
+│  │ Document         │     │ with New Ref     │            │
+│  └──────────────────┘     └────────┬─────────┘            │
+│                                    │                       │
+│                                    └───────────────────────┘
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
 ```
 
-**Chinese (CNKI - requires institutional login):**
-```bash
-# Open CNKI (CLI mode)
-openclaw browser --profile chrome open "https://kns.cnki.net/kns8s/search?classid=WD0FTY92"
-# Type keywords, click search button
-# Click article title to open detail page
-# Copy verification URL from browser address bar
+### Step 1: Generate Initial Proposal
+
+Generate proposal with references (may include unverifiable ones).
+
+### Step 2: Verify Each Reference
+
+**For each reference, check:**
+
+1. **Database Access**
+   ```bash
+   # Try to access verification URL
+   openclaw browser --profile chrome open "[verification-url]"
+   
+   # If URL fails or returns 404:
+   # → Mark as FAILED
+   # → Find replacement reference
+   ```
+
+2. **Authenticity Criteria**
+   ```
+   ✓ Article exists at verification URL
+   ✓ Authors match the citation
+   ✓ Publication year is correct
+   ✓ Journal is real and peer-reviewed
+   ✓ DOI resolves correctly (if available)
+   ✓ Content is accessible
+   ```
+
+3. **Quality Assessment**
+   ```
+   ✓ Published in reputable journal
+   ✓ Relevant to research topic
+   ✓ Within last 10 years
+   ✓ Has citations/impact
+   ```
+
+### Step 3: Handle Failed References
+
+**If a reference fails verification:**
+
+1. **Search for Replacement**
+   ```bash
+   # Use search keywords from failed reference
+   openclaw browser --profile chrome open "https://scholar.google.com/scholar?q=topic+keywords"
+   # OR
+   open "https://kns.cnki.net/kns8s/search?classid=WD0FTY92&q=topic+keywords"
+   ```
+
+2. **Select Valid Replacement**
+   - Choose article from verified database
+   - Ensure similar topic/coverage
+   - Note: "Replacement for ref #[X]"
+
+3. **Update Proposal**
+   - Replace failed reference with new one
+   - Update all in-text citations
+   - Restart verification loop
+
+### Step 4: Continue Until Complete
+
+**Loop criteria:**
+- ALL references must be verifiable
+- ALL in-text citations must match reference list
+- NO broken links or missing DOIs
+
+**Only when loop completes:**
+→ Export Word document
+
+### Reference Verification Template
+
+AI must record for each reference:
+
 ```
-
-### Step 2: Verify Quality Criteria
-
-Include only references that meet ALL:
-- [ ] Peer-reviewed journal
-- [ ] Authors verifiable
-- [ ] Reputable journal (impact factor or core journal)
-- [ ] DOI or stable URL available
-- [ ] Published within last 10 years
-- [ ] Content directly relevant to topic
-
-**Exclude:** predatory journals, non-peer-reviewed sources, inaccessible sources
-
-### Step 3: Document Results
-
-Record with verification URL:
-```
-[1] Author(s). Title[J]. Journal, Year. 验证链接: https://database-url
+[1] AUTHOR. TITLE[J]. JOURNAL, YEAR.
+    Status: VERIFIED/FAILED
+    Database: CNKI/Google Scholar/ScienceDirect/DOI
+    Verification URL: https://...
+    If FAILED → Replacement: [NEW-REF]
 ```
 
 ## Browser Tool Usage
@@ -119,15 +183,28 @@ openclaw browser --profile chrome click e10 --target-id <tab-id>
 ~/Desktop/[课题名称]课题申请书.docx
 ```
 
+**Only export AFTER verification loop completes with ALL references verified.**
+
 ## Best Practices Checklist
 
 Before submitting:
 - [ ] No web_fetch tool used
 - [ ] All write() calls include complete parameters
 - [ ] Numerical data verified (no typos like "4型糖尿病" → "4亿人")
-- [ ] All references include verification URLs
-- [ ] In-text citations match reference list
+- [ ] **ALL references verified through verification loop**
+- [ ] **NO failed/unverifiable references remain**
+- [ ] All in-text citations match reference list
 - [ ] Document follows Chinese academic standards
+
+## AI Verification Loop Summary
+
+When generating a proposal, AI must:
+
+1. **Generate** initial proposal with references
+2. **Verify** each reference (access verification URL)
+3. **If FAILED** → Find replacement → Update proposal
+4. **Repeat** until ALL references verified
+5. **Only then** export Word document
 
 ## Reference Quality Sources
 
