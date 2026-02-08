@@ -6,11 +6,38 @@
 - No VPN required
 
 ## Verification Goals
-- ✅ TOPIC: Article matches research topic
-- ✅ AUTHORS: At least first 2-3 authors correct
-- ✅ YEAR: Publication year correct
+
+For EACH reference, verify these 5 elements:
+- ✅ **TOPIC**: Article matches research topic (title matches proposal theme)
+- ✅ **AUTHORS**: At least first 2-3 authors correct
+- ✅ **YEAR**: Publication year correct
+- ✅ **ABSTRACT**: Article abstract is relevant to proposal
 - ⚠️ DOI: Some articles may not have DOI
 - ⚠️ Volume/Issue/Pages: Obtain from detail page
+
+## 5-Element Verification Checklist
+
+```
+✓ TOPIC: Title matches research topic
+✓ AUTHORS: First 2-3 authors match citation
+✓ YEAR: Publication year matches
+✓ ABSTRACT: Content is relevant to proposal
+   - Does the abstract discuss the same population?
+   - Does the abstract address the same intervention?
+   - Does the abstract measure similar outcomes?
+   - If NOT relevant → Mark FAILED → Search again
+```
+
+## If Abstract is NOT Relevant → FAILED
+
+When abstract does NOT match proposal:
+1. Mark reference as **FAILED**
+2. Document why:
+   ```
+   FAILED REASON: Abstract discusses [X] but proposal needs [Y]
+   ```
+3. Search for replacement article
+4. Re-verify ALL references from beginning
 
 ## 8-Step Verification Process
 
@@ -37,7 +64,6 @@ openclaw browser --browser-profile chrome click [search-button-ref]
 ```bash
 openclaw browser --browser-profile chrome type [search-box-ref] "Orem 自理模式 糖尿病" --submit
 ```
-**Advantage**: Single command to input and submit search
 
 ### Step 4: Wait for Page Load (Critical!)
 ```bash
@@ -70,97 +96,116 @@ From detail page, extract:
 - ✅ All authors (check "显示全部作者" link)
 - ✅ Journal name
 - ✅ Publication date (YYYY-MM-DD)
+- ✅ **Abstract** (for relevance verification)
 - ⚠️ Volume/Issue (e.g., "28(6)")
 - ⚠️ Pages (e.g., "45-52")
 - ⚠️ DOI (if available)
 
+### Step 8: Verify 5 Elements
+
+**Template**:
+```
+[1] Authors. Title[J]. Journal, Year.
+    
+    VERIFICATION RESULTS:
+    ✓ TOPIC: YES/NO (Title matches research topic)
+    ✓ AUTHORS: YES/NO (First 2-3 authors match)
+    ✓ YEAR: YES/NO (Year matches)
+    ✓ ABSTRACT: YES/NO (Content relevant to proposal)
+    
+    If ANY is NO → FAILED → Search again
+```
+
 ## Verification Result Format
 
 ```markdown
-## [Number] [Pending/Verified]
+## [Number] [VERIFIED/FAILED]
 
 **Title**: [Full Title]
 - **Authors**: [First 3 authors, et al.]
 - **Journal**: [Journal Name]
 - **Publication Date**: [YYYY-MM-DD]
-- **Citations**: [Number]
-- **Verification Link**: [CNKI URL]
-- **Status**: [TOPIC✓ AUTHORS✓ YEAR✓ VOL✓ PAGES✓ DOI✓]
+- **Abstract**: [First 2-3 sentences...]
+- **Relevance Check**:
+  - Population matches: YES/NO
+  - Intervention matches: YES/NO
+  - Outcomes match: YES/NO
+- **Status**: [TOPIC✓ AUTHORS✓ YEAR✓ ABSTRACT✓] or [FAILED]
+- **If FAILED**: [Reason and replacement search needed]
 
-**Manual Verification Links**:
-- CNKI: https://kns.cnki.net/kcms2/article/abstract?[article_id]
-- Google Scholar: https://scholar.google.com/scholar?q="Full Title"
+**Failed Example**:
+[3] Authors. Title[J]. Journal, 2019.
+    FAILED: Abstract discusses elderly hypertension, 
+    but proposal focuses on hip fracture with diabetes.
+    → REPLACEMENT SEARCH NEEDED
 ```
 
 ## Troubleshooting
 
-### Issue 1: No Search Results
+### Issue 1: Abstract NOT Relevant
+**Symptom**: Article discusses different population/intervention
+**Solution**:
+1. Mark as FAILED
+2. Document why not relevant
+3. Search for replacement
+4. Re-verify ALL references
+
+### Issue 2: No Search Results
 **Symptom**: "抱歉，暂无数据，请稍后重试。"
 **Solution**:
-1. Simplify keywords (remove some terms)
-2. Try: `Orem 自理模式` → `Orem 糖尿病` → `自理模式 糖尿病`
-3. Check if captcha verification required
+1. Simplify keywords
+2. Remove some terms
+3. Try: `Orem 自理模式` → `Orem 糖尿病`
 
-### Issue 2: Element Ref Invalid
+### Issue 3: Element Ref Invalid
 **Symptom**: `Element "e18" not found`
 **Solution**:
 ```bash
-# Re-get page snapshot
 openclaw browser --browser-profile chrome snapshot --compact
 # Use new ref value
 ```
 
-### Issue 3: Refs Change After Navigation
+### Issue 4: Refs Change After Navigation
 **Cause**: "Refs are not stable across navigations"
 **Solution**: Must re-run `snapshot` after any page change
-
-### Issue 4: Partial Author Information
-**Cause**: Long author lists are collapsed by default
-**Solution**: Click "显示全部作者" (Show All Authors) link
-
-### Issue 5: Missing Volume/Pages/DOI
-**Cause**: Some journal articles lack complete metadata
-**Solution**:
-1. Check HTML reading version
-2. Use Google Scholar to supplement
-3. Mark as `[Partially Verified]`
 
 ## Verification Checklist
 
 After verification, confirm:
 
 - [ ] Article accessible normally
-- [ ] Title matches citation
-- [ ] First 3 author names correct
-- [ ] Journal name correct
-- [ ] Publication year correct
+- [ ] **TOPIC**: Title matches proposal theme
+- [ ] **AUTHORS**: First 3 author names correct
+- [ ] **YEAR**: Publication year correct
+- [ ] **ABSTRACT**: Content relevant to proposal
+  - [ ] Same population
+  - [ ] Same/similar intervention
+  - [ ] Similar outcomes measured
 - [ ] Volume/Issue obtained (if available)
 - [ ] Page range obtained (if available)
 - [ ] DOI obtained (if available)
-- [ ] Verification URL accessible
 
 ## Important Notes
 
-1. **Simplification Strategy**: Complex search queries may return no results
-2. **Wait Time**: Must `wait --load networkidle` after page navigation
-3. **Ref Changes**: Refs become invalid after navigation, must re-snapshot
-4. **Captcha**: If captcha appears, may require manual handling
-5. **Information Completeness**: Not all articles have complete DOI and page info
-6. **--submit Option**: Use `type [ref] "keywords" --submit` for single-step input and search
+1. **5 Elements Required**: TOPIC, AUTHORS, YEAR, ABSTRACT, DOI/URL
+2. **Abstract Critical**: Must check relevance to proposal
+3. **If Not Relevant → FAILED**: Don't include irrelevant references
+4. **Wait Time**: Must `wait --load networkidle` after page navigation
+5. **Ref Changes**: Must re-snapshot after navigation
 
 ## Golden Rule
 
 ```bash
-snapshot → type --submit "keywords" → wait --load → snapshot
+snapshot → type --submit "keywords" → wait --load → snapshot → click → wait → snapshot → verify 5 elements
 ```
 
-## Comparison: CNKI vs PubMed
+## Comparison: CNKI vs PubMed vs Wanfang
 
-| Aspect | CNKI | PubMed |
-|--------|------|--------|
-| **Search Method** | `type --submit` or `type` + `click` | Similar approach |
-| **Primary ID** | None | PMID |
-| **DOI Availability** | Sometimes missing | Usually available |
-| **Language** | Chinese | English |
-| **Nursing Coverage** | Strong | Very Strong |
-| **Bot Detection** | Low | Medium |
+| Aspect | CNKI | PubMed | Wanfang |
+|--------|------|---------|---------|
+| **5-Element Verify** | ✅ Yes | ✅ Yes | ✅ Yes |
+| **Search Method** | type --submit | type --submit | type --submit |
+| **Abstract Check** | ✅ Required | ✅ Required | ✅ Required |
+| **Tab Behavior** | Same tab | Same tab | **NEW TAB** |
+| **Chinese Coverage** | ✅ Strong | Limited | ✅ Strong |
+| **English Coverage** | Limited | ✅ Strong | Limited |

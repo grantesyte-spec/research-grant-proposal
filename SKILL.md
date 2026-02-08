@@ -44,6 +44,43 @@ Use brackets: `[1]`, `[2]`, `[1][2]`, `[1]-[3]`
 
 **CRITICAL: All references MUST be verified via CLI commands. Do NOT fabricate references.**
 
+### 5-Element Verification
+
+For EACH reference, verify these 5 elements:
+
+1. ✅ **TOPIC**: Article title matches research topic
+2. ✅ **AUTHORS**: At least first 2-3 authors correct
+3. ✅ **YEAR**: Publication year correct
+4. ✅ **ABSTRACT**: Abstract content relevant to proposal
+5. ✅ **DOI/PMID**: DOI or PMID available and verifiable
+
+### Abstract Relevance Check
+
+```
+ABSTRACT verification asks:
+- Does the abstract discuss the same POPULATION?
+  (e.g., elderly hip fracture patients vs. children)
+
+- Does the abstract address the same INTERVENTION?
+  (e.g., Orem self-care model vs. traditional care)
+
+- Does the abstract measure similar OUTCOMES?
+  (e.g., functional recovery vs. blood pressure)
+
+IF ANY answer is NO → Mark FAILED → Search for replacement
+```
+
+### If Abstract NOT Relevant → FAILED
+
+When abstract does NOT match proposal:
+1. Mark reference as **FAILED**
+2. Document reason:
+   ```
+   FAILED: Abstract discusses [X] but proposal focuses on [Y]
+   ```
+3. Search for replacement article
+4. Re-verify ALL references from beginning
+
 ### Step 1: Generate Draft
 Generate proposal with references marked as "PENDING VERIFICATION".
 
@@ -61,23 +98,25 @@ For EACH reference:
    openclaw browser --browser-profile chrome snapshot --compact
    ```
 
-3. **Verify Three Key Elements**
-   - ✓ TOPIC: Article matches research topic
-   - ✓ AUTHORS: At least first 2-3 authors match citation
-   - ✓ YEAR: Publication year matches
+3. **Verify 5 Elements**
+   ```
+   ✓ TOPIC: YES/NO (Title matches research topic)
+   ✓ AUTHORS: YES/NO (First 2-3 authors match)
+   ✓ YEAR: YES/NO (Publication year matches)
+   ✓ ABSTRACT: YES/NO (Content relevant to proposal)
+   ✓ DOI/PMID: YES/NO (Identifier verifiable)
+   ```
 
 4. **Record Result**
    ```
    [1] Authors. Title[J]. Journal, Year.
        Status: VERIFIED / FAILED
-       URL Accessed: YES
-       TOPIC Confirmed: YES/NO
-       AUTHORS Confirmed: YES/NO
-       YEAR Confirmed: YES/NO
+       If FAILED → REASON: [Why not relevant]
    ```
 
 5. **If FAILED**
    - Mark as FAILED
+   - Document why not relevant
    - Search for replacement
    - Re-verify ALL references from beginning
 
@@ -86,14 +125,16 @@ For EACH reference:
 For each reference, record:
 ```
 [1] Authors. Title[J]. Journal, Year.
-    Verification URL: https://...
-    CLI Command: openclaw browser --browser-profile chrome open "URL"
-    Snapshot Taken: YES
-    TOPIC Confirmed: YES/NO
-    AUTHORS Confirmed: YES/NO
-    YEAR Confirmed: YES/NO
-    Status: VERIFIED / FAILED
-    If FAILED → REPLACEMENT: [NEW-REF]
+
+    VERIFICATION RESULTS:
+    ✓ TOPIC: YES/NO (Title matches research topic)
+    ✓ AUTHORS: YES/NO (First 2-3 authors match)
+    ✓ YEAR: YES/NO (Year matches)
+    ✓ ABSTRACT: YES/NO (Content relevant to proposal)
+    
+    If ANY is NO → FAILED → Search again
+    
+    Status: [ALL VERIFIED] or [FAILED]
 ```
 
 ### Database Search for Replacements
@@ -113,24 +154,17 @@ openclaw browser --browser-profile chrome open "https://www.wanfangdata.com.cn/"
 
 **Reference**: [CNKI Verification Steps](verification_steps/cnki.md) for detailed 8-step process.
 
-**Key Difference**: CNKI uses `openclaw browser` for verification.
-
 ### Golden Rule
 ```bash
-snapshot → type --submit "keywords" → wait --load networkidle → snapshot
+snapshot → type --submit "keywords" → wait --load networkidle → snapshot → click → wait → snapshot → verify 5 elements
 ```
 
 ## PubMed Verification Workflow
 
-**Reference**: [PubMed Verification Steps](verification_steps/pubmed.md) for detailed process.
-
-**Key Difference**: Uses `openclaw browser` with PMID-based URLs.
+**Reference**: [PubMed Verification Steps](verification_steps/pubmed.md) for detailed 4/8-step process.
 
 ### Key Steps
 ```bash
-# Open PubMed
-openclaw browser --browser-profile chrome open "https://pubmed.ncbi.nlm.nih.gov/"
-
 # Search with keywords
 openclaw browser --browser-profile chrome type e14 "keywords" --submit
 
@@ -142,16 +176,10 @@ openclaw browser --browser-profile chrome open "https://pubmed.ncbi.nlm.nih.gov/
 
 **Reference**: [Wanfang Verification Steps](verification_steps/wanfang.md) for detailed 8-step process.
 
-**Key Difference**: Articles open in **NEW TAB** (unlike CNKI). Tab management required.
+### Key Difference**: Articles open in **NEW TAB**
 
 ### Key Steps
 ```bash
-# Open Wanfang
-openclaw browser --browser-profile chrome open "https://www.wanfangdata.com.cn/"
-
-# Search with keywords
-openclaw browser --browser-profile chrome type [search-box-ref] "keywords" --submit
-
 # Click article (opens in NEW TAB!)
 openclaw browser --browser-profile chrome click [article-ref]
 
@@ -164,6 +192,10 @@ openclaw browser --browser-profile chrome focus [new-tab-id]
 
 | Issue | Solution |
 |-------|----------|
+| Abstract NOT relevant | Mark FAILED → Search for replacement |
+| Wrong population | Mark FAILED → Different article needed |
+| Wrong intervention | Mark FAILED → Different article needed |
+| Wrong outcomes | Mark FAILED → Different article needed |
 | JSON API errors | Use CLI mode: `openclaw browser --browser-profile chrome <command>` |
 | Missing path in write | Always include: `write(content="text", path="/file.txt")` |
 | Typo in numbers | Verify: 亿/万, %, decimals |
@@ -182,17 +214,17 @@ openclaw browser --browser-profile chrome focus [new-tab-id]
 ### CNKI (Chinese)
 - **File**: `verification_steps/cnki.md`
 - **Scope**: Chinese nursing research verification
-- **Features**: openclaw browser automation, 8-step process, --submit option
+- **Features**: openclaw browser, 8-step process, --submit option, 5-element verification
 
 ### PubMed (English)
 - **File**: `verification_steps/pubmed.md`
 - **Scope**: English biomedical and nursing literature
-- **Features**: openclaw browser, PMID-based verification, 4/8-step options, --submit option
+- **Features**: openclaw browser, PMID-based, 4/8-step options, --submit option, 5-element verification
 
 ### Wanfang (Chinese)
 - **File**: `verification_steps/wanfang.md`
 - **Scope**: Chinese science & technology literature
-- **Features**: Complementary to CNKI, NEW TAB behavior, tab management
+- **Features**: Complementary to CNKI, NEW TAB behavior, tab management, 5-element verification
 
 ### DOI (Coming Soon)
 - **File**: `verification_steps/doi.md`
@@ -205,6 +237,12 @@ openclaw browser --browser-profile chrome focus [new-tab-id]
 
 - ❌ DO NOT fabricate references
 - ❌ DO NOT assume references exist without verification
-- ✅ MUST verify each reference via CLI
-- ✅ MUST confirm TOPIC, AUTHORS, YEAR
-- ✅ ALL references must pass verification before export
+- ❌ DO NOT include references with irrelevant abstracts
+- ✅ MUST verify 5 elements for EACH reference
+  - ✓ TOPIC: Article matches research topic
+  - ✓ AUTHORS: First 2-3 authors correct
+  - ✓ YEAR: Publication year correct
+  - ✓ ABSTRACT: Content relevant to proposal
+  - ✓ DOI/PMID: Identifier verifiable
+- ✅ If abstract NOT relevant → Mark FAILED → Search for replacement
+- ✅ ALL references must pass 5-element verification before export
