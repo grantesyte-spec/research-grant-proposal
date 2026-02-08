@@ -8,15 +8,16 @@ A Claude/Codex skill for generating academic research grant proposals in Chinese
 - 📄 **Word Export**: Generate professional `.docx` documents
 - 🔢 **In-Text Citations**: Use numbered citations [1], [2], [3]...
 - ✅ **Validated References**: Step-by-step verification workflow for academic sources
-- 🇨🇳 **Chinese References Support**: Full support for CNKI, Wanfang, and Chinese journal references
+- 🇨🇳 **Chinese References Support**: CNKI, PubMed, and Chinese journal references
 - 🔗 **Verification URLs**: Every reference includes a link for manual verification
 - 📊 **Metrics Tables**: Auto-generated metrics and KPI tables
 
 ## ⚠️ Important: Best Practices
 
-### 1. Do NOT Use web_fetch
+### 1. Use Browser Tools (NOT web_fetch)
 - ❌ Never use `web_fetch` tool
-- ✅ Use browser tools instead (`browser` with `action=open`, `action=snapshot`)
+- ✅ Use `openclaw browser` commands with `--browser-profile chrome`
+- ✅ Follow verification_steps/*.md for detailed procedures
 
 ### 2. Verify All Parameters
 - ✅ Always include ALL required parameters for `write()` calls
@@ -94,61 +95,47 @@ python scripts/generate_proposal.py --title "研究课题标题" --no-validate
 
 ```
 [1] Author(s). Title[J]. Journal, Year, Vol(Issue): Pages. DOI. 
-    验证链接: https://...
+    Verification URL: https://...
 
 [2] Author(s). Title[J]. Journal, Year, Vol(Issue): Pages. 
-    验证链接: https://...
+    Verification URL: https://...
 ```
 
 ## Reference Verification
 
-All references MUST be verified before including in proposals.
+All references MUST be verified using `openclaw browser` commands before including in proposals.
 
 ### Verification Steps
 
-1. **Search**: Use Google Scholar, ScienceDirect, CNKI
-2. **Verify**: Check authenticity, DOI, citation count
-3. **Document**: Record verification URL for each reference
-4. **Quality Check**: Ensure peer-reviewed, relevant, accessible
+**Reference detailed guides:**
+- **CNKI**: See `verification_steps/cnki.md` (8-step process)
+- **PubMed**: See `verification_steps/pubmed.md` (4/8-step process)
+
+### Quick Verification Process
+
+```bash
+# For CNKI
+openclaw browser --browser-profile chrome open "https://kns.cnki.net/kns8s/search?classid=WD0FTY92&q=keywords"
+
+# For PubMed
+openclaw browser --browser-profile chrome open "https://pubmed.ncbi.nlm.nih.gov/?term=keywords"
+```
 
 ### Verification URL Examples
 
-| Source | URL |
-|--------|-----|
-| Google Scholar | `https://scholar.google.com/scholar?q=Title+Author+Year` |
-| ScienceDirect | `https://www.sciencedirect.com/science/article/pii/XXX` |
+| Source | URL Pattern |
+|--------|------------|
+| CNKI | `https://kns.cnki.net/kcms/detail/detail.aspx?dbcode=CJFD&filename=XXX` |
+| PubMed | `https://pubmed.ncbi.nlm.nih.gov/[PMID]/` |
 | DOI | `https://doi.org/[DOI]` |
-| PubMed | `https://pubmed.ncbi.nlm.nih.gov/PMID/` |
-| **CNKI** | `https://kns.cnki.net/kcms/detail/detail.aspx?dbcode=CJFD&dbname=...` |
-| **Wanfang** | `https://www.wanfangdata.com.cn/index/index.do` |
-
-### Chinese References Support
-
-**Search Chinese Literature:**
-- CNKI: https://kns.cnki.net/kns8s/search?classid=WD0FTY92
-- Wanfang: https://www.wanfangdata.com.cn/index/index.do
-- Google Scholar: https://scholar.google.com/scholar?q=site:cnki.net+关键词
-
-**Chinese Reference Format:**
-```
-[序号] 作者1, 作者2, 作者3. 文章题目[J]. 期刊名称, 年, 卷(期): 起止页码. DOI. 验证链接: https://...
-```
-
-**Example Chinese Reference:**
-```
-[2] 王青, 李明华, 陈晓红. 多学科协作护理模式在2型糖尿病合并髋部骨折
-    患者中的应用研究[J]. 中华护理杂志, 2020, 55(3): 321-326. 
-    DOI: 10.3761/j.issn.0254-1769.2020.03.001. 
-    验证链接: https://kns.cnki.net/kcms/detail/detail.aspx?dbcode=CJFD&dbname=CJFDLAST2021&filename=ZHHL202003001
-```
 
 ### Verification Criteria
 
 Include only references that:
 - Published in peer-reviewed journal (Chinese or English)
-- Authors can be verified
+- Authors can be verified (at least first 2-3)
 - Journal is reputable
-- DOI/URL available
+- DOI/PMID available
 - Content directly relevant
 - Published within last 10 years
 
@@ -159,37 +146,24 @@ Include only references that:
 - 护理研究
 - 解放军护理杂志
 
-### Example Verification
-
-```
-[3] Tseng MY, et al. Effects of a diabetes-specific care model... 
-    Experimental Gerontology, 2019, 118: 31-38. 
-    DOI: 10.1016/j.exger.2019.01.006. 
-    验证链接: https://doi.org/10.1016/j.exger.2019.01.006
-```
-
-## Best Practices Checklist
-
-Before submitting any generated proposal:
-
-- [ ] No use of web_fetch tool
-- [ ] All write() calls include complete parameters (path/file_path + content)
-- [ ] All numerical data verified (no typos like "4型糖尿病" → "4亿人")
-- [ ] All references verified through Google Scholar/ScienceDirect/DOI
-- [ ] All references include verification URLs
-- [ ] In-text citations [1], [2], [3]... match reference list
-- [ ] Reference titles are complete and properly formatted
-- [ ] Document structure follows Chinese academic standards
+**Recommended English Journals:**
+- Journal of Clinical Nursing
+- International Journal of Nursing Studies
+- Osteoporosis International
+- Geriatric Nursing
 
 ## Directory Structure
 
 ```
 research-grant-proposal/
-├── SKILL.md                    # Skill documentation with verification workflow
-├── README.md                   # This file
-├── push_to_github.sh          # Push to GitHub
+├── SKILL.md                        # Main skill documentation
+├── README.md                       # This file
+├── verification_steps/              # Detailed verification guides
+│   ├── cnki.md                    # CNKI verification (8-step)
+│   └── pubmed.md                  # PubMed verification (4/8-step)
+├── push_to_github.sh             # Push to GitHub
 └── scripts/
-    └── generate_proposal.py   # Word document generator with validation
+    └── generate_proposal.py       # Word document generator
 ```
 
 ## Supported Topics
@@ -217,12 +191,13 @@ research-grant-proposal/
 [1] Moran WP, et al. Using a collaborative approach to reduce 
     postoperative complications for hip-fracture patients[J]. 
     The Joint Commission Journal, 2006, 32(11): 573-584. 
-    验证链接: https://scholar.google.com/scholar?q=Moran+2006+hip+fracture
+    Verification URL: https://pubmed.ncbi.nlm.nih.gov/17042159/
 
 [2] Tseng MY, et al. Effects of a diabetes-specific care model 
     for hip fractured older patients[J]. Experimental Gerontology, 
     2019, 118: 31-38. 
-    验证链接: https://doi.org/10.1016/j.exger.2019.01.006
+    DOI: 10.1016/j.exger.2019.01.006
+    Verification URL: https://pubmed.ncbi.nlm.nih.gov/30770084/
 ```
 
 ## Push to GitHub
