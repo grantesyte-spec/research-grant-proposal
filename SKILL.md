@@ -104,6 +104,9 @@ openclaw browser --browser-profile chrome open "https://kns.cnki.net/kns8s/searc
 
 # PubMed
 openclaw browser --browser-profile chrome open "https://pubmed.ncbi.nlm.nih.gov/?term=keywords"
+
+# Wanfang
+openclaw browser --browser-profile chrome open "https://www.wanfangdata.com.cn/"
 ```
 
 ## CNKI Verification Workflow
@@ -114,7 +117,7 @@ openclaw browser --browser-profile chrome open "https://pubmed.ncbi.nlm.nih.gov/
 
 ### Golden Rule
 ```bash
-snapshot → type → click → wait --load networkidle → snapshot
+snapshot → type --submit "keywords" → wait --load networkidle → snapshot
 ```
 
 ## PubMed Verification Workflow
@@ -129,13 +132,32 @@ snapshot → type → click → wait --load networkidle → snapshot
 openclaw browser --browser-profile chrome open "https://pubmed.ncbi.nlm.nih.gov/"
 
 # Search with keywords
-openclaw browser --browser-profile chrome type [search-box-ref] "keywords"
-
-# Submit search
-openclaw browser --browser-profile chrome click [search-button-ref]
+openclaw browser --browser-profile chrome type e14 "keywords" --submit
 
 # Get article by PMID directly
 openclaw browser --browser-profile chrome open "https://pubmed.ncbi.nlm.nih.gov/[PMID]/"
+```
+
+## Wanfang Verification Workflow
+
+**Reference**: [Wanfang Verification Steps](verification_steps/wanfang.md) for detailed 8-step process.
+
+**Key Difference**: Articles open in **NEW TAB** (unlike CNKI). Tab management required.
+
+### Key Steps
+```bash
+# Open Wanfang
+openclaw browser --browser-profile chrome open "https://www.wanfangdata.com.cn/"
+
+# Search with keywords
+openclaw browser --browser-profile chrome type [search-box-ref] "keywords" --submit
+
+# Click article (opens in NEW TAB!)
+openclaw browser --browser-profile chrome click [article-ref]
+
+# MUST switch to new tab!
+openclaw browser --browser-profile chrome tabs
+openclaw browser --browser-profile chrome focus [new-tab-id]
 ```
 
 ## Common Pitfalls
@@ -146,7 +168,8 @@ openclaw browser --browser-profile chrome open "https://pubmed.ncbi.nlm.nih.gov/
 | Missing path in write | Always include: `write(content="text", path="/file.txt")` |
 | Typo in numbers | Verify: 亿/万, %, decimals |
 | Refs invalid after navigation | Re-run `snapshot` after page changes |
-| Bot detection on PubMed | Use PMID direct URLs when possible |
+| Wanfang new tab | Use `tabs` and `focus [tab-id]` to switch tabs |
+| Bot detection | Use simplified keywords, try different databases |
 
 ## Output Location
 
@@ -159,22 +182,22 @@ openclaw browser --browser-profile chrome open "https://pubmed.ncbi.nlm.nih.gov/
 ### CNKI (Chinese)
 - **File**: `verification_steps/cnki.md`
 - **Scope**: Chinese nursing research verification
-- **Features**: openclaw browser automation, 8-step detailed process
+- **Features**: openclaw browser automation, 8-step process, --submit option
 
 ### PubMed (English)
 - **File**: `verification_steps/pubmed.md`
 - **Scope**: English biomedical and nursing literature
-- **Features**: openclaw browser, PMID-based verification, 4/8-step options
+- **Features**: openclaw browser, PMID-based verification, 4/8-step options, --submit option
+
+### Wanfang (Chinese)
+- **File**: `verification_steps/wanfang.md`
+- **Scope**: Chinese science & technology literature
+- **Features**: Complementary to CNKI, NEW TAB behavior, tab management
 
 ### DOI (Coming Soon)
 - **File**: `verification_steps/doi.md`
 - **Scope**: DOI-based verification
 - **Features**: Most authoritative source
-
-### Wanfang (Coming Soon)
-- **File**: `verification_steps/wanfang.md`
-- **Scope**: Chinese science & technology
-- **Features**: Complementary to CNKI
 
 ---
 
