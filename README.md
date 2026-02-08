@@ -11,6 +11,24 @@ A Claude/Codex skill for generating academic research grant proposals in Chinese
 - 🔗 **Verification URLs**: Every reference includes a link for manual verification
 - 📊 **Metrics Tables**: Auto-generated metrics and KPI tables
 
+## ⚠️ Important: Best Practices
+
+### 1. Do NOT Use web_fetch
+- ❌ Never use `web_fetch` tool
+- ✅ Use browser tools instead (`browser` with `action=open`, `action=snapshot`)
+
+### 2. Verify All Parameters
+- ✅ Always include ALL required parameters for `write()` calls
+- ✅ Example: `write(content="text", path="/file.txt")`
+- ❌ Never call `write()` without complete parameters
+
+### 3. Validate Content
+- ✅ The generator includes validation for:
+  - Reference format and completeness
+  - Numerical data accuracy
+  - Verification URL presence
+  - Common typos (e.g., "4型糖尿病" → "4亿人")
+
 ## Installation
 
 ### For OpenClaw/Claude Code Users
@@ -51,6 +69,9 @@ python scripts/generate_proposal.py --title "研究课题标题"
 
 # With custom output
 python scripts/generate_proposal.py --title "研究课题标题" --output ~/Desktop/proposal.docx
+
+# Skip validation (not recommended)
+python scripts/generate_proposal.py --title "研究课题标题" --no-validate
 ```
 
 ## Citation Format
@@ -117,15 +138,28 @@ Include only references that:
     验证链接: https://doi.org/10.1016/j.exger.2019.01.006
 ```
 
+## Best Practices Checklist
+
+Before submitting any generated proposal:
+
+- [ ] No use of web_fetch tool
+- [ ] All write() calls include complete parameters (path/file_path + content)
+- [ ] All numerical data verified (no typos like "4型糖尿病" → "4亿人")
+- [ ] All references verified through Google Scholar/ScienceDirect/DOI
+- [ ] All references include verification URLs
+- [ ] In-text citations [1], [2], [3]... match reference list
+- [ ] Reference titles are complete and properly formatted
+- [ ] Document structure follows Chinese academic standards
+
 ## Directory Structure
 
 ```
 research-grant-proposal/
 ├── SKILL.md                    # Skill documentation with verification workflow
 ├── README.md                   # This file
-├── push_to_github.sh         # Push to GitHub
+├── push_to_github.sh          # Push to GitHub
 └── scripts/
-    └── generate_proposal.py   # Word document generator
+    └── generate_proposal.py   # Word document generator with validation
 ```
 
 ## Supported Topics

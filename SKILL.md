@@ -1,6 +1,6 @@
 ---
 name: research-grant-proposal
-description: Generate academic research grant proposals in Chinese with validated references and Word export. Includes detailed reference verification workflow using Google Scholar, ScienceDirect, PubMed, CNKI, and other academic databases. All references include citation numbers and verification URLs.
+description: Generate academic research grant proposals in Chinese with validated references and Word export. Includes detailed reference verification workflow using Google, PubMed, Scholar, ScienceDirect CNKI, and other academic databases. All references include citation numbers and verification URLs.
 ---
 
 # Research Grant Proposal Generator (研究课题申请书生成器)
@@ -13,6 +13,31 @@ Generate professional academic research grant proposals in Chinese with proper f
 2. **Skill generates proposal with in-text citations [1], [2], etc.**
 3. **All references include verification URLs for manual check**
 4. **Export as Word (.docx) to desktop**
+
+## Important: Tools Usage Guidelines
+
+**Critical: Follow these rules when using tools:**
+
+### Do NOT Use web_fetch
+- ❌ Never use `web_fetch` tool for fetching external content
+- ✅ Use browser tools (`browser` with `action=open`, `action=snapshot`) instead
+- ⚠️ This is a strict user requirement - always check if user has given explicit instructions about tool usage
+
+### Verify All Parameters Before Tool Calls
+- ✅ Always include ALL required parameters for tool calls
+- ✅ Double-check `path` or `file_path` parameters for write operations
+- ✅ For write tool: provide `content`, `path` (or `file_path`) together
+- ❌ Avoid calling write without complete parameters
+
+**Example - Correct:**
+```python
+write(content="text", path="/file.txt")
+```
+
+**Example - Incorrect:**
+```python
+write(content="text")  # Missing path parameter!
+```
 
 ## Document Structure
 
@@ -53,16 +78,6 @@ The generated proposal includes:
 [1] Author(s). Title[J]. Journal, Year, Vol(Issue): Pages. DOI. 验证链接: https://...
 [2] Author(s). Title[J]. Journal, Year, Vol(Issue): Pages. 验证链接: https://...
 ```
-
-## Word Document Format
-
-- Chinese fonts (宋体)
-- Proper headings (16pt title, 14pt section, 12pt body)
-- In-text citations as superscript numbers [1]
-- References section with numbered list
-- Tables for metrics and team members
-- Professional academic formatting
-- Saved to Desktop as `.docx`
 
 ## Reference Verification Workflow
 
@@ -168,6 +183,27 @@ Include only references that meet ALL:
 - Duplicate publications
 - Non-accessible sources
 
+## Common Pitfalls to Avoid
+
+### 1. **Do NOT Use web_fetch**
+- ❌ web_fetch is not allowed for this skill
+- ✅ Use browser tools instead (browser action=open, action=snapshot)
+
+### 2. **Verify All Parameters**
+- ❌ Never call write without complete parameters
+- ✅ Always include `path` or `file_path` with `content`
+- ✅ Example: `write(content="text", path="/file.txt")`
+
+### 3. **Check for Typos**
+- ❌ Avoid errors like "4型糖尿病" when meaning "4亿人"
+- ✅ Proofread all numerical data and statistics
+- ✅ Verify unit accuracy (e.g., "亿" vs "万", "%")
+
+### 4. **Verify Reference Titles**
+- ❌ Avoid incomplete or poorly formatted titles
+- ✅ Use full journal titles in standard format
+- ✅ Double-check author names and initials
+
 ## Reference Format (Chinese Academic Standard)
 
 ```
@@ -240,6 +276,19 @@ Generated Word documents are saved to:
     118: 31-38. DOI: 10.1016/j.exger.2019.01.006. 
     验证链接: https://doi.org/10.1016/j.exger.2019.01.006
 ```
+
+## Best Practices Checklist
+
+Before submitting any generated proposal:
+
+- [ ] No use of web_fetch tool
+- [ ] All write() calls include complete parameters (path/file_path + content)
+- [ ] All numerical data verified (no typos like "4型糖尿病" → "4亿人")
+- [ ] All references verified through Google Scholar/ScienceDirect/DOI
+- [ ] All references include verification URLs
+- [ ] In-text citations [1], [2], [3]... match reference list
+- [ ] Reference titles are complete and properly formatted
+- [ ] Document structure follows Chinese academic standards
 
 ## Related Skills
 

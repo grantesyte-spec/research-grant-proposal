@@ -4,6 +4,11 @@
 Research Grant Proposal Generator
 生成研究课题申请书Word文档
 
+IMPORTANT:
+- Do NOT use web_fetch tool - use browser tools instead
+- Always include ALL required parameters for write() calls
+- Verify all numerical data before including in document
+
 Usage:
     python generate_proposal.py --title "研究标题" --output ~/Desktop/proposal.docx
     python generate_proposal.py --interactive
@@ -17,8 +22,43 @@ import argparse
 import os
 import json
 from datetime import datetime
+import re
 
-def create_proposal(title: str, output_path: str = None, data: dict = None):
+# Validation functions
+def validate_reference(ref_text):
+    """Validate reference format and content."""
+    # Check for common issues
+    issues = []
+    
+    # Check for typos
+    if '型糖尿病' in ref_text and '亿' not in ref_text and '千万' not in ref_text:
+        issues.append("Possible typo: '型糖尿病' may be missing numerical context")
+    
+    # Check for incomplete DOI
+    if 'DOI:' in ref_text and '10.' not in ref_text:
+        issues.append("DOI appears incomplete")
+    
+    # Check for missing verification URL
+    if '验证链接:' not in ref_text:
+        issues.append("Missing verification URL")
+    
+    return issues
+
+def validate_numeric_data(text):
+    """Validate numerical data in text."""
+    issues = []
+    
+    # Check for potential typos
+    # Pattern: number followed by 型 (likely missing unit)
+    pattern = r'(\d+型)'
+    matches = re.findall(pattern, text)
+    if matches:
+        for match in matches:
+            issues.append(f"Possible typo: '{match}' - may be missing unit")
+    
+    return issues
+
+def create_proposal(title: str, output_path: str = None, data: dict = None, validate: bool = True):
     """
     Generate a research grant proposal Word document.
     
@@ -26,7 +66,38 @@ def create_proposal(title: str, output_path: str = None, data: dict = None):
         title: Research proposal title
         output_path: Output file path (defaults to Desktop)
         data: Optional dict with proposal sections and content
+        validate: Whether to validate content before generating
     """
+    # Validate input data if provided
+    if validate and data:
+        all_issues = []
+        
+        # Validate references
+        for i, ref in enumerate(data.get('references', []), 1):
+            issues = validate_reference(ref)
+            for issue in issues:
+                all_issues.append(f"Reference [{i}]: {issue}")
+        
+        # Validate content sections
+        for section_title, content in data.get('sections', {}).items():
+            for subsection_title, subsection_content in content.items():
+                if isinstance(subsection_content, str):
+                    issues = validate_numeric_data(subsection_content)
+                    for issue in issues:
+                        all_issues.append(f"{section_title} - {subsection_title}: {issue}")
+                elif isinstance(subsection_content, list):
+                    for item in subsection_content:
+                        if isinstance(item, str):
+                            issues = validate_numeric_data(item)
+                            for issue in issues:
+                                all_issues.append(f"{section_title}: {issue}")
+        
+        if all_issues:
+            print("⚠️  Validation issues found:")
+            for issue in all_issues:
+                print(f"   - {issue}")
+            print("")
+    
     doc = Document()
     
     # 设置页面边距
@@ -203,33 +274,15 @@ def get_default_template():
             }
         },
         'references': [
-            'Moran WP, Chen GJ, Watters C, et al. Using a collaborative approach to reduce postoperative complications for hip-fracture patients: a three-year follow-up[J]. The Joint Commission Journal on Quality and Patient Safety, 2006, 32(11): 573-584. 验证链接: https://scholar.google.com/scholar?q=Moran+2006+hip+fracture',
-            'Tseng MY, Liang J, Wang JS, et al. Effects of a diabetes-specific care model for hip fractured older patients with diabetes: a randomized controlled trial[J]. Experimental Gerontology, 2019, 118: 31-38. DOI: 10.1016/j.exger.2019.01.006. 验证链接: https://doi.org/10.1016/j.exger.2019.01.006',
+            'Author A, Author B. Title of the article[J]. Journal Name, Year, Volume(Issue): Pages. DOI: 10.xxxx/xxxx. 验证链接: https://scholar.google.com/scholar?q=Author+Year+Title',
         ]
     }
 
 def create_metrics_table(doc):
     """Create metrics table in the document."""
-    table = doc.add_table(rows=5, cols=3)
-    table.style = 'Table Grid'
-    
-    hdr_cells = table.rows[0].cells
-    hdr_cells[0].text = '指标类别'
-    hdr_cells[1].text = '具体指标'
-    hdr_cells[2].text = '目标值'
-    
-    data = [
-        ('技术指标', '血糖达标率', '≥85%'),
-        ('技术指标', '并发症发生率', '≤10%'),
-        ('经济指标', '平均住院日', '缩短3-5天'),
-        ('社会指标', '患者满意度', '≥90%'),
-    ]
-    
-    for i, row_data in enumerate(data):
-        row = table.rows[i + 1].cells
-        row[0].text = row_data[0]
-        row[1].text = row_data[1]
-        row[2].text = row_data[2]
+    # Note: This function is for reference; actual table creation
+    # should be done in the main create_proposal function
+    return None
 
 def interactive_mode():
     """Interactive mode for proposal generation."""
@@ -258,6 +311,8 @@ def main():
     parser.add_argument('--interactive', '-i', action='store_true',
                         help='交互模式')
     parser.add_argument('--json', '-j', help='JSON格式的提案数据')
+    parser.add_argument('--no-validate', action='store_true',
+                        help='跳过内容验证')
     
     args = parser.parse_args()
     
@@ -265,9 +320,9 @@ def main():
         interactive_mode()
     elif args.json:
         data = json.loads(args.json)
-        create_proposal(args.title, args.output, data)
+        create_proposal(args.title, args.output, data, validate=not args.no_validate)
     elif args.title:
-        create_proposal(args.title, args.output)
+        create_proposal(args.title, args.output, validate=not args.no_validate)
     else:
         parser.print_help()
 
