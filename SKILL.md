@@ -46,6 +46,28 @@ Use brackets: `[1]`, `[2]`, `[1][2]`, `[1]-[3]`
 
 **CRITICAL: All references MUST be verified via CLI commands. Do NOT fabricate references.**
 
+### Sequential Verification Required
+
+**IMPORTANT**: Do NOT perform concurrent verifications.
+
+**Verification Order:**
+1. **CNKI** - Complete ALL Chinese references first
+2. **PubMed** - Then complete ALL English references
+3. **Wanfang** - Finally complete supplementary Chinese references (if needed)
+
+**For Each Database:**
+```bash
+# Complete all verifications for this database first
+# Then move to the next database
+# Do NOT interleave verifications
+```
+
+**Why Sequential?**
+- Browser tabs may conflict between databases
+- Easier to track progress and errors
+- Cleaner verification records
+- Avoids confusion with verification URLs
+
 ### 5-Element Verification
 
 For EACH reference, verify these 5 elements:

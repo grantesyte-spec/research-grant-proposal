@@ -1,3 +1,33 @@
+## CRITICAL: Sequential Verification Required
+
+**IMPORTANT**: Do NOT perform concurrent verifications.
+
+When verifying references:
+1. Complete ALL CNKI verifications FIRST
+2. Do NOT start PubMed or Wanfang verification until CNKI is complete
+3. Do NOT switch between databases mid-verification
+4. Complete one database before moving to the next
+
+**Why Sequential?**
+- Browser tabs may conflict between databases
+- Easier to track progress and errors
+- Cleaner verification records
+- Avoids confusion with verification URLs
+
+**Verification Order:**
+1. CNKI (Chinese references)
+2. PubMed (English references)
+3. Wanfang (supplementary Chinese references)
+
+**For Each Database:**
+```bash
+# Complete all verifications for this database first
+# Then move to the next database
+# Do NOT interleave verifications
+```
+
+---
+
 # CNKI Reference Verification Steps
 
 ## Scope
