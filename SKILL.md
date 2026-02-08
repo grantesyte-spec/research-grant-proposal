@@ -177,15 +177,12 @@ openclaw browser --profile chrome click e10 --target-id <tab-id>
 | JSON API errors | Use CLI mode: `openclaw browser --profile chrome <command>` |
 | Missing path in write | Always include: `write(content="text", path="/file.txt") |
 | Typo in numbers | Verify: 亿/万, %, decimals |
-| Unverified reference | Include verification URL for manual check |
 
 ## Output Location
 
 ```
 ~/Desktop/[课题名称]课题申请书.docx
 ```
-
-**Only export AFTER verification loop completes with ALL references verified.**
 
 ## Best Practices Checklist
 
@@ -197,16 +194,6 @@ Before submitting:
 - [ ] **NO failed/unverifiable references remain**
 - [ ] All in-text citations match reference list
 - [ ] Document follows Chinese academic standards
-
-## AI Verification Loop Summary
-
-When generating a proposal, AI must:
-
-1. **Generate** initial proposal with references
-2. **Verify** each reference (access verification URL)
-3. **If FAILED** → Find replacement → Update proposal
-4. **Repeat** until ALL references verified
-5. **Only then** export Word document
 
 ## Reference Quality Sources
 
