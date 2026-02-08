@@ -9,9 +9,42 @@
 
 ## PART A: RESEARCH PHASE (Required First)
 
-### A1: Define Search Keywords
+### A1: Break Down Research Topic into Keywords
 
-**CRITICAL LESSON**: Start with SIMPLE keywords, not complex combinations.
+**CRITICAL LESSON**: Before searching, BREAK DOWN the topic into keywords!
+
+**Original Topic:**
+```
+基于动机行为转化理论的Orem自理模式支持在股骨颈骨折合并糖尿病患者护理中的应用
+```
+
+**BREAK DOWN into Concepts:**
+| Concept | Chinese | Alternative Keywords |
+|---------|---------|---------------------|
+| Theory 1 | 动机行为转化理论 | 行为改变理论、阶段变化理论 |
+| Theory 2 | Orem自理模式 | Orem理论、自理理论、自护理论 |
+| Population | 股骨颈骨折 | 髋部骨折、髋关节骨折、骨折 |
+| Comorbidity | 糖尿病 | 血糖、高血糖、糖代谢 |
+| Intervention | 护理 | 护理干预、康复护理、护理模式 |
+
+**Strategy - Search Each Concept Separately:**
+```
+# Search each concept separately
+1. 动机行为转化理论 护理
+2. Orem 自理模式 护理
+3. 股骨颈骨折 护理
+4. 糖尿病 护理
+5. 骨折 糖尿病
+```
+
+**Why Break Down?**
+- Long complex queries → No results
+- Individual concepts → More results
+- Different combinations → Comprehensive coverage
+
+### A2: Define Search Keywords
+
+**LESSON FROM PRACTICE**: Start with SIMPLE keywords, not complex combinations.
 
 **WRONG** (failed in practice):
 ```
@@ -26,12 +59,19 @@
 ```
 
 **Strategy:**
-1. Start with core concept: `Orem 自理模式`
-2. If too many results, add ONE modifier
-3. If no results, simplify, simplify, simplify!
+1. Break down topic first (see A1)
+2. Start with core concept: `Orem 自理模式`
+3. If too many results, add ONE modifier
+4. If no results, simplify, simplify, simplify!
 
 **Example Keywords:**
 ```
+# From topic breakdown - search each concept
+动机行为转化理论 护理
+Orem 自理模式 护理
+股骨颈骨折 护理
+糖尿病 护理
+
 # Simple first (recommended)
 Orem 自理模式
 Orem 自理 护理
@@ -42,12 +82,12 @@ Orem 自理模式 糖尿病
 Orem 自理模式 骨折
 ```
 
-### A2: Open CNKI
+### A3: Open CNKI
 ```bash
 openclaw browser --browser-profile chrome open "https://kns.cnki.net/kns8s/AdvSearch?classid=WD0FTY92&rlang=CHINESE"
 ```
 
-### A3: Search and Explore
+### A4: Search and Explore
 
 **IMPORTANT LESSON**: After EVERY page change, you MUST re-run snapshot!
 
@@ -76,24 +116,37 @@ openclaw browser --browser-profile chrome snapshot --compact
 - Element refs change after each page load
 - Without new snapshot, you'll get: `Error: Element "e18" not found`
 
-### A4: Record Initial Findings
+### A5: Record Initial Findings
 
 **Create research_notes.md and record:**
-- Keywords used
+- Keywords used (from topic breakdown)
 - Total results found
 - Relevant article titles
 - Journal names and years
 
 **Example entry:**
 ```
-## CNKI Search #1
-Keywords: Orem 自理模式
+## CNKI Search - Topic Breakdown
+
+### Concept 1: 动机行为转化理论 护理
+Keywords: 动机行为转化理论 护理
+Results: ~26 articles found
+
+### Concept 2: Orem 自理模式 护理
+Keywords: Orem 自理模式 护理
 Results: 759 articles found
 
-Relevant titles:
+Relevant:
 1. 以Orem自理模式为指导的延续性护理对2型糖尿病... (2024)
 2. Orem自理模式理论对急诊创伤骨折患者... (2024)
-3. 奥伦自理模式在糖尿病肾病患者护理中的应用... (2024)
+
+### Concept 3: 股骨颈骨折 护理
+Keywords: 股骨颈骨折 护理
+Results: [results]
+
+### Concept 4: 糖尿病 护理
+Keywords: 糖尿病 护理
+Results: [results]
 ```
 
 ---
@@ -155,7 +208,7 @@ openclaw browser --browser-profile chrome open "[verification-url]"
 # Wait for load
 openclaw browser --browser-profile chrome wait --load networkidle
 
-# Re-run snapshot
+# CRITICAL - Re-run snapshot!
 openclaw browser --browser-profile chrome snapshot --compact
 ```
 
@@ -196,18 +249,24 @@ VERIFICATION RESULTS:
 ## COMPLETE WORKFLOW
 
 ```
+STEP 0: BREAK DOWN TOPIC (NEW!)
+  ├── Identify concepts in topic
+  ├── Create keyword variations
+  └── Search each concept separately
+
 STEP 1: Research
-  ├── A1: Start with SIMPLE keywords
-  ├── A2: Open CNKI
-  ├── A3: snapshot → type --submit → wait → snapshot
-  └── A4: Record findings
+  ├── A1: Break down topic
+  ├── A2: Define keywords
+  ├── A3: Open CNKI
+  ├── A4: snapshot → type --submit → wait → snapshot
+  └── A5: Record findings
 
 STEP 2: Selection
   ├── B1: Click article → wait → snapshot
   ├── B2: Extract citations
   └── B3: Add to selected
 
-STEP 3: Verification (Only AFTER selection complete)
+STEP 3: Verification (After selection complete)
   ├── C1: Verify 5 elements
   └── C2: Record results
 ```
@@ -216,16 +275,29 @@ STEP 3: Verification (Only AFTER selection complete)
 
 ## LESSONS LEARNED (Updated from Practice)
 
-### Lesson 1: Start with Simple Keywords
+### Lesson 1: Break Down Topic First
 ```
-❌ WRONG: "Orem 自理模式 股骨颈骨折 糖尿病"
+❌ WRONG: Search whole topic
+"基于动机行为转化理论的Orem自理模式支持在股骨颈骨折合并糖尿病患者护理中的应用"
+
+✅ RIGHT: Break down and search each concept
+1. 动机行为转化理论 护理 → ~26 results
+2. Orem 自理模式 护理 → 759 results
+3. 股骨颈骨折 护理 → [results]
+4. 糖尿病 护理 → [results]
+```
+
+### Lesson 2: Start with Simple Keywords
+```
+❌ WRONG: Complex keyword combination
+"Orem 自理模式 股骨颈骨折 糖尿病"
 → No results, timeout, or error
 
-✅ RIGHT: "Orem 自理模式" 
-→ 759 results found!
+✅ RIGHT: Start simple, add complexity
+"Orem 自理模式" → 759 results!
 ```
 
-### Lesson 2: Re-run Snapshot After Every Page Change
+### Lesson 3: Re-run Snapshot After Every Page Change
 ```bash
 # ❌ WRONG - Using old ref
 type e18 "keywords"
@@ -236,7 +308,7 @@ snapshot  # Get new refs
 type e18 "keywords"  # Use new ref
 ```
 
-### Lesson 3: Wait for Network Idle
+### Lesson 4: Wait for Network Idle
 ```bash
 # ❌ WRONG - No wait
 type "keywords" --submit
@@ -248,12 +320,80 @@ wait --load networkidle
 snapshot
 ```
 
-### Lesson 4: If No Results, Simplify
+### Lesson 5: If No Results, Simplify
 ```
 # Strategy:
 # 1. Remove modifiers (糖尿病, 骨折)
 # 2. Use core concept only
 # 3. Try alternative terms
+```
+
+---
+
+## TOPIC BREAKDOWN TEMPLATE
+
+**Original Topic:**
+```
+[Your research topic here]
+```
+
+**Break Down:**
+| # | Concept | Chinese | Keywords |
+|---|---------|---------|----------|
+| 1 | Theory 1 | [Concept 1] | keyword1, keyword2 |
+| 2 | Theory 2 | [Concept 2] | keyword3, keyword4 |
+| 3 | Population | [Target population] | keyword5, keyword6 |
+| 4 | Comorbidity | [Complications] | keyword7, keyword8 |
+| 5 | Intervention | [Intervention type] | keyword9, keyword10 |
+
+**Search Each:**
+```bash
+# Search each concept
+1. keyword1  keyword3
+2. keyword1  keyword5
+3. keyword3  keyword5
+4. keyword3  keyword7
+...
+```
+
+---
+
+## GOLDEN RULES
+
+```
+1. BREAK DOWN TOPIC first - then search
+2. Start SIMPLE → Add complexity later
+3. snapshot → type → wait → snapshot (after EVERY change)
+4. Research FIRST → Select → THEN Verify
+5. Record EVERYTHING in research_notes.md
+6. Never verify what you haven't found
+```
+
+---
+
+## EXAMPLE: Topic Breakdown
+
+**Original Topic:**
+```
+基于动机行为转化理论的Orem自理模式支持在股骨颈骨折合并糖尿病患者护理中的应用
+```
+
+**Break Down:**
+| # | Concept | Keywords |
+|---|---------|----------|
+| 1 | 动机行为转化理论 | 动机行为转化理论、行为改变理论 |
+| 2 | Orem自理模式 | Orem自理模式、Orem理论、自理理论 |
+| 3 | 股骨颈骨折 | 股骨颈骨折、髋部骨折、骨折 |
+| 4 | 糖尿病 | 糖尿病、高血糖、糖代谢 |
+| 5 | 护理干预 | 护理、康复护理、护理模式 |
+
+**Search Combinations:**
+```bash
+1. "Orem 自理模式 护理" → 759 results ✓
+2. "动机行为转化理论 护理" → 26 results ✓
+3. "股骨颈骨折 护理" → [results]
+4. "糖尿病 护理" → [results]
+5. "骨折 糖尿病 护理" → [results]
 ```
 
 ---
@@ -264,9 +404,10 @@ snapshot
 ```
 Message: "抱歉，暂无数据，请稍后重试"
 Solution: 
-1. Simplify keywords
-2. Remove modifiers
-3. Try: "Orem 自理模式" first
+1. Break down topic first
+2. Simplify keywords
+3. Remove modifiers
+4. Try: "Orem 自理模式" first
 ```
 
 ### Problem 2: Element Ref Invalid
@@ -296,42 +437,44 @@ Solution:
 
 ---
 
-## GOLDEN RULES
-
-```
-1. Start SIMPLE → Add complexity later
-2. snapshot → type → wait → snapshot (after EVERY change)
-3. Research FIRST → Select → THEN Verify
-4. Record EVERYTHING in research_notes.md
-5. Never verify what you haven't found
-```
-
----
-
 ## EXAMPLE: Complete CNKI Session (from Practice)
 
 ```bash
-# 1. Start with simple keywords
+# 1. BREAK DOWN TOPIC
+# Topic: 基于动机行为转化理论的Orem自理模式支持在股骨颈骨折合并糖尿病患者护理中的应用
+# Keywords:
+# - 动机行为转化理论 护理
+# - Orem 自理模式 护理
+# - 股骨颈骨折 护理
+# - 糖尿病 护理
+
+# 2. Start with simple keyword
 open "https://kns.cnki.net/kns8s/AdvSearch?classid=WD0FTY92"
 snapshot
 → Found ref e18 for search box
 
-# 2. Search with simple term
+# 3. Search each concept
 type e18 "Orem 自理模式" --submit
 wait --load networkidle
 snapshot
 → Found 759 results!
 
-# 3. Record findings
+# 4. Record findings
 → Added to research_notes.md
 
-# 4. Select promising article
+# 5. Search another concept
+type e18 "动机行为转化理论 护理" --submit
+wait --load networkidle
+snapshot
+→ Found 26 results
+
+# 6. Select promising article
 click [article-ref]
 wait --load networkidle
 snapshot
 → Extract citation
 
-# 5. Verify (after selection complete)
+# 7. Verify (after selection complete)
 open "[verification-url]"
 wait --load networkidle
 snapshot
