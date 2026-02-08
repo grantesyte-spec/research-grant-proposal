@@ -106,7 +106,7 @@ openclaw browser --browser-profile chrome open "https://scholar.google.com/schol
 openclaw browser --browser-profile chrome open "https://kns.cnki.net/kns8s/search?classid=WD0FTY92&q=keywords"
 ```
 
-## Browser Tool Usage
+## CNKI Verification Workflow
 
 **Reference**: [CNKI Verification Steps](verification_steps/cnki.md) for detailed 8-step process.
 

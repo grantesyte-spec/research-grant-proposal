@@ -1,144 +1,151 @@
-# CNKI 文献验证步骤
+# CNKI Reference Verification Steps
 
-## 适用范围
-- 中国知网（CNKI）学术文献检索
-- 验证中文护理研究文献
+## Scope
+- China National Knowledge Infrastructure (CNKI)
+- Chinese nursing research literature verification
+- No VPN required
 
-## 验证目标
-- ✅ TOPIC：文献主题与研究课题匹配
-- ✅ AUTHORS：至少前2-3位作者姓名正确
-- ✅ YEAR：出版年份正确
-- ⚠️ DOI：部分文献可能无DOI
-- ⚠️ 卷期页码：需从详细信息页面获取
+## Verification Goals
+- ✅ TOPIC: Article matches research topic
+- ✅ AUTHORS: At least first 2-3 authors correct
+- ✅ YEAR: Publication year correct
+- ⚠️ DOI: Some articles may not have DOI
+- ⚠️ Volume/Issue/Pages: Obtain from detail page
 
-## 验证步骤
+## 8-Step Verification Process
 
-### 步骤1：打开CNKI高级检索页面
+### Step 1: Open CNKI Advanced Search
 ```bash
 openclaw browser --browser-profile chrome open "https://kns.cnki.net/kns8s/AdvSearch?classid=WD0FTY92&rlang=CHINESE"
 ```
 
-### 步骤2：获取页面快照（查找搜索框ref）
+### Step 2: Get Page Snapshot (Find Element Refs)
 ```bash
 openclaw browser --browser-profile chrome snapshot --compact
 ```
-**注意**：搜索框通常为 `ref=e18`，搜索按钮为 `ref=e33`
+**Note**: Search box is typically `ref=e18`, Search button is `ref=e33`
 
-### 步骤3：输入搜索关键词
+### Step 3: Enter Search Keywords
 ```bash
-# 简化关键词策略：如果全关键词无结果，尝试逐步简化
-openclaw browser --browser-profile chrome type [搜索框ref] "Orem 自理模式 糖尿病"
+# Simplify keywords if no results
+openclaw browser --browser-profile chrome type [search-box-ref] "Orem 自理模式 糖尿病"
 ```
 
-### 步骤4：点击搜索按钮
+### Step 4: Click Search Button
 ```bash
-openclaw browser --browser-profile chrome click [搜索按钮ref]
+openclaw browser --browser-profile chrome click [search-button-ref]
 ```
 
-### 步骤5：等待页面加载（关键！）
+### Step 5: Wait for Page Load (Critical!)
 ```bash
 openclaw browser --browser-profile chrome wait --load networkidle
 ```
 
-### 步骤6：获取搜索结果快照
+### Step 6: Get Search Results Snapshot
 ```bash
 openclaw browser --browser-profile chrome snapshot --compact
 ```
-**成功标识**：
-- 看到结果数量（如 "共找到 75 条结果"）
-- 看到文献列表（标题、作者、期刊、发表时间）
+**Success Indicators**:
+- Result count visible (e.g., "共找到 75 条结果")
+- Article list visible (title, authors, journal, date)
 
-### 步骤7：查看文献详细信息
+### Step 7: View Article Details
 ```bash
-# 点击文献标题链接
-openclaw browser --browser-profile chrome click [文献ref]
+# Click article title link
+openclaw browser --browser-profile chrome click [article-ref]
 
-# 等待加载
+# Wait for load
 openclaw browser --browser-profile chrome wait --load networkidle
 
-# 获取详细信息页面
+# Get detail page snapshot
 openclaw browser --browser-profile chrome snapshot --compact
 ```
 
-### 步骤8：提取完整文献信息
-从详细信息页面提取：
-- ✅ 完整标题
-- ✅ 全部作者（注意"显示全部作者"链接）
-- ✅ 期刊名称
-- ✅ 发表日期（年-月-日）
-- ⚠️ 卷期号（如 "28(6)"）
-- ⚠️ 页码（如 "45-52"）
-- ⚠️ DOI（如有）
+### Step 8: Extract Complete Article Information
+From detail page, extract:
+- ✅ Full title
+- ✅ All authors (check "显示全部作者" link)
+- ✅ Journal name
+- ✅ Publication date (YYYY-MM-DD)
+- ⚠️ Volume/Issue (e.g., "28(6)")
+- ⚠️ Pages (e.g., "45-52")
+- ⚠️ DOI (if available)
 
-## 验证结果记录格式
+## Verification Result Format
 
 ```markdown
-## [序号] [待验证/已验证]
+## [Number] [Pending/Verified]
 
-**题目**：[完整标题]
-- **作者**：[前3位作者, 等]
-- **期刊**：[期刊名称]
-- **发表时间**：[YYYY-MM-DD]
-- **被引次数**：[数字]
-- **验证链接**：[CNKI URL]
-- **验证状态**：[TOPIC✓ AUTHORS✓ YEAR✓ 卷期✓ 页码✓ DOI✓]
+**Title**: [Full Title]
+- **Authors**: [First 3 authors, et al.]
+- **Journal**: [Journal Name]
+- **Publication Date**: [YYYY-MM-DD]
+- **Citations**: [Number]
+- **Verification Link**: [CNKI URL]
+- **Status**: [TOPIC✓ AUTHORS✓ YEAR✓ VOL✓ PAGES✓ DOI✓]
 
-**手动验证链接**：
-- CNKI：https://kns.cnki.net/kcms2/article/abstract?[article_id]
-- Google Scholar：https://scholar.google.com/scholar?q="完整标题"
+**Manual Verification Links**:
+- CNKI: https://kns.cnki.net/kcms2/article/abstract?[article_id]
+- Google Scholar: https://scholar.google.com/scholar?q="Full Title"
 ```
 
-## 常见问题处理
+## Troubleshooting
 
-### 问题1：搜索无结果
-**症状**：`抱歉，暂无数据，请稍后重试。`
-**解决方案**：
-1. 简化关键词（去掉部分检索词）
-2. 尝试：`Orem 自理模式` → `Orem 糖尿病` → `自理模式 糖尿病`
-3. 检查是否需要验证码验证
+### Issue 1: No Search Results
+**Symptom**: "抱歉，暂无数据，请稍后重试。"
+**Solution**:
+1. Simplify keywords (remove some terms)
+2. Try: `Orem 自理模式` → `Orem 糖尿病` → `自理模式 糖尿病`
+3. Check if captcha verification required
 
-### 问题2：页面元素ref失效
-**症状**：`Element "e18" not found`
-**解决方案**：
+### Issue 2: Element Ref Invalid
+**Symptom**: `Element "e18" not found`
+**Solution**:
 ```bash
-# 重新获取页面快照
+# Re-get page snapshot
 openclaw browser --browser-profile chrome snapshot --compact
-# 使用新的ref值
+# Use new ref value
 ```
 
-### 问题3：ref在导航后变化
-**原因**：`Refs are not stable across navigations`
-**解决方案**：每次页面变化后必须重新 `snapshot`
+### Issue 3: Refs Change After Navigation
+**Cause**: "Refs are not stable across navigations"
+**Solution**: Must re-run `snapshot` after any page change
 
-### 问题4：部分作者信息隐藏
-**原因**：长列表默认折叠
-**解决方案**：点击"显示全部作者"链接
+### Issue 4: Partial Author Information
+**Cause**: Long author lists are collapsed by default
+**Solution**: Click "显示全部作者" (Show All Authors) link
 
-### 问题5：缺少卷期页码信息
-**原因**：部分期刊文章信息不完整
-**解决方案**：
-1. 查看HTML阅读版本
-2. 使用Google Scholar补充
-3. 标记为 `[部分验证]`
+### Issue 5: Missing Volume/Pages/DOI
+**Cause**: Some journal articles lack complete metadata
+**Solution**:
+1. Check HTML reading version
+2. Use Google Scholar to supplement
+3. Mark as `[Partially Verified]`
 
-## 验证检查清单
+## Verification Checklist
 
-执行验证后，确认以下项目：
+After verification, confirm:
 
-- [ ] 文献可正常访问
-- [ ] 标题与引用一致
-- [ ] 前3位作者姓名正确
-- [ ] 期刊名称正确
-- [ ] 发表年份正确
-- [ ] 卷期号已获取（如有）
-- [ ] 页码范围已获取（如有）
-- [ ] DOI已获取（如有）
-- [ ] 验证链接可正常访问
+- [ ] Article accessible normally
+- [ ] Title matches citation
+- [ ] First 3 author names correct
+- [ ] Journal name correct
+- [ ] Publication year correct
+- [ ] Volume/Issue obtained (if available)
+- [ ] Page range obtained (if available)
+- [ ] DOI obtained (if available)
+- [ ] Verification URL accessible
 
-## 注意事项
+## Important Notes
 
-1. **简化策略**：复杂检索式可能无结果，建议逐步简化
-2. **等待时间**：每次页面跳转后必须 `wait --load networkidle`
-3. **Ref变化**：导航后ref失效，必须重新获取快照
-4. **验证码**：如果出现验证码，可能需要手动处理
-5. **信息完整性**：并非所有文献都有完整的DOI和页码信息
+1. **Simplification Strategy**: Complex search queries may return no results
+2. **Wait Time**: Must `wait --load networkidle` after page navigation
+3. **Ref Changes**: Refs become invalid after navigation, must re-snapshot
+4. **Captcha**: If captcha appears, may require manual handling
+5. **Information Completeness**: Not all articles have complete DOI and page info
+
+## Golden Rule
+
+```bash
+snapshot → type → click → wait --load networkidle → snapshot
+```
