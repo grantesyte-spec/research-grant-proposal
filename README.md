@@ -12,11 +12,11 @@ Generate academic research grant proposals in Chinese with validated references 
 ## Output Structure
 
 Generated proposal includes:
-- 一、立题依据
-- 二、研究目标与内容
-- 三、研究方法与技术路线
-- 四、预期成果与创新点
-- 五、近五年核心期刊参考文献
+- 1. Background & Significance
+- 2. Objectives & Content
+- 3. Methods & Technical Approach
+- 4. Expected Outcomes & Innovation
+- 5. References
 
 ## Citation Format
 
@@ -120,13 +120,13 @@ research-grant-proposal/
 
 ## Supported Topics
 
-- Collaborative care models (协同护理模式)
-- Prospective nursing management (前瞻性护理管理)
-- Chronic disease management (慢性病管理)
-- Orthopedic nursing (骨科护理)
-- Diabetes nursing (糖尿病护理)
-- Osteoporosis research (骨质疏松研究)
-- Hip fracture care (髋部骨折护理)
+- Collaborative care models
+- Prospective nursing management
+- Chronic disease management
+- Orthopedic nursing
+- Diabetes nursing
+- Osteoporosis research
+- Hip fracture care
 
 ## Output Example
 
