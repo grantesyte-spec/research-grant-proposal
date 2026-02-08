@@ -30,15 +30,17 @@ Use brackets: `[1]`, `[2]`, `[1][2]`, `[1]-[3]`
 
 ### Reference List
 ```
-[number] Authors. Article title[J]. Journal Name, Year, Volume(Issue): Pages. DOI. Verification URL: https://...
+[number] Authors. Article title[J]. Journal Name, Year, Volume(Issue): Pages. Verification URL: https://...
 ```
 
 **Examples:**
 ```
-[1] Wang Y, Li X. Effects of nursing intervention on hip fracture[J]. J Clin Nurs, 2022, 31(15): 2156-2165. DOI: 10.1111/jocn.16235. Verification URL: https://doi.org/10.1111/jocn.16235
+[1] Wang Y, Li X. Effects of nursing intervention on hip fracture[J]. J Clin Nurs, 2022, 31(15): 2156-2165. Verification URL: https://pubmed.ncbi.nlm.nih.gov/35012345/
 
-[2] Li M, Wang J. Orem self-care model in elderly hip fracture patients[J]. Chinese Journal of Nursing, 2020, 55(8): 1121-1126. DOI: 10.3761/j.issn.0254-1769.2020.08.001. Verification URL: https://kns.cnki.net/kcms/detail/detail.aspx?dbcode=CJFD&filename=ZHHL202008001
+[2] Li M, Wang J. Orem self-care model in elderly hip fracture patients[J]. Chinese Journal of Nursing, 2020, 55(8): 1121-1126. Verification URL: https://kns.cnki.net/kcms/detail/detail.aspx?dbcode=CJFD&filename=ZHHL202008001
 ```
+
+**Note**: DOI is optional - use verification URL from CNKI/PubMed/Wanfang as primary source.
 
 ## Reference Verification Workflow
 
@@ -52,7 +54,7 @@ For EACH reference, verify these 5 elements:
 2. ✅ **AUTHORS**: At least first 2-3 authors correct
 3. ✅ **YEAR**: Publication year correct
 4. ✅ **ABSTRACT**: Abstract content relevant to proposal
-5. ✅ **DOI/PMID**: DOI or PMID available and verifiable
+5. ✅ **URL**: Verification URL accessible via browser
 
 ### Abstract Relevance Check
 
@@ -104,7 +106,7 @@ For EACH reference:
    ✓ AUTHORS: YES/NO (First 2-3 authors match)
    ✓ YEAR: YES/NO (Publication year matches)
    ✓ ABSTRACT: YES/NO (Content relevant to proposal)
-   ✓ DOI/PMID: YES/NO (Identifier verifiable)
+   ✓ URL: YES/NO (Verification URL accessible)
    ```
 
 4. **Record Result**
@@ -131,6 +133,7 @@ For each reference, record:
     ✓ AUTHORS: YES/NO (First 2-3 authors match)
     ✓ YEAR: YES/NO (Year matches)
     ✓ ABSTRACT: YES/NO (Content relevant to proposal)
+    ✓ URL: YES/NO (Verification URL accessible)
     
     If ANY is NO → FAILED → Search again
     
@@ -176,7 +179,7 @@ openclaw browser --browser-profile chrome open "https://pubmed.ncbi.nlm.nih.gov/
 
 **Reference**: [Wanfang Verification Steps](verification_steps/wanfang.md) for detailed 8-step process.
 
-### Key Difference**: Articles open in **NEW TAB**
+**Key Difference**: Articles open in **NEW TAB**
 
 ### Key Steps
 ```bash
@@ -226,11 +229,6 @@ openclaw browser --browser-profile chrome focus [new-tab-id]
 - **Scope**: Chinese science & technology literature
 - **Features**: Complementary to CNKI, NEW TAB behavior, tab management, 5-element verification
 
-### DOI (Coming Soon)
-- **File**: `verification_steps/doi.md`
-- **Scope**: DOI-based verification
-- **Features**: Most authoritative source
-
 ---
 
 ## Verification Requirements Summary
@@ -243,6 +241,6 @@ openclaw browser --browser-profile chrome focus [new-tab-id]
   - ✓ AUTHORS: First 2-3 authors correct
   - ✓ YEAR: Publication year correct
   - ✓ ABSTRACT: Content relevant to proposal
-  - ✓ DOI/PMID: Identifier verifiable
+  - ✓ URL: Verification URL accessible (use CNKI/PubMed/Wanfang, DOI not required)
 - ✅ If abstract NOT relevant → Mark FAILED → Search for replacement
 - ✅ ALL references must pass 5-element verification before export

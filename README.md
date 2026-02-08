@@ -1,117 +1,65 @@
-# Research Grant Proposal Skill (研究课题申请书技能)
+# Research Grant Proposal Generator
 
-A Claude/Codex skill for generating academic research grant proposals in Chinese with **in-text citations**, **validated references** (both English and Chinese), **verification URLs**, and **Word document export**.
+Generate academic research grant proposals in Chinese with validated references and Word export.
 
-## Features
+## Quick Start
 
-- 📝 **Chinese Academic Format**: Proper formatting following Chinese academic standards
-- 📄 **Word Export**: Generate professional `.docx` documents
-- 🔢 **In-Text Citations**: Use numbered citations [1], [2], [3]...
-- ✅ **Validated References**: Step-by-step verification workflow for academic sources
-- 🇨🇳 **Chinese References Support**: CNKI, PubMed, and Chinese journal references
-- 🔗 **Verification URLs**: Every reference includes a link for manual verification
-- 📊 **Metrics Tables**: Auto-generated metrics and KPI tables
+1. User provides research topic
+2. Generate proposal framework (4 chapters + references)
+3. Verify references via CNKI/PubMed/Wanfang CLI commands
+4. Export as Word to `~/Desktop/`
 
-## ⚠️ Important: Best Practices
+## Output Structure
 
-### 1. Use Browser Tools (NOT web_fetch)
-- ❌ Never use `web_fetch` tool
-- ✅ Use `openclaw browser` commands with `--browser-profile chrome`
-- ✅ Follow verification_steps/*.md for detailed procedures
-
-### 2. Verify All Parameters
-- ✅ Always include ALL required parameters for `write()` calls
-- ✅ Example: `write(content="text", path="/file.txt")`
-- ❌ Never call `write()` without complete parameters
-
-### 3. Validate Content
-- ✅ The generator includes validation for:
-  - Reference format and completeness
-  - Numerical data accuracy
-  - Verification URL presence
-  - Common typos (e.g., "4型糖尿病" → "4亿人")
-
-## Installation
-
-### For OpenClaw/Claude Code Users
-
-1. Copy this skill to your skills directory:
-   ```bash
-   cp -r research-grant-proposal ~/.claude/skills/
-   ```
-
-2. Restart Claude Code to discover the new skill
-
-### For Claude Web Users
-
-Import the skill through Claude's skill management interface.
-
-## Usage
-
-### Basic Usage
-
-```
-"Generate a research grant proposal about collaborative nursing care with verified references"
-```
-
-### Advanced Usage
-
-```
-"Create a grant proposal titled 'Collaborative Care Combined with Prospective Nursing Management in Type 2 Diabetes Patients with Osteoporotic Intertrochanteric Femoral Fractures' with in-text citations [1]-[20] and verification URLs"
-```
-
-### Command Line
-
-```bash
-# Interactive mode
-python scripts/generate_proposal.py --interactive
-
-# With title
-python scripts/generate_proposal.py --title "研究课题标题"
-
-# With custom output
-python scripts/generate_proposal.py --title "研究课题标题" --output ~/Desktop/proposal.docx
-
-# Skip validation (not recommended)
-python scripts/generate_proposal.py --title "研究课题标题" --no-validate
-```
+Generated proposal includes:
+- 一、立题依据 (Background & Significance)
+- 二、研究目标与内容 (Objectives & Content)
+- 三、研究方法与技术路线 (Methods & Approach)
+- 四、预期成果与创新点 (Expected Outcomes)
+- 五、近五年核心期刊参考文献 (References [1]-[10])
 
 ## Citation Format
 
 ### In-Text Citations
+Use brackets: `[1]`, `[2]`, `[1][2]`, `[1]-[3]`
 
-**Format:** Use numbered citations in brackets [1]
+### Reference List
+```
+[number] Authors. Title[J]. Journal Name, Year, Volume(Issue): Pages. Verification URL: https://...
+```
 
 **Examples:**
 ```
-协同护理模式已被证明可显著改善患者预后[1][2]
-多学科协作团队是实施该模式的关键[3][4][5]
-参考Tseng等[6]的研究设计...
+[1] Wang Y, Li X. Effects of nursing intervention on hip fracture[J]. J Clin Nurs, 2022, 31(15): 2156-2165. Verification URL: https://pubmed.ncbi.nlm.nih.gov/35012345/
+
+[2] Li M, Wang J. Orem self-care model in elderly hip fracture patients[J]. Chinese Journal of Nursing, 2020, 55(8): 1121-1126. Verification URL: https://kns.cnki.net/kcms/detail/detail.aspx?dbcode=CJFD&filename=ZHHL202008001
 ```
 
-### Reference List
-
-**Format:** Numbered list with verification URLs
-
-```
-[1] Author(s). Title[J]. Journal, Year, Vol(Issue): Pages. DOI. 
-    Verification URL: https://...
-
-[2] Author(s). Title[J]. Journal, Year, Vol(Issue): Pages. 
-    Verification URL: https://...
-```
+**Note**: DOI is optional - use verification URL from CNKI/PubMed/Wanfang as primary.
 
 ## Reference Verification
 
-All references MUST be verified using `openclaw browser` commands before including in proposals.
+**CRITICAL**: All references MUST be verified via CLI commands.
+
+### 5-Element Verification
+
+For EACH reference, verify:
+1. ✓ TOPIC: Title matches research topic
+2. ✓ AUTHORS: First 2-3 authors correct
+3. ✓ YEAR: Publication year correct
+4. ✓ ABSTRACT: Content relevant to proposal
+5. ✓ URL: Verification URL accessible
+
+**If any element fails → Mark FAILED → Search for replacement**
 
 ### Verification Steps
 
 **Reference detailed guides:**
-- **CNKI**: See `verification_steps/cnki.md` (8-step process)
-- **PubMed**: See `verification_steps/pubmed.md` (4/8-step process)
+- **CNKI**: `verification_steps/cnki.md` (8-step process)
+- **PubMed**: `verification_steps/pubmed.md` (4/8-step process)
+- **Wanfang**: `verification_steps/wanfang.md` (8-step process)
 
-### Quick Verification Process
+### Quick Verification Commands
 
 ```bash
 # For CNKI
@@ -119,6 +67,9 @@ openclaw browser --browser-profile chrome open "https://kns.cnki.net/kns8s/searc
 
 # For PubMed
 openclaw browser --browser-profile chrome open "https://pubmed.ncbi.nlm.nih.gov/?term=keywords"
+
+# For Wanfang
+openclaw browser --browser-profile chrome open "https://www.wanfangdata.com.cn/"
 ```
 
 ### Verification URL Examples
@@ -127,7 +78,7 @@ openclaw browser --browser-profile chrome open "https://pubmed.ncbi.nlm.nih.gov/
 |--------|------------|
 | CNKI | `https://kns.cnki.net/kcms/detail/detail.aspx?dbcode=CJFD&filename=XXX` |
 | PubMed | `https://pubmed.ncbi.nlm.nih.gov/[PMID]/` |
-| DOI | `https://doi.org/[DOI]` |
+| Wanfang | `https://www.wanfangdata.com.cn/details/article-detail/...` |
 
 ### Verification Criteria
 
@@ -135,9 +86,9 @@ Include only references that:
 - Published in peer-reviewed journal (Chinese or English)
 - Authors can be verified (at least first 2-3)
 - Journal is reputable
-- DOI/PMID available
-- Content directly relevant
+- Content directly relevant to proposal
 - Published within last 10 years
+- Verification URL accessible
 
 **Recommended Chinese Journals:**
 - 中华护理杂志
@@ -160,7 +111,8 @@ research-grant-proposal/
 ├── README.md                       # This file
 ├── verification_steps/              # Detailed verification guides
 │   ├── cnki.md                    # CNKI verification (8-step)
-│   └── pubmed.md                  # PubMed verification (4/8-step)
+│   ├── pubmed.md                  # PubMed verification (4/8-step)
+│   └── wanfang.md                 # Wanfang verification (8-step)
 ├── push_to_github.sh             # Push to GitHub
 └── scripts/
     └── generate_proposal.py       # Word document generator
@@ -196,7 +148,6 @@ research-grant-proposal/
 [2] Tseng MY, et al. Effects of a diabetes-specific care model 
     for hip fractured older patients[J]. Experimental Gerontology, 
     2019, 118: 31-38. 
-    DOI: 10.1016/j.exger.2019.01.006
     Verification URL: https://pubmed.ncbi.nlm.nih.gov/30770084/
 ```
 
