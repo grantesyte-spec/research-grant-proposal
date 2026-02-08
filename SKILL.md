@@ -18,9 +18,67 @@ Generate professional academic research grant proposals in Chinese with proper f
 
 **Critical: Follow these rules when using tools:**
 
+### Browser Tool: Use CLI Mode Instead of JSON API
+
+**⚠️ Important Discovery: The browser JSON API in OpenClaw may have compatibility issues. Always use CLI mode instead.**
+
+**❌ Avoid (JSON API - may fail):**
+```json
+browser({
+  "action": "act",
+  "kind": "type",
+  "ref": "e8",
+  "text": "hello"
+})
+// Error: "request required"
+```
+
+**✅ Use CLI mode (recommended):**
+```bash
+openclaw browser --profile chrome type e8 "搜索关键词" --target-id <tab-id>
+```
+
+**Common CLI Commands:**
+```bash
+# Open a URL
+openclaw browser --profile chrome open "https://kns.cnki.net/kns8s/search"
+
+# Get page snapshot
+openclaw browser --profile chrome snapshot --compact --target-id <tab-id>
+
+# Type text into input field
+openclaw browser --profile chrome type e8 "搜索关键词" --target-id <tab-id>
+
+# Click a button/link
+openclaw browser --profile chrome click e10 --target-id <tab-id>
+
+# List tabs
+openclaw browser --profile chrome tabs
+
+# Check browser status
+openclaw browser --profile chrome status
+```
+
+**Workflow for CNKI Verification:**
+```bash
+# 1. Open CNKI search page
+openclaw browser --profile chrome open "https://kns.cnki.net/kns8s/search?classid=WD0FTY92"
+
+# 2. Get the tab ID from output (e.g., "targetId": "F32587B995D467451EA8F11DA12BFB52")
+
+# 3. Take snapshot to find element refs
+openclaw browser --profile chrome snapshot --compact --target-id F32587B995D467451EA8F11DA12BFB52
+
+# 4. Type search keywords into search box (ref=e8)
+openclaw browser --profile chrome type e8 "Orem 自理模式 糖尿病 骨折 护理" --target-id F32587B995D467451EA8F11DA12BFB52
+
+# 5. Click search button (ref=e10)
+openclaw browser --profile chrome click e10 --target-id F32587B995D467451EA8F11DA12BFB52
+```
+
 ### Do NOT Use web_fetch
 - ❌ Never use `web_fetch` tool for fetching external content
-- ✅ Use browser tools (`browser` with `action=open`, `action=snapshot`) instead
+- ✅ Use browser CLI tools (`openclaw browser --profile chrome`) instead
 - ⚠️ This is a strict user requirement - always check if user has given explicit instructions about tool usage
 
 ### Verify All Parameters Before Tool Calls
@@ -85,16 +143,28 @@ The generated proposal includes:
 
 ### Step 1: Search for References
 
-**Primary Search Tools:**
+**Primary Search Tools (CLI Mode):**
+
 ```bash
+# CNKI (中国知网) - requires institutional login
+# Step 1: Open CNKI search page
+openclaw browser --profile chrome open "https://kns.cnki.net/kns8s/search?classid=WD0FTY92"
+
+# Step 2: Type search keywords (search box ref=e8)
+openclaw browser --profile chrome type e8 "协同护理 糖尿病 髋部骨折" --target-id <tab-id>
+
+# Step 3: Click search button (button ref=e10)
+openclaw browser --profile chrome click e10 --target-id <tab-id>
+
+# CNKI Advanced Search
+openclaw browser --profile chrome open "https://kns.cnki.net/kns8s/AdvSearch?classid=WD0FTY92&rlang=CHINESE"
+# Then use snapshot to find element refs, type in ref=e18 (topic field), click ref=e33 (search)
+
 # Google Scholar (recommended for English)
 open "https://scholar.google.com/scholar?q=keywords"
 
 # ScienceDirect
 open "https://www.sciencedirect.com"
-
-# CNKI (中国知网) - requires institutional login
-open "https://kns.cnki.net/kns8s/search?classid=WD0FTY92"
 ```
 
 **Search Keywords Strategy:**
@@ -103,30 +173,41 @@ open "https://kns.cnki.net/kns8s/search?classid=WD0FTY92"
 
 ### Step 2: Verify Each Reference
 
+**Using Browser CLI for Verification:**
+
 For each candidate reference, verify:
 
-**2.1 Check Authenticity:**
+**2.1 Open Article on CNKI:**
 ```bash
-# Google Scholar
-# 1. Click on the article title
-# 2. Verify author names match
-# 3. Check publication year
-# 4. Confirm journal/publisher exists
-# 5. Look for "Cited by" count (legitimate papers have citations)
+# Click on article title from search results (note the ref from snapshot)
+openclaw browser --profile chrome click e48 --target-id <tab-id>  # e48 is article title link
 ```
 
-**2.2 Verify with DOI:**
+**2.2 Check Authenticity:**
+```bash
+# On article page, verify:
+# 1. Author names match
+# 2. Publication year is correct
+# 3. Journal name is visible
+# 4. Volume, issue, pages are present
+# 5. DOI is available (look for "DOI" link)
+
+# Take snapshot to verify details
+openclaw browser --profile chrome snapshot --compact --target-id <tab-id>
+```
+
+**2.3 Verify with DOI:**
 - Look for DOI in article metadata
-- Visit: https://doi.org/[DOI]
+- Click DOI link or visit: https://doi.org/[DOI]
 - Confirm article loads correctly
 
-**2.3 Check Citation Count:**
-- Google Scholar shows citation count
+**2.4 Check Citation Count:**
+- CNKI shows "被引" (citation count)
 - Papers with 0 citations may be questionable
-- Highly cited papers (>10) are reliable
+- Highly cited papers (>5) are reliable
 
-**2.4 Cross-Reference Check:**
-- Search for the article title in quotes
+**2.5 Cross-Reference Check:**
+- Search for the article title in Google Scholar
 - Check if same article appears on publisher site
 - Verify authors and publication details match
 
@@ -138,15 +219,25 @@ For each verified reference, record:
 ```
 
 **Verification URL Options:**
-| Source | Verification URL Format |
-|--------|------------------------|
-| Google Scholar | `https://scholar.google.com/scholar?q=Title+Author+Year` |
-| ScienceDirect | `https://www.sciencedirect.com/science/article/pii/XXX` |
-| PubMed | `https://pubmed.ncbi.nlm.nih.gov/PMID/` |
-| DOI | `https://doi.org/[DOI]` |
-| CNKI | `https://kns.cnki.net/kns8s/search?classid=WD0FTY92&q=Title` |
+| Source | Verification URL Format | CLI Access |
+|--------|------------------------|-----------|
+| CNKI | `https://kns.cnki.net/kcms/detail/detail.aspx?dbcode=CJFD&...` | `openclaw browser --profile chrome open "URL"` |
+| Google Scholar | `https://scholar.google.com/scholar?q=Title+Author+Year` | `open "URL"` |
+| ScienceDirect | `https://www.sciencedirect.com/science/article/pii/XXX` | `open "URL"` |
+| PubMed | `https://pubmed.ncbi.nlm.nih.gov/PMID/` | `open "URL"` |
+| DOI | `https://doi.org/[DOI]` | `open "URL"` |
+
+**For CNKI URLs, always capture the full URL from browser navigation after clicking article link.**
 
 ### Step 4: Common Issues and Solutions
+
+**Issue: Browser JSON API returns "request required" error**
+- ✅ **Solution:** Use CLI mode instead: `openclaw browser --profile chrome type e8 "text" --target-id <tab-id>`
+
+**Issue: CNKI shows "暂无数据" (no results)**
+- Try alternative keywords (simplified vs traditional Chinese)
+- Use fewer keywords or broader search terms
+- Check if search field ref has changed (take new snapshot)
 
 **Issue: Article not found in database**
 - Try alternative search (title in quotes, author name)
@@ -163,7 +254,8 @@ For each verified reference, record:
 - Verify institutional affiliation
 
 **Issue: CNKI access requires login**
-- Use institutional credentials
+- User is logged in with institutional account (CNKI_3XLBNUJH)
+- If login expires, ask user to re-login on browser
 - Alternative: Use Google Scholar for Chinese journals
 - Record as "requires institutional login"
 
@@ -185,9 +277,10 @@ Include only references that meet ALL:
 
 ## Common Pitfalls to Avoid
 
-### 1. **Do NOT Use web_fetch**
-- ❌ web_fetch is not allowed for this skill
-- ✅ Use browser tools instead (browser action=open, action=snapshot)
+### 1. **Use CLI Mode for Browser Operations**
+- ❌ Avoid using browser JSON API (may return "request required" errors)
+- ✅ Use CLI mode: `openclaw browser --profile chrome <command> <args>`
+- ✅ Example: `openclaw browser --profile chrome type e8 "hello" --target-id <tab-id>`
 
 ### 2. **Verify All Parameters**
 - ❌ Never call write without complete parameters
@@ -203,6 +296,10 @@ Include only references that meet ALL:
 - ❌ Avoid incomplete or poorly formatted titles
 - ✅ Use full journal titles in standard format
 - ✅ Double-check author names and initials
+
+### 5. **Do NOT Use web_fetch**
+- ❌ web_fetch is not allowed for this skill
+- ✅ Use browser CLI tools instead
 
 ## Reference Format (Chinese Academic Standard)
 
@@ -289,14 +386,54 @@ https://scholar.google.com/scholar?q=中文标题+作者+年份
 ### 中文参考文献验证方法
 
 **方法1：CNKI验证（推荐，需要机构登录）**
-1. 访问：https://kns.cnki.net/kns8s/search?classid=WD0FTY92
-2. 输入文章标题或作者名搜索
-3. 点击文章链接查看详情
-4. 记录：DOI、基金项目、作者单位
-5. 验证链接格式：
+
+**⚠️ 重要：使用命令行模式访问浏览器**
+
+由于 OpenClaw 的 browser JSON API 在某些场景下可能不稳定，建议使用命令行模式：
+
+```bash
+# 1. 打开 CNKI 搜索页面
+openclaw browser --profile chrome open "https://kns.cnki.net/kns8s/search?classid=WD0FTY92"
+
+# 2. 获取页面快照（查看搜索框 ref）
+openclaw browser --profile chrome snapshot --target-id <tab-id> --compact
+
+# 3. 在搜索框输入关键词（假设搜索框 ref=e8）
+openclaw browser --profile chrome type e8 "协同护理 糖尿病 髋部骨折" --target-id <tab-id>
+
+# 4. 执行搜索
+openclaw browser --profile chrome click e10 --target-id <tab-id>  # 点击搜索按钮
+```
+
+**详细步骤：**
+
+1. 打开 CNKI 高级搜索页面：
+   ```bash
+   openclaw browser --profile chrome open "https://kns.cnki.net/kns8s/AdvSearch?classid=WD0FTY92&rlang=CHINESE"
    ```
-   https://kns.cnki.net/kcms/detail/detail.aspx?dbcode=CJFD&dbname=CJFDLAST2021&filename=ZHHL202003001
+
+2. 获取页面结构：
+   ```bash
+   openclaw browser --profile chrome snapshot --compact
    ```
+   记录搜索框的 ref ID（如 `e18` 为主题搜索框）
+
+3. 输入搜索词：
+   ```bash
+   openclaw browser --profile chrome type e18 "Orem 自理模式 糖尿病 骨折 护理" --target-id <tab-id>
+   ```
+
+4. 点击搜索按钮（通常 ref=`e33`）：
+   ```bash
+   openclaw browser --profile chrome click e33 --target-id <tab-id>
+   ```
+
+5. 浏览搜索结果并记录验证链接
+
+**验证链接格式：**
+```
+https://kns.cnki.net/kcms/detail/detail.aspx?dbcode=CJFD&dbname=CJFDLAST2021&filename=ZHHL202003001
+```
 
 **方法2：Google Scholar验证（无需登录）**
 1. 访问：https://scholar.google.com/scholar?q=中文标题+作者+年份
@@ -391,10 +528,11 @@ Generated Word documents are saved to:
 
 Before submitting any generated proposal:
 
+- [ ] Browser operations use CLI mode (`openclaw browser --profile chrome`) not JSON API
 - [ ] No use of web_fetch tool
 - [ ] All write() calls include complete parameters (path/file_path + content)
 - [ ] All numerical data verified (no typos like "4型糖尿病" → "4亿人")
-- [ ] All references verified through Google Scholar/ScienceDirect/DOI
+- [ ] All references verified through CNKI CLI / Google Scholar / ScienceDirect / DOI
 - [ ] All references include verification URLs
 - [ ] In-text citations [1], [2], [3]... match reference list
 - [ ] Reference titles are complete and properly formatted
