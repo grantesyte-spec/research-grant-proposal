@@ -11,18 +11,35 @@
 
 ### A1: Define Search Keywords
 
-Based on the research topic, identify:
-- **Core concepts**: Orem self-care model, nursing intervention
-- **Population**: Hip fracture, diabetes, elderly
-- **Outcome measures**: Self-care ability, glycemic control, recovery
+**CRITICAL LESSON**: Start with SIMPLE keywords, not complex combinations.
+
+**WRONG** (failed in practice):
+```
+"Orem 自理模式 股骨颈骨折 糖尿病"
+→ Result: "抱歉，暂无数据，请稍后重试"
+```
+
+**RIGHT** (success in practice):
+```
+"Orem 自理模式"
+→ Result: 759 articles found
+```
+
+**Strategy:**
+1. Start with core concept: `Orem 自理模式`
+2. If too many results, add ONE modifier
+3. If no results, simplify, simplify, simplify!
 
 **Example Keywords:**
 ```
-Orem 自理模式 护理
-股骨颈骨折 护理
-糖尿病 护理
+# Simple first (recommended)
+Orem 自理模式
+Orem 自理 护理
+动机行为 转化 理论
+
+# Add ONE modifier if needed
 Orem 自理模式 糖尿病
-动机行为转化理论 护理
+Orem 自理模式 骨折
 ```
 
 ### A2: Open CNKI
@@ -32,46 +49,67 @@ openclaw browser --browser-profile chrome open "https://kns.cnki.net/kns8s/AdvSe
 
 ### A3: Search and Explore
 
+**IMPORTANT LESSON**: After EVERY page change, you MUST re-run snapshot!
+
 ```bash
-# Get page snapshot to find refs
+# Step 1: Open CNKI
+openclaw browser --browser-profile chrome open "https://kns.cnki.net/kns8s/AdvSearch?classid=WD0FTY92&rlang=CHINESE"
+
+# Step 2: CRITICAL - Get page snapshot FIRST
 openclaw browser --browser-profile chrome snapshot --compact
 
-# Try different keywords
-openclaw browser --browser-profile chrome type e18 "Orem 自理模式 护理" --submit
+# Step 3: Find the search box ref (typically e18)
+# Look for "textbox" or input field
+
+# Step 4: Type and submit
+openclaw browser --browser-profile chrome type e18 "Orem 自理模式" --submit
+
+# Step 5: CRITICAL - Wait for page to load
 openclaw browser --browser-profile chrome wait --load networkidle
+
+# Step 6: CRITICAL - Re-run snapshot after page change!
 openclaw browser --browser-profile chrome snapshot --compact
 ```
+
+**Why Re-run Snapshot?**
+- "Refs are not stable across navigations"
+- Element refs change after each page load
+- Without new snapshot, you'll get: `Error: Element "e18" not found`
 
 ### A4: Record Initial Findings
 
 **Create research_notes.md and record:**
 - Keywords used
 - Total results found
-- Relevant article titles (don't cite yet - just explore)
+- Relevant article titles
 - Journal names and years
 
 **Example entry:**
 ```
 ## CNKI Search #1
-Keywords: Orem 自理模式 护理
-Results: 994 articles found
+Keywords: Orem 自理模式
+Results: 759 articles found
 
-Relevant titles found:
-1. 以奥瑞姆自理模式为基础的护理模式对急诊创伤骨折患者... (2025)
-2. 基于循证支持的Orem自理模式干预对糖尿病合并精神分裂症... (2025)
-...
+Relevant titles:
+1. 以Orem自理模式为指导的延续性护理对2型糖尿病... (2024)
+2. Orem自理模式理论对急诊创伤骨折患者... (2024)
+3. 奥伦自理模式在糖尿病肾病患者护理中的应用... (2024)
 ```
 
 ---
 
-##ION PHASE
+## PART B: SELECTION PHASE
 
- PART B: SELECT### B1: Click on Promising Articles
+### B1: Click on Promising Articles
 
-For each potentially relevant article:
 ```bash
+# Click article link (typically opens in same tab)
 openclaw browser --browser-profile chrome click [article-ref]
+
+# CRITICAL - Wait for load
 openclaw browser --browser-profile chrome wait --load networkidle
+
+# CRITICAL - Re-run snapshot!
 openclaw browser --browser-profile chrome snapshot --compact
 ```
 
@@ -79,17 +117,15 @@ openclaw browser --browser-profile chrome snapshot --compact
 
 From article detail page, extract:
 - ✅ Full title
-- ✅ All authors
+- ✅ Authors (first 2-3)
 - ✅ Journal name
-- ✅ Publication date (Year)
-- ✅ Volume, Issue (if available)
-- ✅ Pages (if available)
+- ✅ Publication year
+- ✅ Volume, Issue, Pages
 - ✅ Abstract
-- ✅ Verification URL
+- ✅ Verification URL (copy from browser)
 
 ### B3: Add to Selected References
 
-Update research_notes.md:
 ```markdown
 ## Selected CNKI References
 
@@ -97,9 +133,8 @@ Update research_notes.md:
 **Title**: [Full Title]
 **Authors**: [First 2-3 authors], et al.
 **Journal**: [Journal Name], [Year], [Vol]([Issue]): [Pages]
-**URL**: https://kns.cnki.net/kcms/detail/detail.aspx?...
-**Abstract**: [Paste abstract]
-**Relevance**: HIGH - Directly addresses Orem model in [population]
+**URL**: https://kns.cnki.net/kcms/detail/detail.aspx?dbcode=CJFD&...
+**Relevance**: HIGH - Addresses Orem model in [population]
 ```
 
 ---
@@ -107,17 +142,20 @@ Update research_notes.md:
 ## PART C: VERIFICATION PHASE (After Research Complete)
 
 **BEFORE verification:**
-- ✅ Research completed
+- ✅ Research completed (searched and explored)
 - ✅ 10-15 references selected
 - ✅ All saved in research_notes.md
 
 ### C1: Verify 5 Elements
 
-For EACH selected reference:
-
 ```bash
-# Open verification URL
+# Open the verification URL you saved
 openclaw browser --browser-profile chrome open "[verification-url]"
+
+# Wait for load
+openclaw browser --browser-profile chrome wait --load networkidle
+
+# Re-run snapshot
 openclaw browser --browser-profile chrome snapshot --compact
 ```
 
@@ -142,16 +180,15 @@ openclaw browser --browser-profile chrome snapshot --compact
 **Journal**: [Journal], [Year]
 
 VERIFICATION RESULTS:
-✓ TOPIC: YES - Matches hip fracture nursing
+✓ TOPIC: YES - Matches research topic
 ✓ AUTHORS: YES - Wang Y, Zhang X confirmed
-✓ YEAR: YES - 2022 matches
+✓ YEAR: YES - 2024 matches
 ✓ ABSTRACT: YES - Relevant to proposal
 ✓ URL: YES - Accessible
 
 **Full Citation**:
-[1] Wang Y, Zhang X, Liu J. Effects of nursing intervention on hip fracture[J]. 
-    Chinese Journal of Nursing, 2022, 57(8): 1021-1026. 
-    Verification URL: https://kns.cnki.net/kcms/detail/detail.aspx?dbcode=CJFD&...
+[1] Authors. Title[J]. Journal, Year, Vol(Issue): Pages. 
+    Verification URL: https://kns.cnki.net/kcms/detail/detail.aspx?...
 ```
 
 ---
@@ -160,87 +197,156 @@ VERIFICATION RESULTS:
 
 ```
 STEP 1: Research
-  ├── A1: Define keywords
+  ├── A1: Start with SIMPLE keywords
   ├── A2: Open CNKI
-  ├── A3: Search and explore (multiple times)
-  └── A4: Record initial findings
+  ├── A3: snapshot → type --submit → wait → snapshot
+  └── A4: Record findings
 
 STEP 2: Selection
-  ├── B1: Click promising articles
-  ├── B2: Extract full citations
-  └── B3: Add selected references
+  ├── B1: Click article → wait → snapshot
+  ├── B2: Extract citations
+  └── B3: Add to selected
 
-STEP 3: Verification (Only AFTER selection)
-  ├── C1: Verify 5 elements for each
+STEP 3: Verification (Only AFTER selection complete)
+  ├── C1: Verify 5 elements
   └── C2: Record results
 ```
 
 ---
 
-## 8-STEP QUICK REFERENCE
+## LESSONS LEARNED (Updated from Practice)
 
-### Research Steps (1-4)
-1. `open CNKI` - Open advanced search
-2. `snapshot` - Get page refs
-3. `type "keywords" --submit` - Search
-4. `wait --load` - Wait for results
-5. `snapshot` - Review results
+### Lesson 1: Start with Simple Keywords
+```
+❌ WRONG: "Orem 自理模式 股骨颈骨折 糖尿病"
+→ No results, timeout, or error
 
-### Selection Steps (5-6)
-5. `click [article-ref]` - Open article
-6. `wait --load → snapshot` - Get details
+✅ RIGHT: "Orem 自理模式" 
+→ 759 results found!
+```
 
-### Verification Steps (7-8)
-7. `open [URL]` - Open verification URL
-8. `verify 5 elements` - Confirm accuracy
+### Lesson 2: Re-run Snapshot After Every Page Change
+```bash
+# ❌ WRONG - Using old ref
+type e18 "keywords"
+→ Error: Element "e18" not found
+
+# ✅ RIGHT - Get new snapshot
+snapshot  # Get new refs
+type e18 "keywords"  # Use new ref
+```
+
+### Lesson 3: Wait for Network Idle
+```bash
+# ❌ WRONG - No wait
+type "keywords" --submit
+snapshot immediately
+
+# ✅ RIGHT - Wait for load
+type "keywords" --submit
+wait --load networkidle
+snapshot
+```
+
+### Lesson 4: If No Results, Simplify
+```
+# Strategy:
+# 1. Remove modifiers (糖尿病, 骨折)
+# 2. Use core concept only
+# 3. Try alternative terms
+```
 
 ---
 
 ## TROUBLESHOOTING
 
-### No Results
-- Simplify keywords
-- Try broader terms
-- Check spelling
+### Problem 1: No Results
+```
+Message: "抱歉，暂无数据，请稍后重试"
+Solution: 
+1. Simplify keywords
+2. Remove modifiers
+3. Try: "Orem 自理模式" first
+```
 
-### Can't Access Article
-- Try different database (PubMed)
-- Mark as unavailable
+### Problem 2: Element Ref Invalid
+```
+Error: Element "e18" not found
+Solution:
+1. Re-run: openclaw browser --browser-profile chrome snapshot --compact
+2. Use new ref from snapshot
+3. NEVER use old refs after page navigation
+```
 
-### Irrelevant Abstract
-- Mark FAILED
-- Continue searching
+### Problem 3: Can't Find Search Box
+```
+Solution:
+1. Run snapshot again
+2. Look for "textbox" in output
+3. Try different refs (e18, e17, e16...)
+```
+
+### Problem 4: Page Didn't Load
+```
+Solution:
+1. Check wait --load networkidle
+2. Increase wait time
+3. Refresh page
+```
 
 ---
 
-## GOLDEN RULE
+## GOLDEN RULES
 
 ```
-Research FIRST → Select → THEN Verify
-Never verify what you haven't found through research
+1. Start SIMPLE → Add complexity later
+2. snapshot → type → wait → snapshot (after EVERY change)
+3. Research FIRST → Select → THEN Verify
+4. Record EVERYTHING in research_notes.md
+5. Never verify what you haven't found
 ```
 
 ---
 
-## EXAMPLE: Complete CNKI Session
+## EXAMPLE: Complete CNKI Session (from Practice)
 
 ```bash
-# Session 1: Initial Research
+# 1. Start with simple keywords
 open "https://kns.cnki.net/kns8s/AdvSearch?classid=WD0FTY92"
-type e18 "Orem 自理模式 护理" --submit
-wait --load
 snapshot
-→ Record findings in research_notes.md
+→ Found ref e18 for search box
 
-# Session 2: Select Articles  
-click [article-ref-2]  # Click "Orem自理模式对急诊创伤骨折患者"
-wait --load
+# 2. Search with simple term
+type e18 "Orem 自理模式" --submit
+wait --load networkidle
 snapshot
-→ Extract citation, add to selected references
+→ Found 759 results!
 
-# Session 3: Verify
-open "https://kns.cnki.net/kcms/detail/detail.aspx?dbcode=CJFD&filename=..."
+# 3. Record findings
+→ Added to research_notes.md
+
+# 4. Select promising article
+click [article-ref]
+wait --load networkidle
+snapshot
+→ Extract citation
+
+# 5. Verify (after selection complete)
+open "[verification-url]"
+wait --load networkidle
 snapshot
 → Verify 5 elements
 → Record as VERIFIED
 ```
+
+---
+
+## COMMON REF PATTERNS
+
+| Element | Typical Ref |
+|---------|------------|
+| Search box | e18, e17, e16 |
+| Search button | e9, e33 |
+| Article title | varies |
+
+**Remember**: Refs CHANGE after navigation. Always re-snapshot!
