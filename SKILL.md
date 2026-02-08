@@ -42,114 +42,146 @@ Use brackets: `[1]`, `[2]`, `[1][2]`, `[1]-[3]`
 
 ## Reference Verification Workflow
 
-**Critical: All references must be verified. AI must iterate until all references are authentic.**
+**Critical: AI MUST verify references by ACTUALLY accessing URLs. Do NOT fabricate references.**
 
 ### AI Self-Correction Loop
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    VERIFICATION LOOP                        │
-├─────────────────────────────────────────────────────────────┤
+│                    VERIFICATION LOOP                          │
 │                                                             │
 │  ┌──────────────────┐                                       │
-│  │ Generate Proposal │ ←── Initial input                      │
+│  │ Generate Draft   │ ← Initial proposal                     │
 │  └────────┬─────────┘                                       │
 │           ↓                                                 │
-│  ┌──────────────────┐    ┌──────────────────┐            │
-│  │ Verify All       │──NO→│ Find Replacement │            │
-│  │ References Auth? │     │ Reference        │            │
-│  └────────┬─────────┘     └────────┬─────────┘            │
-│           ↓ YES                     ↓                       │
-│  ┌──────────────────┐     ┌──────────────────┐            │
-│  │ Export Word      │     │ Update Proposal  │            │
-│  │ Document         │     │ with New Ref     │            │
-│  └──────────────────┘     └────────┬─────────┘            │
-│                                    │                       │
-│                                    └───────────────────────┘
+│  ┌──────────────────────────────────────────────────┐      │
+│  │ FOR EACH REFERENCE:                                 │      │
+│  │ 1. Access verification URL (CLI)                   │      │
+│  │ 2. Confirm article EXISTS at URL                   │      │
+│  │ 3. Verify authors, year, journal match            │      │
+│  │ 4. Check DOI resolves correctly                    │      │
+│  └──────────────────────────────────────────────────┘      │
+│           ↓                                                 │
+│  ┌──────────────────┐    ┌──────────────────────┐         │
+│  │ ALL Refs OK?     │──NO→│ Search + Add New Ref │         │
+│  └────────┬─────────┘     │ Re-verify ALL        │         │
+│           ↓ YES            └──────────────────────┘         │
+│  ┌──────────────────┐                                       │
+│  │ Export Document  │                                       │
+│  └──────────────────┘                                       │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### Step 1: Generate Initial Proposal
+### Step 1: Generate Draft with Candidate References
 
-Generate proposal with references (may include unverifiable ones).
+Generate proposal with references. Mark all as "PENDING VERIFICATION".
 
-### Step 2: Verify Each Reference
+### Step 2: Verify Each Reference (MANDATORY)
 
-**For each reference, check:**
+For EACH reference, you MUST:
 
-1. **Database Access**
+1. **Access Verification URL via CLI**
    ```bash
-   # Try to access verification URL
-   openclaw browser --profile chrome open "[verification-url]"
+   # For DOI links:
+   openclaw browser --profile chrome open "https://doi.org/[DOI]"
+   # WAIT for page to load
+   # CONFIRM article title is visible
    
-   # If URL fails or returns 404:
-   # → Mark as FAILED
-   # → Find replacement reference
+   # For CNKI links:
+   openclaw browser --profile chrome open "https://kns.cnki.net/kcms/detail/detail.aspx?dbcode=CJFD&filename=XXX"
+   # CONFIRM article details page loads
+   # Verify authors, year, journal match citation
    ```
 
-2. **Authenticity Criteria**
+2. **Record Verification Result**
    ```
-   ✓ Article exists at verification URL
-   ✓ Authors match the citation
-   ✓ Publication year is correct
-   ✓ Journal is real and peer-reviewed
-   ✓ DOI resolves correctly (if available)
-   ✓ Content is accessible
-   ```
-
-3. **Quality Assessment**
-   ```
-   ✓ Published in reputable journal
-   ✓ Relevant to research topic
-   ✓ Within last 10 years
-   ✓ Has citations/impact
+   [1] AUTHOR. TITLE[J]. JOURNAL, YEAR.
+       Status: VERIFIED / FAILED
+       URL Accessed: YES/NO
+       Article Confirmed: YES/NO
+       If FAILED → Must find replacement
    ```
 
-### Step 3: Handle Failed References
+3. **If Verification FAILS:**
+   - Mark reference as FAILED
+   - Search for valid replacement
+   - Add new reference
+   - RE-START verification loop from beginning
+   - Continue until ALL references pass
 
-**If a reference fails verification:**
+### Step 3: Mandatory Verification Commands
 
-1. **Search for Replacement**
-   ```bash
-   # Use search keywords from failed reference
-   openclaw browser --profile chrome open "https://scholar.google.com/scholar?q=topic+keywords"
-   # OR CNKI
-   open "https://kns.cnki.net/kns8s/search?classid=WD0FTY92&q=topic+keywords"
-   # OR 万方数据库
-   open "https://www.wanfangdata.com.cn/"
-   ```
+**YOU MUST execute these commands for EACH reference:**
 
-2. **Select Valid Replacement**
-   - Choose article from verified database
-   - Ensure similar topic/coverage
-   - Note: "Replacement for ref #[X]"
+```bash
+# 1. Try to access the verification URL
+openclaw browser --profile chrome open "[verification-url]"
 
-3. **Update Proposal**
-   - Replace failed reference with new one
-   - Update all in-text citations
-   - Restart verification loop
+# 2. Take snapshot to confirm article exists
+openclaw browser --profile chrome snapshot --compact
 
-### Step 4: Continue Until Complete
+# 3. Check if article details are visible in snapshot
+# If NOT visible → REFERENCE IS INVALID
+```
 
-**Loop criteria:**
-- ALL references must be verifiable
-- ALL in-text citations must match reference list
-- NO broken links or missing DOIs
+**CRITICAL: If verification URL returns:**
+- 404 error → FAILED → Find replacement
+- Blank page → FAILED → Find replacement  
+- Article not found → FAILED → Find replacement
 
-**Only when loop completes:**
-→ Export Word document
+### Step 4: NEVER Fabricate References
 
-### Reference Verification Template
+**Rules:**
+- ❌ DO NOT generate references without accessing verification URLs
+- ❌ DO NOT assume a reference exists
+- ❌ DO NOT use placeholder URLs
+- ✅ ONLY include references you have PERSONALLY verified via CLI
+- ✅ If you cannot verify a reference → Say "I could not verify this reference" and find an alternative
 
-AI must record for each reference:
+### Verification Template (Required)
+
+For each reference, record:
 
 ```
 [1] AUTHOR. TITLE[J]. JOURNAL, YEAR.
-    Status: VERIFIED/FAILED
-    Database: CNKI/Google Scholar/ScienceDirect/DOI
     Verification URL: https://...
-    If FAILED → Replacement: [NEW-REF]
+    CLI Command Executed: openclaw browser --profile chrome open "URL"
+    Article Confirmed: YES/NO (based on snapshot)
+    If NO → Reference FAILED → REPLACEMENT: [NEW-REF]
+```
+
+### Example of Proper Verification
+
+**WRONG (Fabricated):**
+```
+[1] Wang Y, et al. Title[J]. J Nurs, 2022. 验证链接: https://doi.org/fake-doi
+← AI did NOT access the URL, reference may not exist
+```
+
+**CORRECT (Verified):**
+```
+[1] Wang Y, et al. Title[J]. J Nurs, 2022.
+    Verification URL: https://doi.org/10.1111/jocn.16235
+    CLI Command: openclaw browser --profile chrome open "https://doi.org/10.1111/jocn.16235"
+    Snapshot Confirms: YES (article title "Effects of Orem's..." visible)
+    Status: VERIFIED ✓
+```
+
+### Database Search for Replacements
+
+When a reference fails verification, search for valid alternatives:
+
+```bash
+# Google Scholar
+openclaw browser --profile chrome open "https://scholar.google.com/scholar?q=topic+keywords+year"
+
+# CNKI
+openclaw browser --profile chrome open "https://kns.cnki.net/kns8s/search?classid=WD0FTY92&q=topic+keywords"
+
+# Select article from results
+# Access its verification URL
+# Add to proposal if confirmed
 ```
 
 ## Browser Tool Usage
@@ -187,11 +219,10 @@ openclaw browser --profile chrome click e10 --target-id <tab-id>
 ## Best Practices Checklist
 
 Before submitting:
-- [ ] No web_fetch tool used
-- [ ] All write() calls include complete parameters
-- [ ] Numerical data verified (no typos like "4型糖尿病" → "4亿人")
-- [ ] **ALL references verified through verification loop**
-- [ ] **NO failed/unverifiable references remain**
+- [ ] **EACH reference verified via CLI** - You MUST execute `openclaw browser --profile chrome open "[url]"` for every reference
+- [ ] **Article confirmed in snapshot** - Take snapshot and confirm article details are visible
+- [ ] **NO fabricated references** - Never include references without actual verification
+- [ ] **Failed references replaced** - If URL fails, find and add new reference
 - [ ] All in-text citations match reference list
 - [ ] Document follows Chinese academic standards
 
