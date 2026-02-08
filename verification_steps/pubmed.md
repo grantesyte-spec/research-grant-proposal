@@ -1,25 +1,12 @@
-# PubMed Research & Verification Guide
+# PubMed Research Script
 
-## Scope
-- PubMed (NCBI - National Center for Biotechnology Information)
-- Primary source for English biomedical and nursing literature
-
----
-
-## QUICK REFERENCE
-
-```
-STEP 0: Break down topic into keywords
-STEP 1: Research - Search and explore  
-STEP 2: Selection - Click and extract
-STEP 3: Verification - Confirm 5 elements (use PMID)
-```
+**Purpose**: Research English literature on PubMed, generate pubmed_results.md
 
 ---
 
 ## STEP 0: Break Down Topic
 
-**Original Topic:**
+**Example Topic:**
 ```
 Application of Orem Self-Care Model based on Transtheoretical Model in Nursing Care of Hip Fracture Patients with Diabetes
 ```
@@ -30,13 +17,13 @@ Application of Orem Self-Care Model based on Transtheoretical Model in Nursing C
 | 1 | Theory | transtheoretical model, TTM |
 | 2 | Theory | orem self-care model |
 | 3 | Population | hip fracture, elderly |
-| 4 | Comorbidity | diabetes, glycemic control |
+| 4 | Comorbidity | diabetes |
 | 5 | Intervention | nursing, rehabilitation |
 
 **Search each concept:**
 ```bash
-"oren self-care model nursing"      # 77,273 results
-"transtheoretical model nursing"    # [results]
+"oren self-care model nursing"      # ~77,273 results
+"transtheoretical model nursing"    # ~171 results
 "hip fracture elderly rehabilitation" # [results]
 ```
 
@@ -56,35 +43,29 @@ snapshot
 
 # Search (typically ref=e14)
 type e14 "oren self-care model nursing" --submit
-
-# Wait and snapshot
 wait --load networkidle
 snapshot
 ```
 
-### 1.3 Record Findings
-```
-## PubMed Search
-Keywords: oren self-care model nursing
-Results: 77,273 articles
-
-Relevant:
-1. [Title] (PMID: [PMID], [Year])
-2. [Title] (PMID: [PMID], [Year])
+### 1.3 Search other keywords
+```bash
+type e14 "transtheoretical model nursing" --submit
+wait --load networkidle
+snapshot
 ```
 
 ---
 
 ## STEP 2: Selection Phase
 
-### 2.1 Click Article
+### 2.1 Click article
 ```bash
 click [article-ref]
 wait --load networkidle
 snapshot
 ```
 
-### 2.2 Extract Citation
+### 2.2 Extract citation
 ```
 **Title**: [Full Title]
 **PMID**: [PMID Number]
@@ -97,12 +78,10 @@ snapshot
 
 ## STEP 3: Verification Phase
 
-### 3.1 Verify 5 Elements (use PMID - most reliable!)
+### 3.1 Verify 5 elements (use PMID - most reliable!)
 ```bash
 # Best: Use PMID directly
 open "https://pubmed.ncbi.nlm.nih.gov/[PMID]/"
-
-# Wait and snapshot
 wait --load networkidle
 snapshot
 ```
@@ -116,99 +95,59 @@ snapshot
 ✓ PMID: Correct? YES/NO
 ```
 
-### 3.2 Record
-```
-## [1] VERIFIED ✓
-Title: [Title]
-PMID: [PMID]
-Citation: Authors. Journal, Year.
-Status: ✓✓✓✓✓
-```
-
 ---
 
-## RECORDING TEMPLATE
+## STEP 4: Generate Output
+
+**Create pubmed_results.md:**
 
 ```markdown
-# Literature Research Notes
+# PubMed Research Results
 
 ## Topic
-[Your topic]
+[Research topic]
 
-## PubMed Search
-Keywords: [keywords]
-Results: [number]
+## Search Keywords & Results
+| Keyword | Results |
+|---------|---------|
+| oren self-care model nursing | 77,273 |
+| transtheoretical model nursing | 171 |
 
-### Selected References
-| # | Title | PMID | Authors | Journal | Year |
-|---|-------|------|---------|---------|------|
-| 1 | [Title] | [PMID] | [Authors] | [Journal] | [Year] |
+## Selected References
+| # | Title | PMID | Authors | Journal | Year | Relevance |
+|---|-------|------|---------|---------|------|-----------|
+| 1 | [Title] | [PMID] | [Authors] | [Journal] | [Year] | High |
+
+## Verified References
 
 ### #1 - VERIFIED ✓
-**Title**: [Title]
+**Title**: [Full Title]
 **PMID**: [PMID]
 **Authors**: [Authors]
 **Journal**: [Journal], [Year]
-Status: ✓✓✓✓✓
+**URL**: https://pubmed.ncbi.nlm.nih.gov/[PMID]/
+Status: TOPIC✓ AUTHORS✓ YEAR✓ ABSTRACT✓ PMID✓
+
+### #2 - [status]
+...
 ```
 
 ---
 
-## PUBMED ADVANTAGES
-
-| Feature | PubMed | CNKI |
-|---------|--------|------|
-| Results Count | More (77K+) | Fewer (759+) |
-| Identifier | PMID (reliable) | No standard ID |
-| English Coverage | ✅ Excellent | Limited |
-| Chinese Coverage | Limited | ✅ Excellent |
-
-**Strategy**: Use BOTH databases!
-
----
-
-## TROUBLESHOOTING
-
-| Problem | Solution |
-|---------|----------|
-| Tab disappears | Use PMID URL directly |
-| No results | Simplify keywords |
-| Element ref not found | Re-run snapshot |
-| Can't find article | Search by PMID |
-
----
-
-## GOLDEN RULES
-
-1. Break down topic first → then search
-2. snapshot → type → wait → snapshot (after EVERY change)
-3. Use PMID for verification (most reliable)
-4. Research → Select → THEN Verify
-5. Record everything in research_notes.md
-
----
-
-## EXAMPLE SESSION
+## EXECUTION
 
 ```bash
-# 1. Break down topic
-# Keywords: oren self-care model nursing
+# Read this file first
+read /Users/nathanlinte/.openclaw/skills/research-grant-proposal/verification_steps/pubmed.md
 
-# 2. Search
-open "https://pubmed.ncbi.nlm.nih.gov/"
-snapshot
-type e14 "oren self-care model nursing" --submit
-wait --load networkidle
-snapshot
-→ Found 77,273 results!
+# Execute steps 1-3
+# Then create pubmed_results.md
+```
 
-# 3. Found relevant article
-# "Usefulness of nursing theory-guided practice" (PMID: 30866078)
+---
 
-# 4. Verify by PMID (most reliable)
-open "https://pubmed.ncbi.nlm.nih.gov/30866078/"
-wait --load networkidle
-snapshot
-→ Verify 5 elements
-→ Record as VERIFIED
+## OUTPUT FILE
+
+```
+pubmed_results.md  ← Generated by this script
 ```
