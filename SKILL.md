@@ -261,3 +261,27 @@ Before submitting:
 - 护理学杂志
 - 中华糖尿病杂志
 - 中国实用护理杂志
+
+---
+
+## 📚 独立验证步骤文档
+
+### CNKI（中国知网）
+- **文件**：`verification_steps/cnki.md`
+- **适用范围**：中文护理研究文献验证
+- **特点**：无需VPN，但部分文献可能缺少DOI
+
+### PubMed（即将推出）
+- **文件**：`verification_steps/pubmed.md`
+- **适用范围**：英文生物医学文献验证
+- **特点**：DOI信息完整，验证便捷
+
+### DOI验证（即将推出）
+- **文件**：`verification_steps/doi.md`
+- **适用范围**：通过DOI验证文献真实性
+- **特点**：最权威的文献验证方式
+
+### 万方数据（即将推出）
+- **文件**：`verification_steps/wanfang.md`
+- **适用范围**：中文科技文献验证
+- **特点**：与CNKI互补
