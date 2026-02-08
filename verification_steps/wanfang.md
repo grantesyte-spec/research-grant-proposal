@@ -2,314 +2,232 @@
 
 ## Scope
 - Wanfang Data (万方数据)
-- Supplementary source for Chinese science & technology literature
-- Use when CNKI results are insufficient
+- Supplementary source for Chinese literature
+
+---
+
+## QUICK REFERENCE
+
+```
+STEP 0: Break down topic into keywords
+STEP 1: Research - Search and explore
+STEP 2: Selection - Click → NEW TAB → Extract
+STEP 3: Verification - Confirm 5 elements
+```
 
 ---
 
 ## IMPORTANT: Search Order
 
-1. **CNKI** - Primary source for Chinese literature
-2. **PubMed** - Primary source for English literature  
+1. **CNKI** - Primary source for Chinese
+2. **PubMed** - Primary source for English
 3. **Wanfang** - Supplementary (use only if needed)
 
 ---
 
-## PART A: RESEARCH PHASE (Required First)
+## STEP 0: Break Down Topic
 
-### A1: Define Search Keywords
+Same keywords as CNKI:
+```bash
+"Orem 自理模式 护理"
+"动机行为转化理论 护理"
+"股骨颈骨折 护理"
+"糖尿病 护理"
+```
 
-Same keywords as CNKI search:
-- Orem 自理模式 护理
-- 股骨颈骨折 护理
-- 糖尿病 护理
-- 动机行为转化理论 护理
+---
 
-### A2: Open Wanfang
+## STEP 1: Research Phase
+
+### 1.1 Open Wanfang
 ```bash
 openclaw browser --browser-profile chrome open "https://www.wanfangdata.com.cn/"
 ```
 
-### A3: Search and Explore
-
+### 1.2 Search
 ```bash
-# Get page snapshot to find refs
-openclaw browser --browser-profile chrome snapshot --compact
+# Get refs FIRST
+snapshot
 
-# Search (find search box ref)
-openclaw browser --browser-profile chrome type [search-ref] "Orem 自理模式 护理" --submit
-openclaw browser --browser-profile chrome wait --load networkidle
-openclaw browser --browser-profile chrome snapshot --compact
+# Search (find ref from snapshot)
+type [search-ref] "Orem 自理模式" --submit
+
+# Wait and snapshot
+wait --load networkidle
+snapshot
 ```
 
-### A4: Record Initial Findings
-
-**Create research_notes.md:**
+### 1.3 Record Findings
 ```
-## Wanfang Search #1 (Supplementary)
+## Wanfang Search (Supplementary)
 Keywords: Orem 自理模式 护理
-Results: [Number] articles found
+Results: [number]
 
-Relevant titles:
+Relevant:
 1. [Title] ([Journal], [Year])
-2. [Title] ([Journal], [Year])
-...
 ```
 
 ---
 
-## PART B: SELECTION PHASE
+## STEP 2: Selection Phase (NEW TAB!)
 
-### B1: Click on Promising Articles
-
-**CRITICAL: Opens in NEW TAB!**
+### 2.1 Click Article (Opens NEW TAB!)
 ```bash
-openclaw browser --browser-profile chrome click [article-ref]
+click [article-ref]
 ```
 
-### B2: SWITCH TO NEW TAB (Required!)
+### 2.2 SWITCH TO NEW TAB (Required!)
 ```bash
 # List all tabs
-openclaw browser --browser-profile chrome tabs
-
-# Output:
-# 1. Google  https://...  id: FB0A51FD...
-# 2. Wanfang  https://...  id: 5C56321A...
-# 3. (untitled)  https://...article-detail/...  id: ABC12345...
+tabs
 
 # Focus on article tab
-openclaw browser --browser-profile chrome focus [article-tab-id]
+focus [article-tab-id]
 ```
 
-### B3: Get Article Details
+### 2.3 Get Details
 ```bash
-openclaw browser --browser-profile chrome wait --load networkidle
-openclaw browser --browser-profile chrome snapshot --compact
+wait --load networkidle
+snapshot
 ```
 
-### B4: Extract Full Citation
-
-Extract:
-- ✅ Full title
-- ✅ Authors
-- ✅ Journal name
-- ✅ Publication date
-- ✅ Volume, Issue, Pages
-- ✅ Abstract
-- ✅ Verification URL
-
-### B5: Add to Selected References
-
-```markdown
-## Selected Wanfang References (Supplementary)
-
-### #1 - Medium Relevance
+### 2.4 Extract Citation
+```
 **Title**: [Full Title]
 **Authors**: [First 2-3], et al.
-**Journal**: [Journal Name], [Year], [Vol]([Issue]): [Pages]
-**URL**: https://www.wanfangdata.com.cn/details/article-detail/...
-**Abstract**: [Paste abstract]
-**Relevance**: MEDIUM - Addresses [aspect]
-**Note**: Supplementary to CNKI results
+**Journal**: [Journal], [Year]
+**URL**: https://www.wanfangdata.com.cn/details/...
 ```
 
 ---
 
-## PART C: VERIFICATION PHASE (After Research Complete)
+## STEP 3: Verification Phase
 
-**BEFORE verification:**
-- ✅ CNKI search completed
-- ✅ PubMed search completed  
-- ✅ Wanfang search completed (supplementary)
-- ✅ 10-15 references selected
-
-### C1: Verify 5 Elements
-
+### 3.1 Verify 5 Elements
 ```bash
-# Find the verification URL in your research_notes.md
-openclaw browser --browser-profile chrome open "[verification-url]"
-
-# If article is in new tab
+# Find article tab
 tabs
 focus [article-tab-id]
-wait --load
+wait --load networkidle
 snapshot
 ```
 
 **Check:**
 ```
-✓ TOPIC: Does title match? YES/NO
-✓ AUTHORS: Do first 2-3 authors match? YES/NO
-✓ YEAR: Does year match? YES/NO
-✓ ABSTRACT: Is abstract relevant? YES/NO
-✓ URL: Can you access? YES/NO
+✓ TOPIC: Title matches? YES/NO
+✓ AUTHORS: First 2-3 match? YES/NO
+✓ YEAR: Year matches? YES/NO
+✓ ABSTRACT: Relevant? YES/NO
+✓ URL: Accessible? YES/NO
 ```
 
-### C2: Record Verification
-
-```markdown
-## Wanfang Verification Results
-
-### #1 - VERIFIED ✓
-
-**Title**: [Title]
-**Authors**: [Authors]
-**Journal**: [Journal], [Year]
-
-VERIFICATION RESULTS:
-✓ TOPIC: YES
-✓ AUTHORS: YES
-✓ YEAR: YES
-✓ ABSTRACT: YES
-✓ URL: YES
-
-**Full Citation**:
-[1] Authors. Title[J]. Journal Name, Year, Vol(Issue): Pages. 
-    Verification URL: https://www.wanfangdata.com.cn/details/article-detail/...
+### 3.2 Record
+```
+## [1] VERIFIED ✓
+Title: [Title]
+Citation: Authors. Journal, Year.
+Status: ✓✓✓✓✓
 ```
 
 ---
 
 ## TAB MANAGEMENT
 
-### List All Tabs
-```bash
-openclaw browser --browser-profile chrome tabs
-```
+| Command | Purpose |
+|---------|----------|
+| `tabs` | List all open tabs |
+| `focus [tab-id]` | Switch to specific tab |
+| `close [tab-id]` | Close a tab |
 
-### Switch Tabs
+**Example:**
 ```bash
-openclaw browser --browser-profile chrome focus [tab-id]
-```
+# List tabs
+tabs
+→ Tab 1: Search page
+→ Tab 2: Article #1 (id: ABC123)
 
-### Close Tabs
-```bash
-openclaw browser --browser-profile chrome close [tab-id]
-```
+# Switch to article
+focus ABC123
 
-### Keep Track
-```
-Tab 1: Search page
-Tab 2: Article #1
-Tab 3: Article #2
+# Continue...
 ```
 
 ---
 
-## COMPLETE WORKFLOW
+## RECORDING TEMPLATE
 
+```markdown
+# Literature Research Notes
+
+## Topic
+[Your topic]
+
+## Wanfang Search (Supplementary)
+Keywords: [keywords]
+Results: [number]
+
+### Selected References
+| # | Title | Authors | Journal | Year |
+|---|-------|---------|---------|------|
+| 1 | [Title] | [Authors] | [Journal] | [Year] |
+
+### #1 - VERIFIED ✓
+**Title**: [Title]
+**URL**: [wanfang-url]
+Status: ✓✓✓✓✓
 ```
-STEP 1: Research (CNKI & PubMed FIRST)
-  ├── CNKI: Search, explore, record
-  ├── PubMed: Search, explore, record
-  └── Wanfang: Only if needed
-
-STEP 2: Selection
-  ├── Click promising articles
-  ├── SWITCH TO NEW TAB
-  ├── Extract citations
-  └── Add to selected references
-
-STEP 3: Verification (After ALL selection complete)
-  ├── Verify each reference
-  └── Record results
-```
-
----
-
-## 8-STEP QUICK REFERENCE
-
-### Research Steps (1-4)
-1. `open Wanfang` - Open homepage
-2. `snapshot` - Get refs
-3. `type --submit` - Search
-4. `wait --load → snapshot` - Review results
-
-### Selection Steps (5-6)
-5. `click article` → opens NEW TAB
-6. `tabs → focus [new-tab-id] → wait → snapshot` - Get details
-
-### Verification Steps (7-8)
-7. `open [URL]` or `tabs → focus → snapshot`
-8. `verify 5 elements` - Confirm accuracy
 
 ---
 
 ## TROUBLESHOOTING
 
-### Can't Find Article
-- Cause: Still on search tab, not article tab
-- Fix: `tabs` → `focus [article-tab-id]`
-
-### Multiple Tabs Open
-- Solution: Clean up unused tabs
-- `tabs` → `close [unwanted-tab-id]`
-
-### No Results
-- Solution: Simplify keywords
-- Use CNKI instead
-
-### Abstract Not Relevant
-- Solution: Mark FAILED
-- This is supplementary source anyway
+| Problem | Solution |
+|---------|----------|
+| Can't find article | Check NEW TAB! |
+| Multiple tabs open | Use `tabs` → `focus [id]` |
+| No results | Simplify keywords or use CNKI |
+| Abstract irrelevant | Mark FAILED, search again |
 
 ---
 
-## GOLDEN RULE
+## GOLDEN RULES
 
-```
-CNKI FIRST → PubMed SECOND → Wanfang LAST (if needed)
-NEVER verify what you haven't found through research
-NEW TAB behavior - ALWAYS switch tabs after clicking!
-```
+1. Break down topic first → then search
+2. snapshot → type → wait → snapshot (after EVERY change)
+3. NEW TAB behavior - ALWAYS switch tabs after clicking!
+4. Research → Select → THEN Verify
+5. Record everything in research_notes.md
+6. CNKI FIRST → PubMed SECOND → Wanfang LAST
 
 ---
 
-## EXAMPLE: Complete Wanfang Session
+## EXAMPLE SESSION
 
 ```bash
-# After CNKI and PubMed searches are done...
-
-# Session 1: Wanfang Research (Supplementary)
+# 1. Search
 open "https://www.wanfangdata.com.cn/"
+snapshot
 type [ref] "Orem 自理模式 护理" --submit
-wait --load
+wait --load networkidle
 snapshot
-→ Record findings (supplementary only)
+→ Found results!
 
-# Session 2: Selection
-click [article-ref]  # Opens NEW TAB!
+# 2. Select - NEW TAB!
+click [article-ref]
+→ Opens NEW TAB!
+
+# 3. Switch tabs
 tabs
-focus [ABC12345]  # Switch to article tab
-wait --load
+focus [ABC123]  # Article tab
+
+# 4. Get details
+wait --load networkidle
 snapshot
-→ Extract citation, add to selected
+→ Extract citation
 
-# Session 3: Verification
-tabs
-focus [article-tab-id]  # Go back to article
+# 5. Verify
+wait --load networkidle
 snapshot
 → Verify 5 elements
 → Record as VERIFIED
 ```
-
----
-
-## COMPARISON TABLE
-
-| Aspect | CNKI | Wanfang | PubMed |
-|--------|------|---------|--------|
-| **Priority** | 1st (Chinese) | 3rd (Supplementary) | 2nd (English) |
-| **Tab Behavior** | Same tab | **NEW TAB** ⚠️ | Same tab |
-| **Tab Management** | Not needed | Required | Not needed |
-| **Coverage** | Chinese journals | Chinese journals | English journals |
-| **Use When** | First choice | CNKI insufficient | For English lit |
-
----
-
-## KEY DIFFERENCES FROM CNKI
-
-1. **NEW TAB behavior** - Must switch tabs after clicking
-2. **Supplementary only** - Use CNKI first
-3. **Less familiar** - May need more exploration
-4. **Tab cleanup** - More important here
