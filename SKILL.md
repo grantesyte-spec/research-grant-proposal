@@ -206,26 +206,136 @@ Include only references that meet ALL:
 
 ## Reference Format (Chinese Academic Standard)
 
+### English References
 ```
-[序号] 作者. 题名[J]. 刊名, 年, 卷(期): 起止页码. DOI. 验证链接: https://...
+[序号] Author(s). Title[J]. Journal, Year, Vol(Issue): Pages. DOI. 验证链接: https://...
+```
+
+### Chinese References
+```
+[序号] 作者1, 作者2, 作者3. 文章题目[J]. 期刊名称, 年, 卷(期): 起止页码. DOI. 验证链接: https://...
 ```
 
 **Examples:**
 
 **English Journal Article:**
 ```
-[1] Tseng MY, Liang J, Wang JS, et al. Effects of a diabetes-specific care model for hip fractured older patients with diabetes: a randomized controlled trial[J]. Experimental Gerontology, 2019, 118: 31-38. DOI: 10.1016/j.exger.2019.01.006. 验证链接: https://doi.org/10.1016/j.exger.2019.01.006
+[1] Tseng MY, Liang J, Wang JS, et al. Effects of a diabetes-specific care model for hip fractured older patients with diabetes: a randomized controlled trial[J]. Experimental Gerontology, 2019, 118(1): 31-38. DOI: 10.1016/j.exger.2019.01.006. 验证链接: https://doi.org/10.1016/j.exger.2019.01.006
 ```
 
 **Chinese Journal Article:**
 ```
-[5] 王青, 李明华. 多学科协作护理模式在糖尿病合并髋部骨折患者中的应用研究[J]. 中华护理杂志, 2020, 55(3): 321-326. 验证链接: https://scholar.google.com/scholar?q=王青+多学科协作+2020
+[2] 王青, 李明华, 陈晓红. 多学科协作护理模式在2型糖尿病合并髋部骨折患者中的应用研究[J]. 中华护理杂志, 2020, 55(3): 321-326. DOI: 10.3761/j.issn.0254-1769.2020.03.001. 验证链接: https://kns.cnki.net/kcms/detail/detail.aspx?dbcode=CJFD&dbname=CJFDLAST2021&filename=ZHHL202003001
 ```
 
-**Thesis/Dissertation:**
+**Chinese Thesis/Dissertation:**
 ```
-[8] Zhang J. The integrated care model for the management of older patients with hip fracture in China[D]. University of New South Wales, 2023. 验证链接: https://scholar.google.com/scholar?q=Zhang+2023+hip+fracture
+[5] 张三. 老年2型糖尿病患者骨质疏松性骨折的护理干预研究[D]. 北京协和医学院, 2023. 验证链接: https://kns.cnki.net/kcms/detail/detail.aspx?dbcode=CMFD&dbname=CMFD202402&filename=102278021.nh
 ```
+
+**Chinese Conference Paper:**
+```
+[8] 李四, 王五. 协同护理模式在骨科患者中的应用[C]. 2022中国护理管理大会论文集, 2022: 156-160. 验证链接: https://kns.cnki.net/kcms/detail/detail.aspx?dbcode=CPFD&dbname=CPFD2023&filename=2022HL0415R014
+```
+
+## 中文参考文献支持
+
+### 搜索中文文献
+
+**CNKI（中国知网）- 需要机构登录**
+```
+https://kns.cnki.net/kns8s/search?classid=WD0FTY92
+```
+
+**万方数据库**
+```
+https://www.wanfangdata.com.cn/index/index.do
+```
+
+**维普期刊**
+```
+http://www.cqvip.com/
+```
+
+**Google Scholar（中文文献）**
+```
+https://scholar.google.com/scholar?q=site:cnki.net+关键词
+# 或
+https://scholar.google.com/scholar?q=中文标题+作者+年份
+```
+
+### 中文参考文献格式
+
+**核心期刊格式（符合中科院/CSCD标准）：**
+```
+[序号] 作者. 文章题目[J]. 期刊名称, 年, 卷(期): 起止页码. DOI.
+```
+
+**学位论文格式：**
+```
+[序号] 作者. 论文题目[D]. 城市: 学校名称, 年.
+```
+
+**会议论文格式：**
+```
+[序号] 作者. 文章题目[C]. 会议名称, 年: 起止页码.
+```
+
+**著作格式：**
+```
+[序号] 作者. 书名[M]. 版次. 出版地: 出版社, 年.
+```
+
+### 中文参考文献验证方法
+
+**方法1：CNKI验证（推荐，需要机构登录）**
+1. 访问：https://kns.cnki.net/kns8s/search?classid=WD0FTY92
+2. 输入文章标题或作者名搜索
+3. 点击文章链接查看详情
+4. 记录：DOI、基金项目、作者单位
+5. 验证链接格式：
+   ```
+   https://kns.cnki.net/kcms/detail/detail.aspx?dbcode=CJFD&dbname=CJFDLAST2021&filename=ZHHL202003001
+   ```
+
+**方法2：Google Scholar验证（无需登录）**
+1. 访问：https://scholar.google.com/scholar?q=中文标题+作者+年份
+2. 点击"引用"查看完整信息
+3. 验证链接格式：
+   ```
+   https://scholar.google.com/scholar?q=王青+多学科协作+2020
+   ```
+
+**方法3：万方/维普验证**
+1. 访问相应数据库
+2. 搜索文章标题
+3. 记录DOI或永久链接
+
+### 中文文献质量评估标准
+
+**核心期刊（满足任一即可）：**
+- [ ] 北大核心期刊目录来源
+- [ ] CSCD（中国科学引文数据库）来源
+- [ ] 科技核心期刊（统计源期刊）
+- [ ] 中文核心期刊要目总览
+
+**常见中文护理期刊：**
+- 中华护理杂志
+- 中国护理管理
+- 护理学杂志
+- 护理研究
+- 解放军护理杂志
+- 中华现代护理杂志
+- 护士进修杂志
+- 护理管理杂志
+
+### 中英文参考文献混合使用建议
+
+1. **引用国外研究时**：优先使用英文原文
+2. **引用国内特色研究时**：使用中文文献
+3. **引用国内政策/指南时**：使用中文文献
+4. **引用方法学内容时**：中英文均可
+5. **数量建议**：中文文献占30-50%为佳
 
 ## Common Topics
 

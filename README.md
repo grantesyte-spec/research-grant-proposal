@@ -1,6 +1,6 @@
 # Research Grant Proposal Skill (研究课题申请书技能)
 
-A Claude/Codex skill for generating academic research grant proposals in Chinese with in-text citations, validated references, verification URLs, and Word document export.
+A Claude/Codex skill for generating academic research grant proposals in Chinese with **in-text citations**, **validated references** (both English and Chinese), **verification URLs**, and **Word document export**.
 
 ## Features
 
@@ -8,6 +8,7 @@ A Claude/Codex skill for generating academic research grant proposals in Chinese
 - 📄 **Word Export**: Generate professional `.docx` documents
 - 🔢 **In-Text Citations**: Use numbered citations [1], [2], [3]...
 - ✅ **Validated References**: Step-by-step verification workflow for academic sources
+- 🇨🇳 **Chinese References Support**: Full support for CNKI, Wanfang, and Chinese journal references
 - 🔗 **Verification URLs**: Every reference includes a link for manual verification
 - 📊 **Metrics Tables**: Auto-generated metrics and KPI tables
 
@@ -118,16 +119,45 @@ All references MUST be verified before including in proposals.
 | ScienceDirect | `https://www.sciencedirect.com/science/article/pii/XXX` |
 | DOI | `https://doi.org/[DOI]` |
 | PubMed | `https://pubmed.ncbi.nlm.nih.gov/PMID/` |
+| **CNKI** | `https://kns.cnki.net/kcms/detail/detail.aspx?dbcode=CJFD&dbname=...` |
+| **Wanfang** | `https://www.wanfangdata.com.cn/index/index.do` |
+
+### Chinese References Support
+
+**Search Chinese Literature:**
+- CNKI: https://kns.cnki.net/kns8s/search?classid=WD0FTY92
+- Wanfang: https://www.wanfangdata.com.cn/index/index.do
+- Google Scholar: https://scholar.google.com/scholar?q=site:cnki.net+关键词
+
+**Chinese Reference Format:**
+```
+[序号] 作者1, 作者2, 作者3. 文章题目[J]. 期刊名称, 年, 卷(期): 起止页码. DOI. 验证链接: https://...
+```
+
+**Example Chinese Reference:**
+```
+[2] 王青, 李明华, 陈晓红. 多学科协作护理模式在2型糖尿病合并髋部骨折
+    患者中的应用研究[J]. 中华护理杂志, 2020, 55(3): 321-326. 
+    DOI: 10.3761/j.issn.0254-1769.2020.03.001. 
+    验证链接: https://kns.cnki.net/kcms/detail/detail.aspx?dbcode=CJFD&dbname=CJFDLAST2021&filename=ZHHL202003001
+```
 
 ### Verification Criteria
 
 Include only references that:
-- Published in peer-reviewed journal
+- Published in peer-reviewed journal (Chinese or English)
 - Authors can be verified
 - Journal is reputable
 - DOI/URL available
 - Content directly relevant
 - Published within last 10 years
+
+**Recommended Chinese Journals:**
+- 中华护理杂志
+- 中国护理管理
+- 护理学杂志
+- 护理研究
+- 解放军护理杂志
 
 ### Example Verification
 

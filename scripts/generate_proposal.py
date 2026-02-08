@@ -8,6 +8,7 @@ IMPORTANT:
 - Do NOT use web_fetch tool - use browser tools instead
 - Always include ALL required parameters for write() calls
 - Verify all numerical data before including in document
+- Supports both English and Chinese references
 
 Usage:
     python generate_proposal.py --title "研究标题" --output ~/Desktop/proposal.docx
@@ -26,21 +27,54 @@ import re
 
 # Validation functions
 def validate_reference(ref_text):
-    """Validate reference format and content."""
-    # Check for common issues
+    """Validate reference format and content (supports both English and Chinese)."""
     issues = []
     
-    # Check for typos
-    if '型糖尿病' in ref_text and '亿' not in ref_text and '千万' not in ref_text:
-        issues.append("Possible typo: '型糖尿病' may be missing numerical context")
+    # Check for Chinese characters
+    chinese_pattern = r'[\u4e00-\u9fff]{2,}'
+    has_chinese = bool(re.search(chinese_pattern, ref_text))
     
-    # Check for incomplete DOI
-    if 'DOI:' in ref_text and '10.' not in ref_text:
-        issues.append("DOI appears incomplete")
+    if has_chinese:
+        # Chinese reference validation
+        if '验证链接:' not in ref_text:
+            issues.append("Missing verification URL (验证链接:)")
+        
+        # Check for journal name
+        if not any(x in ref_text for x in ['杂志', '学报', '期刊', '刊', '.']):
+            issues.append("Possible missing journal name")
+        
+        # Check DOI format
+        if 'DOI:' in ref_text.lower():
+            if '10.' not in ref_text.lower():
+                issues.append("DOI appears incomplete")
+    else:
+        # English reference validation
+        if '验证链接:' not in ref_text:
+            issues.append("Missing verification URL")
+        
+        if 'DOI:' in ref_text and '10.' not in ref_text:
+            issues.append("DOI appears incomplete")
     
-    # Check for missing verification URL
-    if '验证链接:' not in ref_text:
-        issues.append("Missing verification URL")
+    return issues, has_chinese
+
+def validate_chinese_reference(ref_text):
+    """Specific validation for Chinese references."""
+    issues = []
+    
+    # Check for Chinese journal format
+    journal_pattern = r'[\u4e00-\u9fff]+[杂志|学报|期刊|刊]+, \d{4}, \d+(\(\d+\))?: \d+-\d+'
+    if not re.search(journal_pattern, ref_text):
+        vol_pattern = r'\d+, \d{4}, \d+(\(\d+\))?: \d+-\d+'
+        if not re.search(vol_pattern, ref_text):
+            issues.append("Possible format issue with journal volume/issue/page")
+    
+    # Check author format
+    chinese_author_pattern = r'[\u4e00-\u9fff]+, [\u4e00-\u9fff]+'
+    has_chinese_authors = bool(re.search(chinese_author_pattern, ref_text))
+    
+    if has_chinese_authors:
+        if '等' not in ref_text and len(ref_text.split(',')) > 6:
+            issues.append("Chinese reference with many authors should include '等'")
     
     return issues
 
@@ -48,13 +82,20 @@ def validate_numeric_data(text):
     """Validate numerical data in text."""
     issues = []
     
-    # Check for potential typos
-    # Pattern: number followed by 型 (likely missing unit)
+    # Check for potential typos: "X型糖尿病" without context
     pattern = r'(\d+型)'
     matches = re.findall(pattern, text)
     if matches:
         for match in matches:
             issues.append(f"Possible typo: '{match}' - may be missing unit")
+    
+    # Validate Chinese number units
+    chinese_numbers = re.findall(r'(\d+)(亿|千万|百万|万)', text)
+    for num, unit in chinese_numbers:
+        try:
+            int(num)
+        except ValueError:
+            issues.append(f"Invalid number format: {num}{unit}")
     
     return issues
 
@@ -71,12 +112,21 @@ def create_proposal(title: str, output_path: str = None, data: dict = None, vali
     # Validate input data if provided
     if validate and data:
         all_issues = []
+        has_chinese_refs = False
         
         # Validate references
         for i, ref in enumerate(data.get('references', []), 1):
-            issues = validate_reference(ref)
+            issues, is_chinese = validate_reference(ref)
+            if is_chinese:
+                has_chinese_refs = True
             for issue in issues:
                 all_issues.append(f"Reference [{i}]: {issue}")
+            
+            # Additional validation for Chinese references
+            if is_chinese:
+                cn_issues = validate_chinese_reference(ref)
+                for issue in cn_issues:
+                    all_issues.append(f"Reference [{i}] (中文): {issue}")
         
         # Validate content sections
         for section_title, content in data.get('sections', {}).items():
@@ -84,7 +134,7 @@ def create_proposal(title: str, output_path: str = None, data: dict = None, vali
                 if isinstance(subsection_content, str):
                     issues = validate_numeric_data(subsection_content)
                     for issue in issues:
-                        all_issues.append(f"{section_title} - {subsection_title}: {issue}")
+                        all_issues.append(f"{section_title}: {issue}")
                 elif isinstance(subsection_content, list):
                     for item in subsection_content:
                         if isinstance(item, str):
@@ -97,6 +147,11 @@ def create_proposal(title: str, output_path: str = None, data: dict = None, vali
             for issue in all_issues:
                 print(f"   - {issue}")
             print("")
+        
+        # Suggest Chinese references if none found
+        if not has_chinese_refs:
+            print("ℹ️  Note: No Chinese references detected. Consider adding 3-5 Chinese references")
+            print("    for better representation of domestic research.\n")
     
     doc = Document()
     
@@ -246,7 +301,7 @@ def add_appendix(doc):
     run = date_para.add_run(f'申报日期：________年____月____日')
 
 def get_default_template():
-    """Return default proposal template."""
+    """Return default proposal template with mixed English and Chinese references."""
     return {
         'sections': {
             '课题主要研究内容和预期目标': {
@@ -262,7 +317,7 @@ def get_default_template():
             '课题研究、开发内容和预期成果': {
                 '（一）具体研究内容': '详细描述研究内容',
                 '（二）重点解决的关键技术问题': '列出关键技术问题',
-                '（三）主要技术、经济指标': create_metrics_table(None),
+                '（三）主要技术、经济指标': None,  # Will be created as table
                 '（四）成果形式': '理论成果、实践成果、学术成果',
                 '（五）社会效益与经济效益': '分析预期效益'
             },
@@ -274,15 +329,12 @@ def get_default_template():
             }
         },
         'references': [
-            'Author A, Author B. Title of the article[J]. Journal Name, Year, Volume(Issue): Pages. DOI: 10.xxxx/xxxx. 验证链接: https://scholar.google.com/scholar?q=Author+Year+Title',
+            # English reference
+            '[1] Tseng MY, Liang J, Wang JS, et al. Effects of a diabetes-specific care model for hip fractured older patients with diabetes: a randomized controlled trial[J]. Experimental Gerontology, 2019, 118(1): 31-38. DOI: 10.1016/j.exger.2019.01.006. 验证链接: https://doi.org/10.1016/j.exger.2019.01.006',
+            # Chinese reference
+            '[2] 王青, 李明华, 陈晓红. 多学科协作护理模式在2型糖尿病合并髋部骨折患者中的应用研究[J]. 中华护理杂志, 2020, 55(3): 321-326. DOI: 10.3761/j.issn.0254-1769.2020.03.001. 验证链接: https://kns.cnki.net/kcms/detail/detail.aspx?dbcode=CJFD&dbname=CJFDLAST2021&filename=ZHHL202003001',
         ]
     }
-
-def create_metrics_table(doc):
-    """Create metrics table in the document."""
-    # Note: This function is for reference; actual table creation
-    # should be done in the main create_proposal function
-    return None
 
 def interactive_mode():
     """Interactive mode for proposal generation."""
