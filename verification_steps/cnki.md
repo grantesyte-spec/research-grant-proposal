@@ -9,6 +9,8 @@ Purpose: research Chinese literature on CNKI and generate `cnki_results.md`.
 3. Keep one `targetId` for all actions.
 4. If visual captcha text appears, check if core controls are still operable before stopping.
 5. Trust actionable refs from snapshot (for example: topic field + search button), not page warnings.
+6. If uncertain about current page state, run `snapshot` first, then decide the next action.
+7. Prefer `type ... --submit` over a separate click on search when available.
 
 ## Steps
 

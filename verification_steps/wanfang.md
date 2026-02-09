@@ -9,6 +9,8 @@ Purpose: research Chinese literature on Wanfang and generate `wanfang_results.md
 3. Prefer `navigate` over opening new pages in new tabs.
 4. If visual overlays appear, continue when search controls remain operable.
 5. Judge page state by actionable refs from snapshot.
+6. If uncertain about current page state, run `snapshot` first, then decide the next action.
+7. Prefer `type ... --submit` over a separate click on search when available.
 
 ## Steps
 
