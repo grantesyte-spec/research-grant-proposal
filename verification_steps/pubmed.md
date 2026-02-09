@@ -13,6 +13,11 @@
 4. **One URL per session** - Stay on the same tab throughout
 5. **If connection lost**: Restart browser service → `open` once → complete all actions
 
+### Page-Heuristic Rules (MUST FOLLOW)
+
+1. **不要被“视觉验证码层”误导**：若页面出现浮层提示，但核心检索控件仍可操作，优先继续执行检索链路。
+2. **以可操作 ref 为准，不以页面文案为准**：先检查 snapshot 中是否存在稳定可操作控件，再决定是否中断流程。
+
 **Correct workflow:**
 ```bash
 # ✅ RIGHT - Single tab, use navigate

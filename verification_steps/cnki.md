@@ -13,6 +13,11 @@
 4. **One URL per session** - Stay on the same tab throughout
 5. **If connection lost**: Restart browser service → `open` once → complete all actions
 
+### CNKI Page-Heuristic Rules (MUST FOLLOW)
+
+1. **不要被“视觉验证码层”误导**：若页面出现“拖动下方拼图完成验证”等提示，但核心控件可操作（如 `主题` + `textbox` + `检索`），先继续走检索链路。
+2. **以可操作 ref 为准，不以页面文案为准**：优先判断 snapshot 是否存在稳定可操作控件（如 `e110/e112/e183` 这类组合），不要先假设页面不可用。
+
 **Correct workflow:**
 ```bash
 # ✅ RIGHT - Single tab, one URL

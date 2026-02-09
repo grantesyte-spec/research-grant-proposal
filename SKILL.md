@@ -9,6 +9,13 @@ description: Generate academic research grant proposals in Chinese based on REAL
 
 ## Core Principles
 
+### Hard Rules (MUST FOLLOW)
+
+1. **串行执行**：CNKI → PubMed → Wanfang，一个做完再做下一个。
+2. **单 tab 执行**：全程只保留一个浏览器 tab。
+3. **禁止并行**：不要同时进行多个数据库 research。
+4. **固定上下文**：每一步都绑定同一个 `targetId`，避免误跳页/误分析。
+
 1. **Research First** - Never generate proposals without real literature
 2. **Verify Everything** - All references must be validated
 3. **Modular Research** - Each database has its own workflow
