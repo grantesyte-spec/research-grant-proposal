@@ -22,7 +22,7 @@ description: Generate Chinese-language academic nursing grant proposals based on
 
 ## Workflow
 
-### Step 1: Database Research
+### Step 1: Database Research (MANDATORY ORDER)
 
 Read and execute each file in order:
 
@@ -30,11 +30,13 @@ Read and execute each file in order:
 2. `verification_steps/pubmed.md` → produce `pubmed_results.md`
 3. `verification_steps/wanfang.md` → produce `wanfang_results.md`
 
-### Step 2: Aggregate
+### Step 2: Aggregate (MANDATORY GATE)
 
 Read all three result files and produce `research_notes.md` using `research_notes_template.md`.
 
-### Step 3: Draft Proposal
+**Do not draft the proposal before all three result files exist and pass minimum counts.**
+
+### Step 3: Draft Proposal (ONLY AFTER GATE PASSES)
 
 Generate final proposal sections using only verified references:
 

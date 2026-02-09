@@ -46,6 +46,8 @@ Select 5-7 relevant papers and verify each item:
 
 ### 4) Create `cnki_results.md`
 
+After CNKI is complete, continue to PubMed. Do not draft proposal at this stage.
+
 Required structure:
 
 ```markdown

@@ -42,6 +42,8 @@ Select 5-7 papers and verify:
 
 ### 4) Create `wanfang_results.md`
 
+After Wanfang is complete, aggregate all three result files first. Do not draft proposal before aggregation.
+
 Required structure:
 
 ```markdown

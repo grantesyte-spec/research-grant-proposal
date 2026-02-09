@@ -46,6 +46,8 @@ Use article URL format:
 
 ### 4) Create `pubmed_results.md`
 
+After PubMed is complete, continue to Wanfang. Do not draft proposal at this stage.
+
 Required structure:
 
 ```markdown
