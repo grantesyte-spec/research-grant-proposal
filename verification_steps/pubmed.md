@@ -1,185 +1,71 @@
 # PubMed Research Script
 
-**Purpose**: Research English literature on PubMed, generate pubmed_results.md
+Purpose: research English literature on PubMed and generate `pubmed_results.md`.
 
----
+## Browser Rules
 
-## ⚠️ BROWSER BEST PRACTICES (Critical!)
+1. Use a single tab only.
+2. Keep one `targetId` across all actions.
+3. Use `navigate` for URL transitions.
+4. If visual overlays appear, continue if search controls remain operable.
+5. Judge operability by snapshot refs.
 
-**Learned from experience:**
-1. **Single tab only** - Do NOT open multiple tabs simultaneously
-2. **No rapid operations** - Wait between each action
-3. **Use `navigate` NOT `open`** - Prevents new tab creation
-4. **One URL per session** - Stay on the same tab throughout
-5. **If connection lost**: Restart browser service → `open` once → complete all actions
+## Steps
 
-### Page-Heuristic Rules (MUST FOLLOW)
+### 1) Open PubMed
 
-1. **不要被“视觉验证码层”误导**：若页面出现浮层提示，但核心检索控件仍可操作，优先继续执行检索链路。
-2. **以可操作 ref 为准，不以页面文案为准**：先检查 snapshot 中是否存在稳定可操作控件，再决定是否中断流程。
+Start from:
+- `https://pubmed.ncbi.nlm.nih.gov/`
 
-**Correct workflow:**
-```bash
-# ✅ RIGHT - Single tab, use navigate
-browser --browser-profile chrome open "https://pubmed.ncbi.nlm.nih.gov/?term=diabetes+hip+fracture+nursing"
-snapshot  # Get refs
-click [article-ref]  # Click within same tab
+### 2) Run Queries
 
-# ❌ WRONG - Multiple opens or rapid operations
-browser open "url1"
-browser open "url2"
-snapshot
-type...
-```
+Suggested queries:
+- `transtheoretical model nursing diabetes`
+- `Orem self-care nursing`
+- `hip fracture diabetes rehabilitation`
+- `femoral neck fracture diabetes nursing`
 
-**Tip:** Use URL with search term directly: `https://pubmed.ncbi.nlm.nih.gov/?term=diabetes+hip+fracture+nursing`
+For each query:
+- type into search box
+- submit
+- snapshot results
 
----
+### 3) Select and Verify Papers
 
-## STEP 0: Break Down Topic
+Select 5-7 papers and verify:
+- Topic relevance
+- Authors
+- Year
+- Abstract relevance
+- PMID and URL validity
 
-**Example Topic:**
-```
-Application of Orem Self-Care Model based on Transtheoretical Model in Nursing Care of Hip Fracture Patients with Diabetes
-```
+Use article URL format:
+- `https://pubmed.ncbi.nlm.nih.gov/<PMID>/`
 
-**Break Down:**
-| # | Concept | Keywords |
-|---|---------|----------|
-| 1 | Theory | transtheoretical model, TTM |
-| 2 | Theory | orem self-care model |
-| 3 | Population | hip fracture, elderly |
-| 4 | Comorbidity | diabetes |
-| 5 | Intervention | nursing, rehabilitation |
+### 4) Create `pubmed_results.md`
 
-**Search each concept:**
-```bash
-"oren self-care model nursing"      # ~77,273 results
-"transtheoretical model nursing"    # ~171 results
-"hip fracture elderly rehabilitation" # [results]
-```
-
----
-
-## STEP 1: Research Phase
-
-### 1.1 Open PubMed
-```bash
-openclaw browser --browser-profile chrome open "https://pubmed.ncbi.nlm.nih.gov/"
-```
-
-### 1.2 Search
-```bash
-# Get refs FIRST
-snapshot
-
-# Search (typically ref=e14)
-type e14 "oren self-care model nursing" --submit
-wait --load networkidle
-snapshot
-```
-
-### 1.3 Search other keywords
-```bash
-type e14 "transtheoretical model nursing" --submit
-wait --load networkidle
-snapshot
-```
-
----
-
-## STEP 2: Selection Phase
-
-### 2.1 Click article
-```bash
-click [article-ref]
-wait --load networkidle
-snapshot
-```
-
-### 2.2 Extract citation
-```
-**Title**: [Full Title]
-**PMID**: [PMID Number]
-**Authors**: [First 2-3], et al.
-**Journal**: [Journal], [Year]
-**URL**: https://pubmed.ncbi.nlm.nih.gov/[PMID]/
-```
-
----
-
-## STEP 3: Verification Phase
-
-### 3.1 Verify 5 elements (use PMID - most reliable!)
-```bash
-# Best: Use PMID directly
-open "https://pubmed.ncbi.nlm.nih.gov/[PMID]/"
-wait --load networkidle
-snapshot
-```
-
-**Check:**
-```
-✓ TOPIC: Title matches? YES/NO
-✓ AUTHORS: First 2-3 match? YES/NO
-✓ YEAR: Year matches? YES/NO
-✓ ABSTRACT: Relevant? YES/NO
-✓ PMID: Correct? YES/NO
-```
-
----
-
-## STEP 4: Generate Output
-
-**Create pubmed_results.md:**
+Required structure:
 
 ```markdown
 # PubMed Research Results
 
 ## Topic
-[Research topic]
+...
 
 ## Search Keywords & Results
 | Keyword | Results |
-|---------|---------|
-| oren self-care model nursing | 77,273 |
-| transtheoretical model nursing | 171 |
+|---|---|
 
 ## Selected References
 | # | Title | PMID | Authors | Journal | Year | Relevance |
-|---|-------|------|---------|---------|------|-----------|
-| 1 | [Title] | [PMID] | [Authors] | [Journal] | [Year] | High |
 
 ## Verified References
-
 ### #1 - VERIFIED ✓
-**Title**: [Full Title]
-**PMID**: [PMID]
-**Authors**: [Authors]
-**Journal**: [Journal], [Year]
-**URL**: https://pubmed.ncbi.nlm.nih.gov/[PMID]/
+Title: ...
+PMID: ...
+Authors: ...
+Journal: ...
+Year: ...
+URL: ...
 Status: TOPIC✓ AUTHORS✓ YEAR✓ ABSTRACT✓ PMID✓
-
-### #2 - [status]
-...
-```
-
----
-
-## EXECUTION
-
-```bash
-# Read this file first
-read /Users/nathanlinte/.openclaw/skills/research-grant-proposal/verification_steps/pubmed.md
-
-# Execute steps 1-3
-# Then create pubmed_results.md
-```
-
----
-
-## OUTPUT FILE
-
-```
-pubmed_results.md  ← Generated by this script
 ```

@@ -1,164 +1,61 @@
-# Literature Research Notes
+# Unified Research Notes
 
 ## Topic
-[Research topic provided by user]
+[Topic]
 
-## Search Date
-[Date]
+## Search date
+[YYYY-MM-DD]
 
-## Research Objective
-[What is the goal of this research?]
+## Requirements check
+- [ ] CNKI >= 5 verified references
+- [ ] PubMed >= 5 verified references
+- [ ] Wanfang >= 5 verified references
+- [ ] Total references >= 15
 
----
+## CNKI results
+### Queries and counts
+| Query | Results |
+|---|---|
 
-## CNKI Search Results (Chinese Literature)
+### Verified references
+| # | Title | Authors | Journal | Year | URL |
+|---|---|---|---|---|---|
 
-**Search Date**: [Date]
-**Keywords Used**: [List of search terms]
-**Database**: https://kns.cnki.net/kns8s/AdvSearch?classid=WD0FTY92&rlang=CHINESE
-**Total Results Found**: [Number]
+## PubMed results
+### Queries and counts
+| Query | Results |
+|---|---|
 
-### Search Queries
-| # | Keywords | Results |
-|---|----------|---------|
-| 1 | [Query 1] | [Number] |
-| 2 | [Query 2] | [Number] |
-| 3 | [Query 3] | [Number] |
+### Verified references
+| # | Title | PMID | Authors | Journal | Year | URL |
+|---|---|---|---|---|---|---|
 
-### Relevant Articles Found
-| # | Title | Authors | Journal | Year | Relevance |
-|---|-------|---------|---------|------|-----------|
-| 1 | [Title] | [Authors] | [Journal] | [Year] | High/Medium/Low |
+## Wanfang results
+### Queries and counts
+| Query | Results |
+|---|---|
 
-### Full Citations (Selected)
-[1] [Full citation with URL]
+### Verified references
+| # | Title | Authors | Journal | Year | URL |
+|---|---|---|---|---|---|
 
----
+## Final selected references (15-21)
+| # | Source | Citation | Why selected |
+|---|---|---|---|
 
-## PubMed Search Results (English Literature)
+## Key evidence points for proposal writing
 
-**Search Date**: [Date]
-**Keywords Used**: [List of search terms]  
-**Database**: https://pubmed.ncbi.nlm.nih.gov/
-**Total Results Found**: [Number]
+### Section 1: Main research content and objectives
+- ...
 
-### Search Queries
-| # | Keywords | Results |
-|---|----------|---------|
-| 1 | [Query 1] | [Number] |
-| 2 | [Query 2] | [Number] |
+### Section 2: Rationale and trends
+- ...
 
-### Relevant Articles Found
-| # | Title | PMID | Authors | Journal | Year | Relevance |
-|---|-------|------|---------|---------|------|-----------|
-| 1 | [Title] | [PMID] | [Authors] | [Journal] | [Year] | High/Medium/Low |
+### Section 3: R&D content and expected outputs
+- ...
 
-### Full Citations (Selected)
-[1] [Full citation with PMID URL]
+### Section 4: Methods and technical route
+- ...
 
----
-
-## Wanfang Search Results (Supplementary)
-
-**Search Date**: [Date]
-**Keywords Used**: [List of search terms]
-**Database**: https://www.wanfangdata.com.cn/
-**Total Results Found**: [Number]
-
-### Relevant Articles Found
-| # | Title | Authors | Journal | Year | Relevance |
-|---|-------|---------|---------|------|-----------|
-| 1 | [Title] | [Authors] | [Journal] | [Year] | Medium |
-
-### Full Citations (Selected)
-[1] [Full citation with URL]
-
----
-
-## Selected References for Proposal
-
-### Criteria for Selection
-- Published within last 5 years
-- High relevance to topic
-- Quality journals (核心期刊/SCI)
-- Accessible verification URLs
-
-### Final List (10-15 references)
-| # | Full Citation | Database | Justification |
-|---|--------------|---------|--------------|
-| 1 | [Citation] | CNKI | [Why selected] |
-| 2 | [Citation] | PubMed | [Why selected] |
-
----
-
-## Key Findings from Research
-
-### Orem Self-Care Model Applications
-- [Finding 1]
-- [Finding 2]
-
-### TTM/Motivational Interview Applications
-- [Finding 1]
-- [Finding 2]
-
-### Hip Fracture Nursing Research
-- [Finding 1]
-- [Finding 2]
-
-### Diabetes Nursing Research  
-- [Finding 1]
-- [Finding 2]
-
----
-
-## Research Gaps
-
-### What's Well-Established
-- [Point 1]
-- [Point 2]
-
-### What's Missing (Opportunity for Proposal)
-- [Gap 1]
-- [Gap 2]
-
-### Proposed Innovation
-- [How this proposal addresses gaps]
-
----
-
-## Literature Summary for Proposal Writing
-
-### Background Section Should Include:
-- [Point 1 - supported by ref X]
-- [Point 2 - supported by ref Y]
-
-### Methods Section Should Reference:
-- [Point 1 - supported by ref X]
-- [Point 2 - supported by ref Y]
-
-### Expected to Cite:
-- [X] references from CNKI
-- [Y] references from PubMed
-- [Z] references from Wanfang
-
----
-
-## Verification Status
-
-| # | Reference | Status |
-|---|-----------|--------|
-| 1 | [Citation] | Pending/Verified |
-| 2 | [Citation] | Pending/Verified |
-
----
-
-## Next Steps
-
-- [ ] Finalize reference selection
-- [ ] Generate proposal based on research
-- [ ] Export to Word document
-- [ ] Final verification
-
----
-
-*Template created for research-grant-proposal skill*
+### Section 5: Core references in last 5 years
+- ...
