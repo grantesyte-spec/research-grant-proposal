@@ -4,6 +4,33 @@
 
 ---
 
+## ⚠️ BROWSER BEST PRACTICES (Critical!)
+
+**Learned from experience:**
+1. **Single tab only** - Do NOT open multiple tabs simultaneously
+2. **No rapid operations** - Wait between each action
+3. **Use `navigate` NOT `open`** - Prevents new tab creation
+4. **One URL per session** - Stay on the same tab throughout
+5. **If connection lost**: Restart browser service → `open` once → complete all actions
+
+**Correct workflow:**
+```bash
+# ✅ RIGHT - Single tab, use navigate
+browser --browser-profile chrome open "https://pubmed.ncbi.nlm.nih.gov/?term=diabetes+hip+fracture+nursing"
+snapshot  # Get refs
+click [article-ref]  # Click within same tab
+
+# ❌ WRONG - Multiple opens or rapid operations
+browser open "url1"
+browser open "url2"
+snapshot
+type...
+```
+
+**Tip:** Use URL with search term directly: `https://pubmed.ncbi.nlm.nih.gov/?term=diabetes+hip+fracture+nursing`
+
+---
+
 ## STEP 0: Break Down Topic
 
 **Example Topic:**

@@ -4,6 +4,34 @@
 
 ---
 
+## ⚠️ BROWSER BEST PRACTICES (Critical!)
+
+**Learned from experience:**
+1. **Single tab only** - Do NOT open multiple tabs simultaneously
+2. **No rapid operations** - Wait between each action
+3. **Use `navigate` NOT `open`** - Prevents new tab creation
+4. **One URL per session** - Stay on the same tab throughout
+5. **If connection lost**: Restart browser service → `open` once → complete all actions
+
+**Correct workflow:**
+```bash
+# ✅ RIGHT - Single tab, one URL
+browser --browser-profile chrome open "https://kns.cnki.net/..."
+snapshot  # Get refs
+type e18 "keyword" --submit
+wait --load networkidle
+snapshot  # Get new refs
+click [article-ref]
+
+# ❌ WRONG - Multiple opens
+browser open "url1"
+browser open "url2"
+snapshot
+type...
+```
+
+---
+
 ## STEP 0: Break Down Topic
 
 **Example Topic:**
