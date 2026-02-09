@@ -1,6 +1,6 @@
 ---
 name: research-grant-proposal
-description: Generate academic research grant proposals in Chinese based on REAL literature research and validated references.
+description: Generate academic research grant proposals in Chinese based on REAL literature research and validated references from MULTIPLE databases (CNKI, PubMed, Wanfang).
 ---
 
 # Research Grant Proposal Generator
@@ -12,27 +12,37 @@ description: Generate academic research grant proposals in Chinese based on REAL
 1. **Research First** - Never generate proposals without real literature
 2. **Verify Everything** - All references must be validated
 3. **Modular Research** - Each database has its own workflow
-4. **Coordinate via SKILL.md** - This file orchestrates the entire process
+4. **MULTIPLE DATABASES REQUIRED** - For comprehensive research, ALL three databases MUST be used:
+   - CNKI: 5-7 verified articles (Chinese nursing literature)
+   - PubMed: 5-7 verified articles (English biomedical literature)
+   - Wanfang: 5-7 verified articles (Supplementary Chinese literature)
+5. **Minimum Total: 15-21 verified references per proposal**
+6. **Coordinate via SKILL.md** - This file orchestrates the entire process
 
 ---
 
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│  SKILL.md (Coordinator)                                      │
-│  • Decides which verification_steps file to use             │
-│  • CNKI research → cnki.md                                  │
-│  • PubMed research → pubmed.md                              │
-│  • Wanfang research → wanfang.md                            │
-│  • Aggregates results from all sources                      │
-│  • Generates final proposal                                 │
-└─────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────┐
+│  SKILL.md (Coordinator)                                             │
+│  • DECIDES: All 3 databases REQUIRED for every proposal             │
+│  • CNKI research → cnki.md (5-7 articles required)                   │
+│  • PubMed research → pubmed.md (5-7 articles required)              │
+│  • Wanfang research → wanfang.md (5-7 articles required)            │
+│  • Aggregates results from ALL sources                              │
+│  • Generates final proposal                                         │
+│                                                                     │
+│  MINIMUM REQUIREMENT: 15-21 verified references total                 │
+└─────────────────────────────────────────────────────────────────────┘
          │                    │                    │
          ▼                    ▼                    ▼
 ┌──────────────────┐ ┌──────────────────┐ ┌──────────────────┐
 │   cnki.md        │ │   pubmed.md      │ │   wanfang.md     │
 │   (独立脚本)      │ │   (独立脚本)      │ │   (独立脚本)      │
+│                  │ │                  │ │                  │
+│  Requirement:     │ │  Requirement:     │ │  Requirement:     │
+│  5-7 articles    │ │  5-7 articles    │ │  5-7 articles    │
 │                  │ │                  │ │                  │
 │  Output:         │ │  Output:         │ │  Output:         │
 │  cnki_results.md │ │  pubmed_results.md│ │  wanfang_results.md│
@@ -71,36 +81,50 @@ research-grant-proposal/
 
 ## Workflow
 
+### For ALL Research Proposals
+
+**IMPORTANT MINIMUM REQUIREMENTS:**
+
+| Database | Required References | Purpose |
+|----------|---------------------|---------|
+| CNKI | 5-7 articles | Chinese nursing literature, domestic research |
+| PubMed | 5-7 articles | English biomedical literature, international research |
+| Wanfang | 5-7 articles | Supplementary Chinese literature |
+
+**Total Minimum: 15-21 verified references per proposal**
+
+---
+
 ### Step 1: Research (Modular)
 
 Choose the appropriate verification_steps file based on your database:
 
-#### CNKI (Chinese Literature)
+#### CNKI (Chinese Literature) - REQUIRED 5-7 articles
 ```bash
 read /Users/nathanlinte/.openclaw/skills/research-grant-proposal/verification_steps/cnki.md
-# Execute steps in cnki.md
-# → Generates cnki_results.md
+# Execute ALL steps in cnki.md
+# → MUST generate cnki_results.md (minimum 5 verified articles)
 ```
 
-#### PubMed (English Literature)
+#### PubMed (English Literature) - REQUIRED 5-7 articles
 ```bash
 read /Users/nathanlinte/.openclaw/skills/research-grant-proposal/verification_steps/pubmed.md
-# Execute steps in pubmed.md
-# → Generates pubmed_results.md
+# Execute ALL steps in pubmed.md
+# → MUST generate pubmed_results.md (minimum 5 verified articles)
 ```
 
-#### Wanfang (Supplementary Chinese)
+#### Wanfang (Supplementary Chinese) - REQUIRED 5-7 articles
 ```bash
 read /Users/nathanlinte/.openclaw/skills/research-grant-proposal/verification_steps/wanfang.md
-# Execute steps in wanfang.md
-# → Generates wanfang_results.md
+# Execute ALL steps in wanfang.md
+# → MUST generate wanfang_results.md (minimum 5 verified articles)
 ```
 
 ---
 
 ### Step 2: Aggregate Results
 
-After ALL research files complete:
+**AFTER ALL research files complete (MUST have all 3 files):**
 
 ```bash
 # Read all generated result files
@@ -113,6 +137,12 @@ read /Users/nathanlinte/.openclaw/skills/research-grant-proposal/wanfang_results
 
 ```markdown
 # Unified Research Notes
+
+## Minimum Requirements Met:
+- [x] CNKI: 5+ verified articles
+- [x] PubMed: 5+ verified articles
+- [x] Wanfang: 5+ verified articles
+- [x] Total: 15+ verified references
 
 ## CNKI Results (from cnki_results.md)
 ...
@@ -127,9 +157,13 @@ read /Users/nathanlinte/.openclaw/skills/research-grant-proposal/wanfang_results
 | # | Source | Title | Authors | Journal | Year | Relevance |
 |---|--------|-------|---------|---------|------|-----------|
 | 1 | CNKI | [Title] | [Authors] | [Journal] | [Year] | High |
-| 2 | PubMed | [PMID] | [Authors] | [Journal] | [Year] | High |
-| 3 | Wanfang | [Title] | [Authors] | [Journal] | [Year] | Medium |
-```
+| 2 | CNKI | [Title] | [Authors] | [Journal] | [Year] | High |
+| 3 | CNKI | [Title] | [Authors] | [Journal] | [Year] | High |
+| 4 | CNKI | [Title] | [Authors] | [Journal] | [Year] | High |
+| 5 | CNKI | [Title] | [Authors] | [Journal] | [Year] | High |
+| 6 | PubMed | [PMID] | [Authors] | [Journal] | [Year] | High |
+| ... | ... | ... | ... | ... | ... | ... |
+
 
 ---
 
@@ -150,25 +184,26 @@ Generate the proposal citing ONLY verified real references.
 
 ## File Outputs
 
-| File | Purpose | Generated By |
-|------|---------|--------------|
-| cnki_results.md | CNKI research findings | cnki.md |
-| pubmed_results.md | PubMed research findings | pubmed.md |
-| wanfang_results.md | Wanfang research findings | wanfang.md |
-| research_notes.md | Unified notes (combined) | SKILL.md |
-| [Topic]课题申请书.docx | Final proposal | SKILL.md |
+| File | Purpose | Generated By | Minimum Required |
+|------|---------|--------------|------------------|
+| cnki_results.md | CNKI research findings | cnki.md | 5 verified articles |
+| pubmed_results.md | PubMed research findings | pubmed.md | 5 verified articles |
+| wanfang_results.md | Wanfang research findings | wanfang.md | 5 verified articles |
+| research_notes.md | Unified notes (combined) | SKILL.md | ALL 3 files must exist |
+| [Topic]课题申请书.docx | Final proposal | SKILL.md | Minimum 15 total references |
 
 ---
 
 ## When to Use Each File
 
-| Situation | Use |
-|-----------|-----|
-| Need Chinese nursing literature | cnki.md |
-| Need English biomedical literature | pubmed.md |
-| Need supplementary Chinese literature | wanfang.md |
-| Combine research from multiple sources | SKILL.md |
-| Generate final proposal | SKILL.md |
+| Situation | Use | Minimum Articles |
+|-----------|-----|-----------------|
+| **ALL Chinese research proposals** | cnki.md + pubmed.md + wanfang.md | 5 from each |
+| Need Chinese nursing literature | cnki.md | 5 required |
+| Need English biomedical literature | pubmed.md | 5 required |
+| Need supplementary Chinese literature | wanfang.md | 5 required |
+| Combine research from multiple sources | SKILL.md | ALL 3 files required |
+| Generate final proposal | SKILL.md | Minimum 15 total |
 
 ---
 
@@ -185,14 +220,25 @@ Generate the proposal citing ONLY verified real references.
 
 ## Verification Checklist
 
-Before generating proposal, ensure:
+Before generating proposal, ensure ALL requirements are met:
 
-- [ ] cnki_results.md exists (if Chinese literature needed)
-- [ ] pubmed_results.md exists (if English literature needed)
-- [ ] wanfang_results.md exists (if Wanfang used)
+### Required References (MUST HAVE ALL THREE)
+- [ ] **cnki_results.md exists** - minimum 5 verified CNKI articles
+- [ ] **pubmed_results.md exists** - minimum 5 verified PubMed articles
+- [ ] **wanfang_results.md exists** - minimum 5 verified Wanfang articles
+
+### Aggregate Step
 - [ ] research_notes.md created with unified references
 - [ ] All references verified (TOPIC✓ AUTHORS✓ YEAR✓)
 - [ ] References saved with full citations
+
+### Minimum Totals
+| Database | Minimum Required | Status |
+|----------|-----------------|--------|
+| CNKI | 5 articles | ⬜ |
+| PubMed | 5 articles | ⬜ |
+| Wanfang | 5 articles | ⬜ |
+| **Total** | **15 articles** | ⬜ |
 
 ---
 
@@ -200,9 +246,11 @@ Before generating proposal, ensure:
 
 | Problem | Solution |
 |---------|----------|
-| Need CNKI research | Use cnki.md |
-| Need PubMed research | Use pubmed.md |
-| Need Wanfang research | Use wanfang.md |
+| Missing CNKI references | Use cnki.md - MUST find 5-7 articles |
+| Missing PubMed references | Use pubmed.md - MUST find 5-7 articles |
+| Missing Wanfang references | Use wanfang.md - MUST find 5-7 articles |
+| Not enough references (only 1-4) | Continue searching until minimum met |
+| Can't access CNKI/Wanfang | Request user to provide verified references |
 | Combining results | Read all *_results.md files |
 | Generating proposal | Use unified research_notes.md |
 | Reference format | Follow citation format in README.md |
@@ -238,28 +286,36 @@ Before generating proposal, ensure:
 
 ## Example: Complete Research Flow
 
+**FOR ALL PROPOSALS - MUST COMPLETE ALL THREE DATABASES**
+
 ```bash
-# 1. Research - Choose appropriate file(s)
+# 1. Research - Execute ALL THREE databases
 
-## CNKI Research
-read cnki.md
-# Execute cnki.md steps
-# → Generates cnki_results.md
+## CNKI Research (REQUIRED - 5-7 articles)
+read /Users/nathanlinte/.openclaw/skills/research-grant-proposal/verification_steps/cnki.md
+# Execute ALL steps in cnki.md
+# → Generates cnki_results.md (verify minimum 5 articles)
 
-## PubMed Research
-read pubmed.md
-# Execute pubmed.md steps
-# → Generates pubmed_results.md
+## PubMed Research (REQUIRED - 5-7 articles)
+read /Users/nathanlinte/.openclaw/skills/research-grant-proposal/verification_steps/pubmed.md
+# Execute ALL steps in pubmed.md
+# → Generates pubmed_results.md (verify minimum 5 articles)
 
-## Wanfang Research (if needed)
-read wanfang.md
-# Execute wanfang.md steps
-# → Generates wanfang_results.md
+## Wanfang Research (REQUIRED - 5-7 articles)
+read /Users/nathanlinte/.openclaw/skills/research-grant-proposal/verification_steps/wanfang.md
+# Execute ALL steps in wanfang.md
+# → Generates wanfang_results.md (verify minimum 5 articles)
 
-# 2. Aggregate
+# 2. Aggregate (ONLY after all 3 files exist)
 read cnki_results.md
 read pubmed_results.md
+read wanfang_results.md
 # Combine into research_notes.md
+# Ensure minimum requirements met:
+# - CNKI: 5+
+# - PubMed: 5+
+# - Wanfang: 5+
+# - Total: 15+
 
 # 3. Generate Proposal
 # Use research_notes.md to generate final proposal
