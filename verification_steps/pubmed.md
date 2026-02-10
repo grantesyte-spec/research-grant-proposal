@@ -38,8 +38,14 @@ Select 5-7 papers and verify:
 - Topic relevance
 - Authors
 - Year
-- Abstract relevance
+- Abstract relevance (must read abstract text, not title-only)
 - PMID and URL validity
+
+For each selected paper, record mandatory fields:
+- `Abstract key points` (1-3 bullets)
+- `Relevance to topic` (one sentence)
+
+If abstract is unavailable/inaccessible, mark `NOT VERIFIED` and replace with another paper.
 
 Use article URL format:
 - `https://pubmed.ncbi.nlm.nih.gov/<PMID>/`
@@ -71,5 +77,9 @@ Authors: ...
 Journal: ...
 Year: ...
 URL: ...
+Abstract key points:
+- ...
+- ...
+Relevance to topic: ...
 Status: TOPIC✓ AUTHORS✓ YEAR✓ ABSTRACT✓ PMID✓
 ```
