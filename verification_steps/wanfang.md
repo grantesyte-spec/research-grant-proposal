@@ -18,7 +18,7 @@ Purpose: research Chinese literature on Wanfang and generate `wanfang_results.md
 
 ### 1) Open Wanfang
 
-- `http://new.wf.xy22.top/index.html`
+- `https://www.wanfangdata.com.cn/`
 
 ### 2) Run Queries
 

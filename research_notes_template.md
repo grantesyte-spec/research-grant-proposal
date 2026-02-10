@@ -10,7 +10,8 @@
 - [ ] CNKI >= 5 verified references
 - [ ] PubMed >= 5 verified references
 - [ ] Wanfang >= 5 verified references
-- [ ] Each database has 5+ references with written abstract key points
+- [ ] CNKI has 5+ references with written document key points (from downloaded files)
+- [ ] PubMed/Wanfang each have 5+ references with written abstract key points
 - [ ] Total references >= 15
 - [ ] Evidence-to-claim mapping prepared for proposal drafting
 
@@ -20,7 +21,7 @@
 |---|---|
 
 ### Verified references
-| # | Title | Authors | Journal | Year | URL | Abstract key points | Relevance to topic |
+| # | Title | Authors | Journal | Year | URL | Document key points | Relevance to topic |
 |---|---|---|---|---|---|---|---|
 
 ## PubMed results

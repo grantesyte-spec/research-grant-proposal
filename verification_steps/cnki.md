@@ -43,14 +43,19 @@ Select 5-7 relevant papers and verify each item:
 - Topic relevance
 - Authors
 - Year
-- Abstract relevance (must read abstract text, not title-only)
+- **Downloaded document relevance** (must read document text, not title-only)
 - Verifiable URL
 
 For each selected paper, record mandatory fields:
-- `Abstract key points` (1-3 bullets)
+- `Document key points` (1-3 bullets)
 - `Relevance to topic` (one sentence)
 
-If abstract is unavailable/inaccessible, mark `NOT VERIFIED` and replace with another paper.
+Operational requirement:
+- CNKI entries may jump to `a12.papermao` download gateway.
+- Trigger download and wait **10-15 seconds** before concluding success/failure.
+- If the first link fails, try provided alternate download links on the same page.
+
+If document text is unavailable/inaccessible, mark `NOT VERIFIED` and replace with another paper.
 
 ### 4) Create `cnki_results.md`
 
@@ -78,9 +83,9 @@ Authors: ...
 Journal: ...
 Year: ...
 URL: ...
-Abstract key points:
+Document key points:
 - ...
 - ...
 Relevance to topic: ...
-Status: TOPIC✓ AUTHORS✓ YEAR✓ ABSTRACT✓ URL✓
+Status: TOPIC✓ AUTHORS✓ YEAR✓ DOC✓ URL✓
 ```

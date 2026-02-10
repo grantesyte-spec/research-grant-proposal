@@ -32,11 +32,13 @@ Read and execute each file in order:
 2. `verification_steps/pubmed.md` → produce `pubmed_results.md`
 3. `verification_steps/wanfang.md` → produce `wanfang_results.md`
 
-**Abstract-level verification is mandatory for every selected paper.**
-- For each selected paper, capture:
-  - `Abstract key points` (1-3 bullets)
-  - `Relevance to topic` (one sentence)
-- If no abstract is accessible, mark as `NOT VERIFIED` and replace it.
+**Evidence-level verification is mandatory for every selected paper.**
+- CNKI: use **downloaded document content** as evidence (not title-only, not abstract-only).
+  - Wait **10-15 seconds** for each download to complete before extraction.
+  - Capture `Document key points` (1-3 bullets) + `Relevance to topic` (one sentence).
+- PubMed/Wanfang: abstract-level verification remains mandatory.
+  - Capture `Abstract key points` (1-3 bullets) + `Relevance to topic` (one sentence).
+- If required evidence text is inaccessible, mark as `NOT VERIFIED` and replace it.
 
 ### Step 2: Aggregate (MANDATORY GATE)
 
@@ -63,7 +65,8 @@ Generate final proposal sections using only verified references:
 - `cnki_results.md` exists with 5+ verified papers
 - `pubmed_results.md` exists with 5+ verified papers
 - `wanfang_results.md` exists with 5+ verified papers
-- Each database has 5+ papers with `ABSTRACT✓` and written abstract key points
+- CNKI has 5+ papers with `DOC✓` and written document key points
+- PubMed/Wanfang each have 5+ papers with `ABSTRACT✓` and written abstract key points
 - `research_notes.md` merges all sources and includes evidence-to-claim mapping
 - Final references count is 15+
 - Proposal body includes in-text bracket citations mapped to final reference list
