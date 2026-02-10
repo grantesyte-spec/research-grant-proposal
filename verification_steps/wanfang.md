@@ -11,12 +11,14 @@ Purpose: research Chinese literature on Wanfang and generate `wanfang_results.md
 5. Judge page state by actionable refs from snapshot.
 6. If uncertain about current page state, run `snapshot` first, then decide the next action.
 7. Prefer `type ... --submit` over a separate click on search when available.
+8. For article detail pages, prefer `navigate` using the article URL instead of clicking title links that may open a new tab.
+9. If a new tab appears, close it immediately and continue with the original `targetId`.
 
 ## Steps
 
 ### 1) Open Wanfang
 
-- `https://www.wanfangdata.com.cn/`
+- `http://new.wf.xy22.top/index.html`
 
 ### 2) Run Queries
 

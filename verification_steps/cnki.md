@@ -11,12 +11,14 @@ Purpose: research Chinese literature on CNKI and generate `cnki_results.md`.
 5. Trust actionable refs from snapshot (for example: topic field + search button), not page warnings.
 6. If uncertain about current page state, run `snapshot` first, then decide the next action.
 7. Prefer `type ... --submit` over a separate click on search when available.
+8. For article detail pages, prefer `navigate` using the article URL instead of clicking title links that may open a new tab.
+9. If a new tab appears, close it immediately and continue with the original `targetId`.
 
 ## Steps
 
 ### 1) Open CNKI Advanced Search
 
-- URL: `https://kns.cnki.net/kns8s/AdvSearch?classid=WD0FTY92&rlang=CHINESE`
+- URL: `http://118.25.64.223:8081/kns8s/defaultresult/index`
 - Take snapshot and identify:
   - topic field ref
   - search button ref

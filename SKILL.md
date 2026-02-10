@@ -12,6 +12,8 @@ description: Generate Chinese-language academic nursing grant proposals based on
 3. Do not run database research in parallel.
 4. Keep the same `targetId` across browser actions to prevent context drift.
 5. Treat page operability by actionable refs, not by visual overlays.
+6. Do not open article links via normal click if they may spawn a new tab; prefer `navigate` with the extracted URL in the same tab.
+7. If a new tab opens accidentally, immediately close it and continue in the original `targetId`.
 
 ## Minimum Literature Requirements
 
