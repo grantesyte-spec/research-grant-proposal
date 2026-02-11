@@ -14,12 +14,14 @@ description: Generate Chinese-language academic nursing grant proposals based on
 5. Treat page operability by actionable refs, not by visual overlays.
 6. Do not open article links via normal click if they may spawn a new tab; prefer `navigate` with the extracted URL in the same tab.
 7. If a new tab opens accidentally, immediately close it and continue in the original `targetId`.
+8. For **CNKI** and **Wanfang**, select **Chinese-language papers only**.
+9. For **CNKI** and **Wanfang**, select **core-journal papers only** (for example: 北大核心 / 科技核心 / CSCD / CSSCI, or an equivalent core label visible on the platform).
 
 ## Minimum Literature Requirements
 
-- CNKI: 5-7 verified papers
+- CNKI: 5-7 verified papers (**Chinese + core journals**)
 - PubMed: 5-7 verified papers
-- Wanfang: 5-7 verified papers
+- Wanfang: 5-7 verified papers (**Chinese + core journals**)
 - Total: 15-21 verified references
 
 ## Workflow
@@ -36,9 +38,14 @@ Read and execute each file in order:
 - CNKI: use **downloaded document content** as evidence (not title-only, not abstract-only).
   - Wait **10-15 seconds** for each download to complete before extraction.
   - Capture `Document key points` (1-3 bullets) + `Relevance to topic` (one sentence).
-- PubMed/Wanfang: abstract-level verification remains mandatory.
+  - Capture `Core journal label` from the platform.
+- PubMed: abstract-level verification is mandatory.
   - Capture `Abstract key points` (1-3 bullets) + `Relevance to topic` (one sentence).
+- Wanfang: abstract-level verification is mandatory.
+  - Capture `Abstract key points` (1-3 bullets) + `Relevance to topic` (one sentence).
+  - Capture `Core journal label` from the platform.
 - If required evidence text is inaccessible, mark as `NOT VERIFIED` and replace it.
+- If Chinese-language or core-journal constraints are not met for CNKI/Wanfang, mark as `NOT VERIFIED` and replace it.
 
 ### Step 2: Aggregate (MANDATORY GATE)
 
@@ -65,8 +72,9 @@ Generate final proposal sections using only verified references:
 - `cnki_results.md` exists with 5+ verified papers
 - `pubmed_results.md` exists with 5+ verified papers
 - `wanfang_results.md` exists with 5+ verified papers
-- CNKI has 5+ papers with `DOC✓` and written document key points
-- PubMed/Wanfang each have 5+ papers with `ABSTRACT✓` and written abstract key points
+- CNKI has 5+ papers with `DOC✓`, `CHINESE✓`, `CORE✓` and written document key points
+- PubMed has 5+ papers with `ABSTRACT✓` and written abstract key points
+- Wanfang has 5+ papers with `ABSTRACT✓`, `CHINESE✓`, `CORE✓` and written abstract key points
 - `research_notes.md` merges all sources and includes evidence-to-claim mapping
 - Final references count is 15+
 - Proposal body includes in-text bracket citations mapped to final reference list

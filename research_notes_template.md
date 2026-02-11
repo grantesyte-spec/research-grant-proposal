@@ -11,7 +11,10 @@
 - [ ] PubMed >= 5 verified references
 - [ ] Wanfang >= 5 verified references
 - [ ] CNKI has 5+ references with written document key points (from downloaded files)
-- [ ] PubMed/Wanfang each have 5+ references with written abstract key points
+- [ ] CNKI selected references are Chinese-language and core-journal only
+- [ ] PubMed has 5+ references with written abstract key points
+- [ ] Wanfang has 5+ references with written abstract key points
+- [ ] Wanfang selected references are Chinese-language and core-journal only
 - [ ] Total references >= 15
 - [ ] Evidence-to-claim mapping prepared for proposal drafting
 
@@ -21,8 +24,8 @@
 |---|---|
 
 ### Verified references
-| # | Title | Authors | Journal | Year | URL | Document key points | Relevance to topic |
-|---|---|---|---|---|---|---|---|
+| # | Title | Authors | Journal | Year | URL | Core label | Document key points | Relevance to topic |
+|---|---|---|---|---|---|---|---|---|
 
 ## PubMed results
 ### Queries and counts
@@ -39,8 +42,8 @@
 |---|---|
 
 ### Verified references
-| # | Title | Authors | Journal | Year | URL | Abstract key points | Relevance to topic |
-|---|---|---|---|---|---|---|---|
+| # | Title | Authors | Journal | Year | URL | Core label | Abstract key points | Relevance to topic |
+|---|---|---|---|---|---|---|---|---|
 
 ## Final selected references (15-21)
 | # | Source | Citation | Why selected |
