@@ -2,23 +2,26 @@
 
 Purpose: research **Chinese core-journal literature** on Wanfang and generate `wanfang_results.md`.
 
-## Browser Rules
+## Browser Rules (OpenClaw CLI)
 
 1. Use a single tab only.
 2. Keep one `targetId` across all actions.
-3. Prefer `navigate` over opening new pages in new tabs.
+3. Prefer `openclaw browser navigate` over opening new pages in new tabs.
 4. If visual overlays appear, continue when search controls remain operable.
 5. Judge page state by actionable refs from snapshot.
-6. If uncertain about current page state, run `snapshot` first, then decide the next action.
-7. Prefer `type ... --submit` over a separate click on search when available.
-8. For article detail pages, prefer `navigate` using the article URL instead of clicking title links that may open a new tab.
-9. If a new tab appears, close it immediately and continue with the original `targetId`.
+6. If uncertain about current page state, run `openclaw browser snapshot` first, then decide the next action.
+7. Prefer `openclaw browser type ... --submit` over a separate click on search when available.
+8. For article detail pages, prefer `openclaw browser navigate` using the article URL instead of clicking title links that may open a new tab.
+9. If a new tab appears, close it immediately with `openclaw browser tab close <id>` and continue with the original `targetId`.
 
 ## Steps
 
 ### 1) Open Wanfang
 
-- `https://www.wanfangdata.com.cn/`
+Use OpenClaw CLI to navigate:
+```bash
+openclaw browser navigate https://www.wanfangdata.com.cn/
+```
 
 ### 2) Run Queries (Chinese only)
 
@@ -28,14 +31,18 @@ Suggested queries:
 - `股骨颈骨折 合并 糖尿病 护理`
 - `股骨颈骨折 糖尿病 围手术期 护理`
 
-For each query:
-- enter query
-- submit
-- apply filters when available:
-  - 语种：中文
-  - 文献类型：期刊
-  - 期刊级别/来源类别：北大核心、科技核心、CSCD、CSSCI（或平台显示的等效核心标签）
-- snapshot results
+For each query, use OpenClaw CLI:
+```bash
+# Type query and submit
+openclaw browser type <search_field_ref> "Orem 自理模式 护理" --submit
+
+# Apply filters
+openclaw browser snapshot --format aria
+# Look for filter options: 语种=中文, 文献类型=期刊, 期刊级别=北大核心/CSCD/CSSCI
+
+# Check results
+openclaw browser snapshot --compact
+```
 
 ### 3) Select and Verify Papers
 
@@ -52,6 +59,14 @@ For each selected paper, record mandatory fields:
 - `Abstract key points` (1-3 bullets)
 - `Relevance to topic` (one sentence)
 - `Core journal label` (for example: 北大核心 / 科技核心 / CSCD / CSSCI)
+
+**Navigate to article pages using OpenClaw CLI:**
+```bash
+openclaw browser navigate https://www.wanfangdata.com.cn/details/detail.aspx?dbcode=CAPJ&dbname=CAPJLAST&filename=...
+
+# Read abstract
+openclaw browser snapshot --format aria
+```
 
 If abstract is unavailable/inaccessible, mark `NOT VERIFIED` and replace with another paper.
 If Chinese-language or core-journal requirements are not met, mark `NOT VERIFIED` and replace with another paper.

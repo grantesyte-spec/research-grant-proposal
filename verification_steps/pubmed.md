@@ -2,24 +2,26 @@
 
 Purpose: research English literature on PubMed and generate `pubmed_results.md`.
 
-## Browser Rules
+## Browser Rules (OpenClaw CLI)
 
 1. Use a single tab only.
 2. Keep one `targetId` across all actions.
-3. Use `navigate` for URL transitions.
+3. Use `openclaw browser navigate` for URL transitions.
 4. If visual overlays appear, continue if search controls remain operable.
 5. Judge operability by snapshot refs.
-6. If uncertain about current page state, run `snapshot` first, then decide the next action.
-7. Prefer `type ... --submit` over a separate click on search when available.
-8. For article detail pages, prefer `navigate` using the article URL instead of clicking title links that may open a new tab.
-9. If a new tab appears, close it immediately and continue with the original `targetId`.
+6. If uncertain about current page state, run `openclaw browser snapshot` first, then decide the next action.
+7. Prefer `openclaw browser type ... --submit` over a separate click on search when available.
+8. For article detail pages, prefer `openclaw browser navigate` using the article URL instead of clicking title links that may open a new tab.
+9. If a new tab appears, close it immediately with `openclaw browser tab close <id>` and continue with the original `targetId`.
 
 ## Steps
 
 ### 1) Open PubMed
 
-Start from:
-- `https://pubmed.ncbi.nlm.nih.gov/`
+Use OpenClaw CLI to navigate:
+```bash
+openclaw browser navigate https://pubmed.ncbi.nlm.nih.gov/
+```
 
 ### 2) Run Queries
 
@@ -29,10 +31,14 @@ Suggested queries:
 - `hip fracture diabetes rehabilitation`
 - `femoral neck fracture diabetes nursing`
 
-For each query:
-- type into search box
-- submit
-- snapshot results
+For each query, use OpenClaw CLI:
+```bash
+# Type query and submit
+openclaw browser type <search_field_ref> "Orem self-care nursing" --submit
+
+# View results
+openclaw browser snapshot --format aria
+```
 
 ### 3) Select and Verify Papers
 
@@ -47,10 +53,16 @@ For each selected paper, record mandatory fields:
 - `Abstract key points` (1-3 bullets)
 - `Relevance to topic` (one sentence)
 
-If abstract is unavailable/inaccessible, mark `NOT VERIFIED` and replace with another paper.
+**Navigate to article detail pages using OpenClaw CLI:**
+```bash
+# Use article URL format
+openclaw browser navigate https://pubmed.ncbi.nlm.nih.gov/<PMID>/
 
-Use article URL format:
-- `https://pubmed.ncbi.nlm.nih.gov/<PMID>/`
+# Read abstract
+openclaw browser snapshot --format aria
+```
+
+If abstract is unavailable/inaccessible, mark `NOT VERIFIED` and replace with another paper.
 
 ### 4) Create `pubmed_results.md`
 

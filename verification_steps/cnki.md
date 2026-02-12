@@ -2,26 +2,33 @@
 
 Purpose: research **Chinese core-journal literature** on CNKI and generate `cnki_results.md`.
 
-## Browser Rules
+## Browser Rules (OpenClaw CLI)
 
 1. Use a single tab only.
-2. Use `navigate` to change pages, do not open extra tabs.
+2. Use `openclaw browser navigate` to change pages, do not open extra tabs.
 3. Keep one `targetId` for all actions.
 4. If visual captcha text appears, check if core controls are still operable before stopping.
 5. Trust actionable refs from snapshot (for example: topic field + search button), not page warnings.
-6. If uncertain about current page state, run `snapshot` first, then decide the next action.
-7. Prefer `type ... --submit` over a separate click on search when available.
-8. For article detail pages, prefer `navigate` using the article URL instead of clicking title links that may open a new tab.
-9. If a new tab appears, close it immediately and continue with the original `targetId`.
+6. If uncertain about current page state, run `openclaw browser snapshot` first, then decide the next action.
+7. Prefer `openclaw browser type ... --submit` over a separate click on search when available.
+8. For article detail pages, prefer `openclaw browser navigate` using the article URL instead of clicking title links that may open a new tab.
+9. If a new tab appears, close it immediately with `openclaw browser tab close <id>` and continue with the original `targetId`.
 
 ## Steps
 
 ### 1) Open CNKI Advanced Search
 
-- URL: `http://118.25.64.223:8081/kns8s/defaultresult/index`
-- Take snapshot and identify:
-  - topic field ref
-  - search button ref
+Use OpenClaw CLI to navigate:
+```bash
+openclaw browser navigate http://118.25.64.223:8081/kns8s/defaultresult/index
+```
+
+Take snapshot and identify:
+```bash
+openclaw browser snapshot --format aria
+```
+- Find topic field ref (search input)
+- Find search button ref
 
 ### 2) Run Queries (Chinese only)
 
@@ -31,14 +38,18 @@ Suggested queries:
 - `股骨颈骨折 合并 糖尿病 护理`
 - `股骨颈骨折 糖尿病 围手术期 护理`
 
-For each query:
-- input query
-- click search
-- apply filters when available:
-  - 语种：中文
-  - 来源类别/期刊级别：北大核心、科技核心、CSCD、CSSCI（或平台显示的等效核心标签）
-- snapshot results
-- record result count if visible
+For each query, use OpenClaw CLI:
+```bash
+# Type query and submit
+openclaw browser type <search_field_ref> "Orem 自理模式 护理" --submit
+
+# Apply filters
+openclaw browser snapshot --format aria
+# Look for filter options: 语种=中文, 来源类别=北大核心/CSCD/CSSCI
+
+# Check results count
+openclaw browser snapshot --compact
+```
 
 ### 3) Select and Verify Papers
 
@@ -56,10 +67,17 @@ For each selected paper, record mandatory fields:
 - `Relevance to topic` (one sentence)
 - `Core journal label` (for example: 北大核心 / 科技核心 / CSCD / CSSCI)
 
-Operational requirement:
-- CNKI entries may jump to `a12.papermao` download gateway.
-- Trigger download and wait **10-15 seconds** before concluding success/failure.
-- If the first link fails, try provided alternate download links on the same page.
+**Download and verify documents using OpenClaw CLI:**
+```bash
+# Click download link (may redirect to papermao gateway)
+openclaw browser click <download_ref>
+
+# Wait 10-15 seconds for download
+openclaw browser wait --text "下载完成" --timeout 15000
+
+# If redirected, use navigate to return
+openclaw browser navigate https://navi.cnki.net/
+```
 
 If document text is unavailable/inaccessible, mark `NOT VERIFIED` and replace with another paper.
 If Chinese-language or core-journal requirements are not met, mark `NOT VERIFIED` and replace with another paper.
