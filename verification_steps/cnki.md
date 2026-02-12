@@ -43,9 +43,10 @@ For each query, use OpenClaw CLI:
 # Type query and submit
 openclaw browser type <search_field_ref> "Orem 自理模式 护理" --submit
 
-# Apply filters
+# Apply filters (use RELATIVE time filter, e.g., "近5年" - do NOT hardcode specific years)
 openclaw browser snapshot --format aria
-# Look for filter options: 语种=中文, 来源类别=北大核心/CSCD/CSSCI
+# Look for filter options: 语种=中文, 来源类别=北大核心/CSCD/CSSCI, 发表时间=近5年
+# CNKI typically has a date filter dropdown - select "近5年" (last 5 years)
 
 # Check results count
 openclaw browser snapshot --compact
@@ -56,7 +57,7 @@ openclaw browser snapshot --compact
 Select 5-7 relevant papers and verify each item:
 - Topic relevance
 - Authors
-- Year
+- **Year (must be within last 5 years from current execution year - use RELATIVE check)**
 - **Downloaded document relevance** (must read document text, not title-only)
 - Verifiable URL
 - Chinese-language check
@@ -80,7 +81,7 @@ openclaw browser navigate https://navi.cnki.net/
 ```
 
 If document text is unavailable/inaccessible, mark `NOT VERIFIED` and replace with another paper.
-If Chinese-language or core-journal requirements are not met, mark `NOT VERIFIED` and replace with another paper.
+If Chinese-language, core-journal, or year requirements are not met, mark `NOT VERIFIED` and replace with another paper.
 
 ### 4) Create `cnki_results.md`
 

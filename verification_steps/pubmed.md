@@ -36,6 +36,11 @@ For each query, use OpenClaw CLI:
 # Type query and submit
 openclaw browser type <search_field_ref> "Orem self-care nursing" --submit
 
+# Apply date filter (use RELATIVE time filter, e.g., "5 years" - do NOT hardcode specific years)
+openclaw browser snapshot --compact
+# Look for date filter options: typically a timeline slider or dropdown with "1 year", "5 years", "10 years"
+# Select "5 years" filter - PubMed will calculate the relative date range automatically
+
 # View results
 openclaw browser snapshot --format aria
 ```
@@ -45,7 +50,7 @@ openclaw browser snapshot --format aria
 Select 5-7 papers and verify:
 - Topic relevance
 - Authors
-- Year
+- **Year (must be within last 5 years from current execution year - use RELATIVE check)**
 - Abstract relevance (must read abstract text, not title-only)
 - PMID and URL validity
 
@@ -63,6 +68,7 @@ openclaw browser snapshot --format aria
 ```
 
 If abstract is unavailable/inaccessible, mark `NOT VERIFIED` and replace with another paper.
+If year requirement is not met, mark `NOT VERIFIED` and replace with another paper.
 
 ### 4) Create `pubmed_results.md`
 

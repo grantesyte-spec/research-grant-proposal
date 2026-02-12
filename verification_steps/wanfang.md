@@ -45,9 +45,10 @@ For each query, use OpenClaw CLI:
 # Type query and submit
 openclaw browser type <search_field_ref> "Orem 自理模式 护理" --submit
 
-# Apply filters
+# Apply filters (use RELATIVE time filter, e.g., "近5年" - do NOT hardcode specific years)
 openclaw browser snapshot --format aria
-# Look for filter options: 语种=中文, 文献类型=期刊, 期刊级别=北大核心/CSCD/CSSCI
+# Look for filter options: 语种=中文, 文献类型=期刊, 期刊级别=北大核心/CSCD/CSSCI, 发表时间=近5年
+# Wanfang typically has a date filter dropdown - select "近5年" (last 5 years)
 
 # Check results
 openclaw browser snapshot --compact
@@ -58,7 +59,7 @@ openclaw browser snapshot --compact
 Select 5-7 papers and verify:
 - Topic relevance
 - Authors
-- Year
+- **Year (must be within last 5 years from current execution year - use RELATIVE check)**
 - **Abstract relevance (read from search results page directly, NO need to click into article pages)**
   - Wanfang search results typically show the abstract in the snippet/摘要 section
   - Extract key points directly from the visible abstract summary
@@ -95,7 +96,7 @@ openclaw browser snapshot --compact
 ```
 
 If abstract is unavailable/inaccessible, mark `NOT VERIFIED` and replace with another paper.
-If Chinese-language or core-journal requirements are not met, mark `NOT VERIFIED` and replace with another paper.
+If Chinese-language, core-journal, or year requirements are not met, mark `NOT VERIFIED` and replace with another paper.
 
 ### 4) Create `wanfang_results.md`
 
