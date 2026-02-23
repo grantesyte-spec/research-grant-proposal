@@ -58,7 +58,7 @@ Read all three result files and produce `research_notes.md` using `research_note
 Generate final proposal sections using only verified references:
 
 1. Main research content and objectives
-2. Rationale (purpose, significance, domestic/international landscape, trend)
+2. **Rationale** (including purpose, significance, domestic/international overview, **market forecast**, and development trend)
 3. R&D content and expected outputs
 4. Methods and technical route (with process diagram)
 5. Core references in the last 5 years
@@ -83,3 +83,16 @@ Generate final proposal sections using only verified references:
 
 - Markdown draft in current session
 - Optional DOCX export via `scripts/generate_proposal.py`
+
+### Required Sections (Must Include)
+
+1. **Main research content and objectives** (课题主要研究内容和预期目标)
+2. **Rationale** (课题立题依据) - including:
+   - Purpose (目的)
+   - Significance (意义)
+   - Domestic/international overview (国内外概况)
+   - **Market forecast** (市场预测) ← ADDED
+   - Development trend (发展趋势)
+3. **R&D content and expected outputs** (课题研究、开发内容和预期成果)
+4. **Methods and technical route** (研究方法和技术路线) - with process diagram
+5. **Core references in the last 5 years** (近五年核心期刊参考文献)
