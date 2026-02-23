@@ -5,14 +5,16 @@ Purpose: research **Chinese core-journal literature** on CNKI and generate `cnki
 ## Browser Rules (OpenClaw CLI)
 
 1. Use a single tab only.
-2. Use `openclaw browser navigate` to change pages, do not open extra tabs.
-3. Keep one `targetId` for all actions.
+2. Use OpenClaw **browser CLI commands** (`openclaw browser ...`) for all browser actions.
+3. Use `openclaw browser navigate` to change pages, do not open extra tabs.
 4. If visual captcha text appears, check if core controls are still operable before stopping.
 5. Trust actionable refs from snapshot (for example: topic field + search button), not page warnings.
 6. If uncertain about current page state, run `openclaw browser snapshot` first, then decide the next action.
 7. Prefer `openclaw browser type ... --submit` over a separate click on search when available.
 8. For article detail pages, prefer `openclaw browser navigate` using the article URL instead of clicking title links that may open a new tab.
-9. If a new tab appears, close it immediately with `openclaw browser tab close <id>` and continue with the original `targetId`.
+9. If a new tab appears, close it immediately with `openclaw browser tab close <id>` and continue in the original tab.
+10. Always treat this CNKI URL as the canonical page to return to when redirected:
+    `http://118.25.64.223:8081/kns8s/defaultresult/index`
 
 ## Steps
 
@@ -43,6 +45,9 @@ For each query, use OpenClaw CLI:
 # Type query and submit
 openclaw browser type <search_field_ref> "Orem 自理模式 护理" --submit
 
+# Save current result-list URL for later return after download redirects
+# (copy from browser address bar output/context)
+
 # Apply filters (use RELATIVE time filter, e.g., "近5年" - do NOT hardcode specific years)
 openclaw browser snapshot --format aria
 # Look for filter options: 语种=中文, 来源类别=北大核心/CSCD/CSSCI, 发表时间=近5年
@@ -70,15 +75,20 @@ For each selected paper, record mandatory fields:
 
 **Download and verify documents using OpenClaw CLI:**
 ```bash
-# Click download link (may redirect to papermao gateway)
+# Before clicking download, store the current CNKI result/detail URL as RESULT_URL
+# RESULT_URL should usually start with: http://118.25.64.223:8081/kns8s/defaultresult/index
+
+# Click download link (may redirect to another domain)
 openclaw browser click <download_ref>
 
-# Wait 10-15 seconds for download
-openclaw browser wait --text "下载完成" --timeout 15000
+# Wait 30 seconds to allow download/redirect flow to complete
+openclaw browser wait --timeout 30000
 
-# If redirected, use navigate to return
-openclaw browser navigate https://navi.cnki.net/
+# Return to the previously saved CNKI URL
+openclaw browser navigate <RESULT_URL>
 ```
+
+Do NOT use `https://navi.cnki.net/` as a generic return page for this workflow.
 
 If document text is unavailable/inaccessible, mark `NOT VERIFIED` and replace with another paper.
 If Chinese-language, core-journal, or year requirements are not met, mark `NOT VERIFIED` and replace with another paper.
