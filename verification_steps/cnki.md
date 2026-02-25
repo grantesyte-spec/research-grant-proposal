@@ -59,12 +59,29 @@ openclaw browser snapshot --compact
 
 ### 3) Select and Verify Papers
 
-Select 5-7 relevant papers and verify each item:
+**Important Workflow - Download & Analyze One by One:**
+
+1. **Extract Links (DO NOT CLICK)** — From search results, extract each paper's download URL
+   - Find the download URL in the result row (look for `id=` parameter)
+   - **CRITICAL**: Must include both `id=` AND `&ddata=` parameters — the full URL must contain `&ddata=` at the end
+   - Example: `http://a12.papermao.net/cdown?id=XXX&ddata=YYY|CJFQ|...`
+   - Save these complete URLs to a file for later use
+
+2. **Download One Paper** — Use the saved URL to download one paper at a time
+
+3. **Analyze Before Next** — After download completes, extract and analyze the document content
+   - Only then proceed to download the next paper
+
+**Repeat**: Extract → Save URL → Download → Analyze → Next Paper
+
+---
+
+**Select 5-7 relevant papers and verify each item:**
 - Topic relevance
 - Authors
 - **Year (must be within last 5 years from current execution year - use RELATIVE check)**
 - **Downloaded document relevance** (must read document text, not title-only)
-- Verifiable URL
+- Verifiable URL (complete URL with `&ddata=` parameter)
 - Chinese-language check
 - Core-journal label check (capture visible label text)
 
@@ -73,20 +90,23 @@ For each selected paper, record mandatory fields:
 - `Relevance to topic` (one sentence)
 - `Core journal label` (for example: 北大核心 / 科技核心 / CSCD / CSSCI)
 
-**Download and verify documents using OpenClaw CLI:**
+**Download and verify documents using saved URLs:**
 ```bash
-# Before clicking download, store the current CNKI result/detail URL as RESULT_URL
-# RESULT_URL should usually start with: http://118.25.64.223:8081/kns8s/defaultresult/index
+# Navigate directly to the saved download URL (includes &ddata= parameter)
+openclaw browser navigate <SAVED_DOWNLOAD_URL>
 
-# Click download link (may redirect to another domain)
-openclaw browser click <download_ref>
+# Wait for download to complete in browser
+# Check local Downloads folder for new files
+ls -la ~/Downloads/
 
-# Wait 30 seconds to allow download/redirect flow to complete
-openclaw browser wait --timeout 30000
+# Extract document content using pdfplumber or similar tool
+# Analyze and record key points
 
-# Return to the previously saved CNKI URL
-openclaw browser navigate <RESULT_URL>
+# Return to CNKI search results for next paper
+openclaw browser navigate http://118.25.64.223:8081/kns8s/defaultresult/index
 ```
+
+**Key Point**: The download URL MUST contain `&ddata=` parameter. Without it, the download will fail.
 
 Do NOT use `https://navi.cnki.net/` as a generic return page for this workflow.
 
