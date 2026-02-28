@@ -5,6 +5,15 @@ description: Generate Chinese-language academic nursing grant proposals based on
 
 # Research Grant Proposal Generator
 
+> **Quick Reference**
+> - CNKI research (5-7 core journal papers)
+> - PubMed research (5-7 papers)
+> - Wanfang research (5-7 core journal papers)
+> - Aggregate to `research_notes.md`
+> - Draft final proposal
+> - **Total required: 15-21 verified references**
+> - **One tab only, one database at a time**
+
 ## Hard Rules (MUST FOLLOW)
 
 1. Run databases in sequence only: **CNKI → PubMed → Wanfang**.
