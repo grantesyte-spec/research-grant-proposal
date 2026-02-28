@@ -3,7 +3,7 @@ name: research-grant-proposal
 description: Generate Chinese-language academic nursing grant proposals based on research literature from CNKI, PubMed, and Wanfang. Use when the user asks for proposal writing, literature-backed sections, technical routes, or reference lists.
 ---
 
-# Research Grant Proposal Generator
+---
 
 > **Quick Reference**
 > - CNKI research (5-7 core journal papers)
@@ -111,9 +111,9 @@ Read all three verification step files in order, using the keyword matrix from S
    - 按优先级顺序执行检索
 
 **Evidence-level verification is mandatory for every selected paper.**
-- CNKI: use **downloaded document content** as evidence (not title-only, not abstract-only).
-  - Wait **10-15 seconds** for each download to complete before extraction.
-  - Capture `Document key points` (1-3 bullets) + `Relevance to topic` (one sentence).
+- CNKI: abstract-level verification is mandatory.
+  - Wait **10-15 seconds** for each page to load after navigation.
+  - Capture `Abstract key points` (1-3 bullets) + `Relevance to topic` (one sentence).
   - Capture `Core journal label` from the platform.
 - PubMed: abstract-level verification is mandatory.
   - Capture `Abstract key points` (1-3 bullets) + `Relevance to topic` (one sentence).
@@ -185,7 +185,7 @@ wanfang.md → 读取issue_keywords → 检索矩阵执行 → wanfang_results.m
 - [ ] `cnki_results.md` exists with 5+ verified papers
 - [ ] `pubmed_results.md` exists with 5+ verified papers
 - [ ] `wanfang_results.md` exists with 5+ verified papers
-- [ ] CNKI has 5+ papers with `DOC✓`, `CHINESE✓`, `CORE✓` and written document key points
+- [ ] CNKI has 5+ papers with `ABSTRACT✓`, `CHINESE✓`, `CORE✓` and written abstract key points
 - [ ] PubMed has 5+ papers with `ABSTRACT✓` and written abstract key points
 - [ ] Wanfang has 5+ papers with `ABSTRACT✓`, `CHINESE✓`, `CORE✓` and written abstract key points
 - [ ] `research_notes.md` merges all sources and includes evidence-to-claim mapping
