@@ -3,8 +3,6 @@ name: research-grant-proposal
 description: Generate Chinese-language academic nursing grant proposals based on research literature from CNKI, PubMed, and Wanfang. Use when the user asks for proposal writing, literature-backed sections, technical routes, or reference lists.
 ---
 
----
-
 ## Hard Rules (MUST FOLLOW)
 
 1. Run databases in sequence only: **CNKI → PubMed → Wanfang**.
@@ -55,10 +53,10 @@ workspace/
 
 ## Minimum Literature Requirements
 
-- CNKI: 5-7 verified papers (**Chinese + core journals**)
-- PubMed: 5-7 verified papers
-- Wanfang: 5-7 verified papers (**Chinese + core journals**)
-- Total: 15-21 verified references
+- CNKI: 5-7 researched papers (**Chinese + core journals**)
+- PubMed: 5-7 researched papers
+- Wanfang: 5-7 researched papers (**Chinese + core journals**)
+- Total: 15-21 researched references
 
 ## Workflow
 
@@ -117,9 +115,9 @@ Read all three result files and produce `research_notes.md` using `research_note
 
 **Do not draft the proposal before all three result files exist and pass minimum counts.**
 
-### Step 3: Draft Proposal (ONLY AFTER GATE PASSES)
+### Step 3: Draft Proposal (ONLY AFTER Step 2 Complete)
 
-Generate final proposal sections using only verified references:
+Generate final proposal sections using only researched references:
 **Write to:** `workspace/research-projects/[课题名]/grant_proposal.md`
 
 1. Main research content and objectives
@@ -166,12 +164,12 @@ wanfang.md → 读取issue_keywords → 检索矩阵执行 → wanfang_results.m
 生成最终课题申请书
 ```
 
-## Verification Checklist
+## Research Checklist
 
 - [ ] `issue_keywords.md` exists (from Step 0)
-- [ ] `cnki_results.md` exists with 5+ verified papers
-- [ ] `pubmed_results.md` exists with 5+ verified papers
-- [ ] `wanfang_results.md` exists with 5+ verified papers
+- [ ] `cnki_results.md` exists with 5+ researched papers
+- [ ] `pubmed_results.md` exists with 5+ researched papers
+- [ ] `wanfang_results.md` exists with 5+ researched papers
 - [ ] CNKI has 5+ papers with `ABSTRACT✓`, `CHINESE✓`, `CORE✓` and written abstract key points
 - [ ] PubMed has 5+ papers with `ABSTRACT✓` and written abstract key points
 - [ ] Wanfang has 5+ papers with `ABSTRACT✓`, `CHINESE✓`, `CORE✓` and written abstract key points
