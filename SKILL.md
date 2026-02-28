@@ -101,18 +101,14 @@ Read all three research guide files in order, using the keyword matrix from Step
    - 读取 `issue_keywords.md` 中的检索矩阵
    - 按优先级顺序执行检索
 
-**Evidence-level verification is mandatory for every selected paper.**
-- CNKI: abstract-level verification is mandatory.
-  - Wait **10-15 seconds** for each page to load after navigation.
-  - Capture `Abstract key points` (1-3 bullets) + `Relevance to topic` (one sentence).
-  - Capture `Core journal label` from the platform.
-- PubMed: abstract-level verification is mandatory.
-  - Capture `Abstract key points` (1-3 bullets) + `Relevance to topic` (one sentence).
-- Wanfang: abstract-level verification is mandatory.
-  - Capture `Abstract key points` (1-3 bullets) + `Relevance to topic` (one sentence).
-  - Capture `Core journal label` from the platform.
-- If required evidence text is inaccessible, mark as `NOT VERIFIED` and replace it.
-- If Chinese-language or core-journal constraints are not met for CNKI/Wanfang, mark as `NOT VERIFIED` and replace it.
+**Evidence-level research is mandatory for every selected paper.**
+
+- **CNKI**: Wait **10-15 seconds** for each page to load after navigation. Capture `Abstract key points` (1-3 bullets) + `Relevance to topic` (one sentence). Capture `Core journal label`.
+- **PubMed**: Capture `Abstract key points` (1-3 bullets) + `Relevance to topic` (one sentence).
+- **Wanfang**: Capture `Abstract key points` (1-3 bullets) + `Relevance to topic` (one sentence). Capture `Core journal label`.
+
+- If required evidence text is inaccessible, mark as **NOT RELEVANT** and replace it.
+- If Chinese-language or core-journal constraints are not met for CNKI/Wanfang, mark as **NOT RELEVANT** and replace it.
 
 ### Step 2: Aggregate (MANDATORY GATE)
 
