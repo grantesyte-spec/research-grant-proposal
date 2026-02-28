@@ -87,7 +87,7 @@ workspace/
 
 **前提：** Step 0 必须先完成，生成 `issue_keywords.md`
 
-Read all three verification step files in order, using the keyword matrix from Step 0:
+Read all three research guide files in order, using the keyword matrix from Step 0:
 
 1. `research_guides/cnki.md` → produce `cnki_results.md`
    - 读取 `issue_keywords.md` 中的检索矩阵
