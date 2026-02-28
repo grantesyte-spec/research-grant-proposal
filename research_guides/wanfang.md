@@ -2,6 +2,17 @@
 
 Purpose: research **Chinese core-journal literature** on Wanfang and generate `wanfang_results.md`.
 
+## File Output Location
+**IMPORTANT:** Write results to `workspace/research-projects/[课题名]/wanfang_results.md`
+- See SKILL.md "File Storage Convention" section for directory structure
+- Do NOT write to skill directory
+
+## Prerequisite
+
+**Step 0 must be completed first:**
+- Ensure `issue_keywords.md` exists (generated from SKILL.md Step 0)
+- Read the keyword matrix from `issue_keywords.md`
+
 ## Browser Rules (OpenClaw CLI)
 
 1. Use a single tab only.
@@ -23,7 +34,33 @@ Purpose: research **Chinese core-journal literature** on Wanfang and generate `w
 10. For article detail pages, prefer `openclaw browser navigate` using the article URL instead of clicking title links that may open a new tab.
 11. If a new tab appears, close it immediately with `openclaw browser tab close <id>` and continue with the original `targetId`.
 
-## Steps
+## Step 0: 读取检索矩阵 (前置步骤)
+
+**必须先执行此步骤：**
+
+1. 读取 `issue_keywords.md` 文件
+2. 提取 Wanfang 检索用的关键词矩阵（中文）
+3. 按优先级排序确定检索顺序
+
+### 关键词来源
+
+从 issue_keywords.md 中提取中文关键词：
+- 理论基础关键词
+- 护理理论关键词
+- 研究对象关键词
+- 交叉组合关键词
+
+### 检索轮次设计
+
+按照 issue_keywords.md 中的矩阵执行检索：
+
+**第1轮 - 理论基础检索（如TTM、健康信念模式等）**
+**第2轮 - 护理理论检索（如Orem自理模式）**
+**第3轮 - 单一疾病检索（如骨折、糖尿病）**
+**第4轮 - 疾病交叉检索（如骨折+糖尿病）**
+**第5轮 - 综合检索（如Orem+糖尿病+护理）**
+
+---
 
 ### 1) Open Wanfang
 
@@ -34,20 +71,26 @@ openclaw browser navigate https://www.wanfangdata.com.cn/
 
 ### 2) Run Queries (Chinese only)
 
-Suggested queries:
+**使用 issue_keywords.md 中的关键词矩阵，按优先级顺序检索：**
+
+从 issue_keywords.md 中提取的关键词示例：
+- `动机行为转化理论 护理`
+- `跨理论模型 护理`
 - `Orem 自理模式 护理`
-- `动机行为转化 理论 护理`
-- `股骨颈骨折 合并 糖尿病 护理`
-- `股骨颈骨折 糖尿病 围手术期 护理`
+- `Orem 糖尿病 护理`
+- `Orem 骨折 护理`
+- `股骨颈骨折 糖尿病 护理`
+- `髋部骨折 糖尿病 护理`
+- `老年骨折 糖尿病 护理`
 
 For each query, use OpenClaw CLI:
 ```bash
 # Type query and submit
-openclaw browser type <search_field_ref> "Orem 自理模式 护理" --submit
+openclaw browser type <search_field_ref> "[关键词]" --submit
 
 # Apply filters (use RELATIVE time filter, e.g., "近5年" - do NOT hardcode specific years)
 openclaw browser snapshot --format aria
-# Look for filter options: 语种=中文, 文献类型=期刊, 期刊级别=北大核心/CSCD/CSSCI, 发表时间=近5年
+# Look for filter options: 语种=中文, 文献类型=期刊, 期刊级别=WJCI/北大核心/CSCD/CSSCI, 发表时间=近5年
 # Wanfang typically has a date filter dropdown - select "近5年" (last 5 years)
 
 # Check results
@@ -70,7 +113,7 @@ Select 5-7 papers and verify:
 For each selected paper, record mandatory fields:
 - `Abstract key points` (1-3 bullets - extract from search results snippet)
 - `Relevance to topic` (one sentence)
-- `Core journal label` (for example: 北大核心 / 科技核心 / CSCD / CSSCI)
+- `Core journal label` (for example: WJCI / 北大核心 / 科技核心 / CSCD / CSSCI)
 
 **Example of extracting from search results:**
 ```bash
@@ -108,7 +151,7 @@ Required structure:
 # Wanfang Research Results
 
 ## Topic
-...
+[课题名称]
 
 ## Search Keywords & Results
 | Keyword | Results |
