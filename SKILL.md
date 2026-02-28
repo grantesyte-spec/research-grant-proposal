@@ -1,6 +1,6 @@
 ---
 name: research-grant-proposal
-description: Generate Chinese-language academic nursing grant proposals based on verified literature from CNKI, PubMed, and Wanfang. Use when the user asks for proposal writing, literature-backed sections, technical routes, or reference lists.
+description: Generate Chinese-language academic nursing grant proposals based on research literature from CNKI, PubMed, and Wanfang. Use when the user asks for proposal writing, literature-backed sections, technical routes, or reference lists.
 ---
 
 # Research Grant Proposal Generator
