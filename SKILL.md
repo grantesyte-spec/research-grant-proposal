@@ -39,7 +39,6 @@ workspace/
 │       ├── wanfang_results.md
 │       ├── grant_proposal.md
 │       ├── research_notes.md
-│       ├── topic_decomposition.md
 │       └── issue_keywords.md
 └── skills/                         ← 技能定义（仅模板/工具）
     └── research-grant-proposal/
@@ -67,7 +66,7 @@ workspace/
 
 **目的：** 在开始检索前，系统化分析课题并生成检索矩阵
 
-1. 读取 `topic_decomposition.md` 通用模板
+1. 读取 `issue_keywords.md` 通用模板
 2. 根据用户课题，提取以下要素：
    - 理论基础
    - 护理理论
@@ -144,7 +143,7 @@ Generate final proposal sections using only verified references:
     ↓
 [Step 0] 课题拆解
     ↓
-读取 topic_decomposition.md 模板
+读取 issue_keywords.md 模板
     ↓
 提取要素：理论基础 + 护理理论 + 研究对象 + 干预措施
     ↓

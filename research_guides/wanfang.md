@@ -15,24 +15,45 @@ Purpose: research **Chinese core-journal literature** on Wanfang and generate `w
 
 ## Browser Rules (OpenClaw CLI)
 
+> **⚠️ 重要原则：控制信息量，避免上下文膨胀**
+> 
+> 浏览器快照返回整个页面DOM，信息量巨大会稀释注意力。遵循以下规则：
+
 1. Use a single tab only.
 2. Keep one `targetId` across all actions.
 3. Prefer `openclaw browser navigate` over opening new pages in new tabs.
 4. If visual overlays appear, continue when search controls remain operable.
 5. Judge page state by actionable refs from snapshot.
 6. If uncertain about current page state, run `openclaw browser snapshot` first, then decide the next action.
-7. Prefer `openclaw browser type ... --submit` over a separate click on search when available.
-8. **Wanfang website is SLOW and has UNSTABLE page state.**
-   - **After each action, ALWAYS run `snapshot` to check current page state before proceeding.**
-   - **If you encounter "Element not found" errors, IMMEDIATELY refresh the page with `navigate` and re-obtain element references.**
-   - **Increase wait time (sleep) appropriately, as Wanfang uses AJAX loading.**
-9. **For Wanfang, analyze abstracts directly from the search results page to select relevant papers.**
-   - Search results on Wanfang typically display abstract content in the snippet.
-   - **NO need to click into individual article pages to read full abstracts.**
-   - Use the visible abstract summary from search results for verification.
-   - This avoids page navigation issues and speeds up the verification process.
-10. For article detail pages, prefer `openclaw browser navigate` using the article URL instead of clicking title links that may open a new tab.
-11. If a new tab appears, close it immediately with `openclaw browser tab close <id>` and continue with the original `targetId`.
+7. **精确提取，避免全量快照**：
+   - 使用 `snapshot --compact` 获取简化版本（推荐首选）
+   - 使用 `grep` 过滤关键内容：`snapshot --compact | grep -E "摘要：|核心|Wanfang"`
+   - 使用 `head -50` 限制行数，避免信息过载
+8. **分步处理策略**：
+   - 第一步：获取文章列表（简化版snapshot）
+   - 第二步：选择目标文章后，逐个打开详情页
+   - 不要试图从一次快照中提取所有信息
+9. **Wanfang网站特殊注意事项**：
+   - Wanfang网站加载慢，页面状态不稳定
+   - 每次操作后都要运行snapshot检查当前页面状态
+   - 遇到"Element not found"错误时，立即刷新页面并重新获取元素引用
+   - 适当增加等待时间，因为Wanfang使用AJAX加载
+10. Prefer `openclaw browser type ... --submit` over a separate click on search when available.
+11. **For Wanfang, analyze abstracts directly from the search results page to select relevant papers.**
+    - Search results on Wanfang typically display abstract content in the snippet.
+    - **NO need to click into individual article pages to read full abstracts.**
+    - Use the visible abstract summary from search results for verification.
+    - This avoids page navigation issues and speeds up the verification process.
+12. For article detail pages, prefer `openclaw browser navigate` using the article URL instead of clicking title links that may open a new tab.
+13. If a new tab appears, close it immediately with `openclaw browser tab close <id>` and continue with the original `targetId`.
+14. **提取摘要时的最佳实践**：
+    ```bash
+    # 先看简化版
+    openclaw browser snapshot --compact | head -80
+    
+    # 精确定位摘要区域
+    openclaw browser snapshot --compact | grep -A 5 "摘要"
+    ```
 
 ## Step 0: 读取检索矩阵 (前置步骤)
 
@@ -99,6 +120,8 @@ openclaw browser snapshot --compact
 
 ### 3) Select and Verify Papers
 
+**⚠️ 关键要求：必须从搜索结果页面读取摘要内容，不能仅凭标题判断！**
+
 Select 5-7 papers and verify:
 - Topic relevance
 - Authors
@@ -110,25 +133,25 @@ Select 5-7 papers and verify:
 - Chinese-language check
 - Core-journal label check (capture visible label text)
 
-For each selected paper, record mandatory fields:
-- `Abstract key points` (1-3 bullets - extract from search results snippet)
-- `Relevance to topic` (one sentence)
-- `Core journal label` (for example: WJCI / 北大核心 / 科技核心 / CSCD / CSSCI)
+For each selected paper, **must execute the following steps**:
 
-**Example of extracting from search results:**
-```bash
-# After search, use --compact snapshot to view results with abstracts
-openclaw browser snapshot --compact | grep -E "摘要：|CSTPCD|北大核心"
+1. **Read abstract from search results** (cannot skip):
+   - Use `--compact` snapshot to view results with abstracts
+   - Find "摘要：" section in the snapshot
+   - Extract abstract key points from visible content
 
-# Identify papers with visible abstracts and core journal labels
-# Select the most relevant ones based on visible information
-```
+2. **Extract abstract key points** (1-3 bullets): From visible abstract, not inferred from title
 
-**Why analyze from search results:**
-- Wanfang search results display 摘要 (abstract) directly in the snippet
-- Avoids page navigation and element reference issues
-- Significantly faster verification process
-- Reduces the risk of "element not found" errors
+3. **Confirm core journal label**: Must see label text (WJCI/北大核心/科技核心/CSCD/CSSCI)
+
+4. **Write relevance sentence**: Based on abstract content, not title guess
+
+**Verification checklist (for each paper):**
+- [ ] Found abstract content in search results
+- [ ] Abstract key points from visible content (not guessed)
+- [ ] Core journal label confirmed
+- [ ] Year within last 5 years confirmed
+- [ ] Chinese language confirmed
 
 If the visible abstract from search results is insufficient to determine relevance, then navigate to the article page:
 ```bash
@@ -140,6 +163,8 @@ openclaw browser snapshot --compact
 
 If abstract is unavailable/inaccessible, mark `NOT VERIFIED` and replace with another paper.
 If Chinese-language, core-journal, or year requirements are not met, mark `NOT VERIFIED` and replace with another paper.
+
+> **Important lesson (2026-02-28)**: Having output ≠ correctly completed. Writing wanfang_results.md doesn't mean verification is done — ensure every paper's abstract key points come from visible search results content.
 
 ### 4) Create `wanfang_results.md`
 

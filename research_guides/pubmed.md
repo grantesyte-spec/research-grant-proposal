@@ -15,6 +15,10 @@ Purpose: research English literature on PubMed and generate `pubmed_results.md`.
 
 ## Browser Rules (OpenClaw CLI)
 
+> **⚠️ 重要原则：控制信息量，避免上下文膨胀**
+> 
+> 浏览器快照返回整个页面DOM，信息量巨大会稀释注意力。遵循以下规则：
+
 1. Use a **single tab only** throughout the entire research process.
    - Do NOT open new tabs; use navigate to stay in the same tab.
    - If a new tab accidentally opens, close it immediately and focus back to the original tab.
@@ -25,6 +29,22 @@ Purpose: research English literature on PubMed and generate `pubmed_results.md`.
 4. If visual overlays appear, continue if search controls remain operable.
 5. Judge operability by snapshot refs.
 6. If uncertain about current page state, run `openclaw browser snapshot` first, then decide the next action.
+7. **精确提取，避免全量快照**：
+   - 使用 `snapshot --compact` 获取简化版本（推荐首选）
+   - 使用 `grep` 过滤关键内容：`snapshot --compact | grep -E "Abstract|PMID|202"`
+   - 使用 `head -50` 限制行数，避免信息过载
+8. **分步处理策略**：
+   - 第一步：获取文章列表（简化版snapshot）
+   - 第二步：选择目标文章后，逐个打开详情页
+   - 不要试图从一次快照中提取所有信息
+9. **提取摘要时的最佳实践**：
+   ```bash
+   # 先看简化版
+   openclaw browser snapshot --compact | head -80
+   
+   # 精确定位摘要区域
+   openclaw browser snapshot --compact | grep -A 10 "Abstract"
+   ```
 7. Prefer `openclaw browser type ... --submit` over a separate click on search when available.
 8. For article detail pages, prefer `openclaw browser navigate` using the article URL instead of clicking title links that may open a new tab.
 9. If a new tab appears, close it immediately with `openclaw browser tab close <id>` and continue with the original `targetId`.
@@ -95,6 +115,8 @@ openclaw browser snapshot --format aria
 
 ### 3) Select and Verify Papers
 
+**⚠️ 关键要求：每篇文献必须打开详情页阅读摘要，不能仅凭标题判断！**
+
 Select 5-7 papers and verify:
 - Topic relevance
 - Authors
@@ -102,21 +124,31 @@ Select 5-7 papers and verify:
 - Abstract relevance (must read abstract text, not title-only)
 - PMID and URL validity
 
-For each selected paper, record mandatory fields:
-- `Abstract key points` (1-3 bullets)
-- `Relevance to topic` (one sentence)
+For each selected paper, **must execute the following steps**:
 
-**Navigate to article detail pages using OpenClaw CLI:**
-```bash
-# Use article URL format
-openclaw browser navigate https://pubmed.ncbi.nlm.nih.gov/<PMID>/
+1. **Open article detail page** (cannot skip):
+   ```bash
+   openclaw browser navigate https://pubmed.ncbi.nlm.nih.gov/<PMID>/
+   openclaw browser snapshot --format aria
+   ```
 
-# Read abstract
-openclaw browser snapshot --format aria
-```
+2. **Read abstract content**: Find "Abstract" section in the page snapshot
+
+3. **Extract abstract key points** (1-3 bullets): From the actual abstract, not inferred from title
+
+4. **Write relevance sentence**: Based on abstract content, not title guess
+
+**Verification checklist (for each paper):**
+- [ ] Opened detail page
+- [ ] Found abstract content
+- [ ] Abstract key points from原文 (not guessed)
+- [ ] Year within last 5 years confirmed
+- [ ] PMID/URL valid
 
 If abstract is unavailable/inaccessible, mark `NOT VERIFIED` and replace with another paper.
 If year requirement is not met, mark `NOT VERIFIED` and replace with another paper.
+
+> **Important lesson (2026-02-28)**: Having output ≠ correctly completed. Writing pubmed_results.md doesn't mean verification is done — ensure every paper's abstract key points come from actual detail page content.
 
 ### 4) Create `pubmed_results.md`
 
