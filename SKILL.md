@@ -42,7 +42,7 @@ workspace/
     └── research-grant-proposal/
         ├── SKILL.md
         ├── research_guides/
-        └── templates/
+        └── research_notes_template.md
 ```
 
 **Workflow for Each Project:**
@@ -101,7 +101,7 @@ Read all three research guide files in order, using the keyword matrix from Step
 
 **Evidence-level research is mandatory for every selected paper.**
 
-- **CNKI**: Wait **10-15 seconds** for each page to load after navigation. Capture `Abstract key points` (1-3 bullets) + `Relevance to topic` (one sentence). Capture `Core journal label`.
+- **CNKI**: Wait **5 seconds** for each page to load after navigation. Capture `Abstract key points` (1-3 bullets) + `Relevance to topic` (one sentence). Capture `Core journal label`.
 - **PubMed**: Capture `Abstract key points` (1-3 bullets) + `Relevance to topic` (one sentence).
 - **Wanfang**: Capture `Abstract key points` (1-3 bullets) + `Relevance to topic` (one sentence). Capture `Core journal label`.
 

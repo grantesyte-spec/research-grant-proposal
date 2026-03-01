@@ -22,7 +22,7 @@ Purpose: research Chinese core-journal literature on CNKI and generate `cnki_res
 1. Use a **single tab only** throughout the entire research process.
    - Do NOT open new tabs; use navigate to stay in the same tab.
    - If a new tab accidentally opens, close it immediately and focus back to the original tab.
-2. Wait 10-15 seconds before taking snapshot after navigation.
+2. Wait 5 seconds before taking snapshot after navigation.
    - This allows the page to fully load and stabilizes element refs.
    - Dynamic pages (like CNKI search results) need time to render.
 3. Check `openclaw browser tabs` first if unsure about current tab state.
@@ -48,13 +48,13 @@ Purpose: research Chinese core-journal literature on CNKI and generate `cnki_res
    # 精确定位摘要区域
    openclaw browser snapshot --compact | grep -A 5 "摘要"
    ```
-7. Prefer `openclaw browser type ... --submit` over a separate click on search when available.
-8. **For article detail pages: MUST use `openclaw browser navigate <article_url>` instead of clicking title links.**
+10. Prefer `openclaw browser type ... --submit` over a separate click on search when available.
+11. **For article detail pages: MUST use `openclaw browser navigate <article_url>` instead of clicking title links.**
    - Clicking title links often fails with timeout errors
    - Get the article URL from snapshot: look for `/url: https://kns.cnki.net/kcms2/article/abstract?...` in the title link element
-9. If a new tab appears, close it immediately with `openclaw browser tab close <id>` and continue with the original `targetId`.
-10. **Getting search box ref:** Use `openclaw browser snapshot --labels | grep textbox` to find the textbox ref (usually e8 or similar)
-11. **Getting article URLs from search results:** Each title in search results has a URL. Extract URLs from snapshot looking for links with `/url: https://kns.cnki.net/kcms2/article/abstract?...`
+12. If a new tab appears, close it immediately with `openclaw browser tab close <id>` and continue with the original `targetId`.
+13. **Getting search box ref:** Use `openclaw browser snapshot --labels | grep textbox` to find the textbox ref (usually e8 or similar)
+14. **Getting article URLs from search results:** Each title in search results has a URL. Extract URLs from snapshot looking for links with `/url: https://kns.cnki.net/kcms2/article/abstract?...`
 
 ## Step 0: 读取检索矩阵
 
@@ -70,16 +70,39 @@ Purpose: research Chinese core-journal literature on CNKI and generate `cnki_res
 openclaw browser navigate https://kns.cnki.net/kns8s/search
 ```
 
-### 2) Click "中文" Filter (重要步骤)
+### 2) Run Queries - 先获取搜索框ref
 
-搜索页面加载后，**必须先点击"中文"筛选**，否则默认显示中英文混合结果：
+**重要：每轮检索前先获取搜索框ref，确保ref有效**
 
 ```bash
-# 方法1：使用JavaScript点击中文筛选按钮（推荐）
-openclaw browser act --kind evaluate --fn "document.querySelector('.switch-ChEn .ch').click()"
+# 获取搜索框ref
+openclaw browser snapshot --compact | grep -E "textbox.*中文" | head -3
+# 通常返回 ref=e8
+```
 
-# 方法2：尝试通过URL参数切换
-openclaw browser navigate "https://kns.cnki.net/kns8s/search?param0=Chinese"
+使用 issue_keywords.md 中的关键词矩阵，按优先级顺序检索：
+
+```bash
+# 输入关键词并搜索
+openclaw browser type <search_field_ref> "[关键词]" --submit
+```
+
+**核心流程循环：**
+```
+搜索 → 点击中文 → 检查来源类别
+    ↓
+有核心期刊选项 → 勾选并选文献
+    ↓
+暂无分组结果 → 立即换下一组关键词（不要纠结）
+```
+
+### 3) Click "中文" Filter + 检查结果 (重要步骤)
+
+搜索页面加载后，**必须先点击"中文"筛选**，然后立即检查结果：
+
+```bash
+# 点击中文筛选
+openclaw browser evaluate --fn "(el) => { const items = document.querySelectorAll('.ch'); for(let item of items) { if(item.textContent.includes('中')) { item.click(); break; } } }"
 ```
 
 **为什么必须点击中文：**
@@ -87,54 +110,65 @@ openclaw browser navigate "https://kns.cnki.net/kns8s/search?param0=Chinese"
 - 核心期刊筛选选项只在选中"中文"后才出现
 - 不点击中文会漏掉大量中文核心期刊
 
+**立即检查来源类别状态：**
+```bash
+openclaw browser snapshot --compact | grep -E "来源类别" -A 3
+```
+
+**判断结果（二选一）：**
+1. **如果有核心期刊选项**（如"北大核心"、"CSCD"、"WJCI"）→ 继续Step 4勾选核心期刊
+2. **如果显示"暂无分组结果"** → 立即换下一组关键词，不要继续尝试
+
 **验证是否成功切换到中文：**
-```bash
-openclaw browser snapshot --compact | grep -E "来源类别|北大|CSCD|WJCI|核心"
-```
-如果看到"来源类别"下有"北大核心"、"CSCD"、"WJCI"等选项，说明切换成功。
+只要看到"来源类别"这个筛选项（term: 来源类别），就说明切换成功。
 
-### 3) Select Core Journal Filter (核心期刊筛选)
+### 4) Select Core Journal Filter (核心期刊筛选)
 
-点击"中文"后，在搜索结果页面左侧会出现"来源类别"筛选选项：
+**⚠️ 必须使用精确提取，避免全量快照：**
 
 ```bash
-# 查看来源类别筛选选项
-openclaw browser snapshot --compact | grep -E "来源类别|北大|CSCD|WJCI|核心" -A 5
-
-# 常见核心期刊选项：
-# - 北大核心 (checkbox "北大核心")
-# - CSCD (checkbox "CSCD")  
-# - WJCI (checkbox "WJCI")
-# - 科技核心
+# 精确提取来源类别筛选选项（推荐）
+openclaw browser snapshot --compact | grep -E "来源类别" -A 3
 ```
 
-**勾选核心期刊：**
-```bash
-# 点击北大核心复选框（通常是 checkbox "北大核心"）
-openclaw browser click <checkbox_ref>
+**常见核心期刊选项：**
+- 北大核心 (checkbox "北大核心")
+- CSCD (checkbox "CSCD")
+- WJCI (checkbox "WJCI")
+- 科技核心 (checkbox "科技核心")
+- CA (checkbox "CA")
+- AJ (checkbox "AJ")
+- ISR (checkbox "ISR")
 
-# 示例：点击编号为e46的复选框
-openclaw browser click e46
+**⚠️ 重要规则：当有多个核心期刊选项时，必须全部勾选！**
 
-# 等待结果更新
-sleep 5
-openclaw browser snapshot --compact
-```
+当搜索结果页面左侧"来源类别"显示多个核心期刊选项时（如同时显示"北大核心"、"CSCD"、"WJCI"），**必须勾选所有核心期刊选项**，以获取最全面的核心期刊文献。
 
-### 4) Run Queries (Chinese only)
+**处理流程：**
+1. 先提取**所有**来源类别复选框（不管是什么核心期刊，全部勾选）：
+   ```bash
+   # 提取来源类别下所有checkbox的ref
+   openclaw browser snapshot --compact | grep -E "term: 来源类别" -A 10 | grep "checkbox"
+   ```
 
-使用 issue_keywords.md 中的关键词矩阵，按优先级顺序检索：
+2. **依次点击勾选每个checkbox**：
+   ```bash
+   # 假设找到 e46, e47, e48, e49...
+   openclaw browser click e46
+   sleep 2
+   openclaw browser click e47
+   sleep 2
+   openclaw browser click e48
+   # 继续勾选所有找到的checkbox...
+   ```
 
-```bash
-# 输入关键词并搜索
-openclaw browser type <search_field_ref> "[关键词]" --submit
+3. **验证全部勾选成功**：
+   ```bash
+   sleep 5
+   openclaw browser snapshot --compact | grep -E "row \"[0-9]" | head -15
+   ```
 
-# 等待搜索结果加载
-sleep 5
-openclaw browser snapshot --compact
-```
-
-### 5) Select and Verify Papers (基于摘要验证)
+### 5) Select and Verify Papers (基于摘要验证 - 必须打开详情页)
 
 **⚠️ 关键要求：每篇文献必须打开详情页阅读摘要，不能仅凭标题判断！**
 
@@ -171,8 +205,6 @@ openclaw browser snapshot --compact
 > **重要教训（2026-02-28）**：有输出 ≠ 正确完成。写出了cnki_results.md不代表验证做好了——必须确保每篇文献的摘要要点都来自详情页的真实内容。
 
 ### 6) Create `cnki_results.md`
-
-Required structure:
 
 ```markdown
 # CNKI Research Results
